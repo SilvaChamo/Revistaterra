@@ -26,17 +26,18 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           <SearchBox />
         </div>
         <Nav />
-        <div className="border-t border-neutral-200">
-          <div className="mx-auto flex max-w-[1300px] items-center text-[11px] text-neutral-600">
-            <b className="z-10 shrink-0 bg-white px-5 py-2 uppercase" style={{ color: GREEN }}>Cotações do dia</b>
-            <div className="terra-marquee-wrap min-w-0 flex-1 overflow-hidden py-2">
-              <div className="terra-marquee"><Row /><Row dup /></div>
-            </div>
-          </div>
-        </div>
       </header>
 
-      <div className="mx-auto mt-5 max-w-[1300px] px-3">{children}</div>
+      <div className="mx-auto mt-5 max-w-[1300px] px-3">
+        {/* barra de cotações: só na largura do conteúdo */}
+        <div className="mb-5 flex items-center bg-white text-[11px] text-neutral-600 shadow-sm">
+          <b className="z-10 shrink-0 bg-white px-5 py-2.5 uppercase" style={{ color: GREEN }}>Cotações do dia</b>
+          <div className="terra-marquee-wrap min-w-0 flex-1 overflow-hidden py-2.5">
+            <div className="terra-marquee"><Row /><Row dup /></div>
+          </div>
+        </div>
+        {children}
+      </div>
 
       <footer className="mt-8 text-sm text-white" style={{ background: DARK }}>
         <div className="mx-auto grid max-w-[1300px] gap-8 px-6 py-8 md:grid-cols-4">
