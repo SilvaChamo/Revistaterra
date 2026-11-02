@@ -66,8 +66,9 @@ export default function Weather() {
       <div className="relative h-[152px] shrink-0 overflow-hidden lg:h-auto lg:min-h-[152px] lg:flex-1 border-b border-neutral-300 bg-[#0e1a26] text-white">
         <img src="/terra/clima-bg.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-[#0b1a2b]/55 to-[#0b1a2b]/80" />
-        <div className="relative flex h-full flex-col justify-between px-5 py-4">
-          <div className="flex items-center gap-4">
+        <div className="relative flex h-full flex-col">
+          {/* nuvem e dados: centrados entre a linha de cima (cabeçalho) e a linha de baixo */}
+          <div className="flex flex-1 items-center gap-4 px-5">
             <span className="text-5xl leading-none drop-shadow" aria-hidden>{icon}</span>
             <div className="min-w-0 flex-1">
               <div className="whitespace-nowrap text-[10px] font-bold uppercase tracking-normal text-emerald-300 drop-shadow">{p.label} · {p.province}</div>
@@ -75,7 +76,8 @@ export default function Weather() {
               <div className="whitespace-nowrap text-xs text-white/90">{cond}</div>
             </div>
           </div>
-          <div className="flex gap-x-3 whitespace-nowrap border-t border-white/60 pt-3 text-[11px] text-white/90"><span>Sensação {w.feels}°C</span><span>Humidade {w.hum}%</span><span>Vento {w.wind} km/h</span></div>
+          {/* linha de lado a lado, transparente */}
+          <div className="flex gap-x-3 whitespace-nowrap border-t border-white/30 px-5 py-3 text-[11px] text-white/90"><span>Sensação {w.feels}°C</span><span>Humidade {w.hum}%</span><span>Vento {w.wind} km/h</span></div>
         </div>
       </div>
       <div className="p-5">
