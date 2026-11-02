@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Mail, Search, X } from 'lucide-react';
-import { DARK, DARKER, LIME, social } from '@/lib/terra';
+import { DARK, DARKER, LIME, TOPBAR, social } from '@/lib/terra';
 
 export const THIN_BAR = 36; // altura da barra fina, em px
 
@@ -26,12 +26,12 @@ function MiniTemp() {
     <span className="flex items-center gap-1.5 whitespace-nowrap font-semibold" title="Temperatura em Maputo">
       <span aria-hidden>{t ? t.icon : '🌡️'}</span>
       <span>{t ? `${t.temp}°C` : '--°C'}</span>
-      <span className="hidden font-normal text-neutral-500 sm:inline">Maputo</span>
+      <span className="hidden font-normal text-white/70 sm:inline">Maputo</span>
     </span>
   );
 }
 
-const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:text-[#047857]';
+const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:text-[#9BCB3C]';
 
 /** Barra fina por cima do cabeçalho (não fica fixa): e-mail e rádio à esquerda; temperatura, pesquisa e redes à direita. */
 export default function TopThinBar() {
@@ -46,11 +46,11 @@ export default function TopThinBar() {
   }, [search]);
 
   return (
-    <div className="relative z-[60] border-b border-neutral-200 bg-[#f3f6f4] text-xs text-neutral-700" style={{ height: THIN_BAR }}>
+    <div className="relative z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR }}>
       <div className="relative mx-auto flex h-full max-w-[1300px] items-center justify-between gap-3 px-3">
         <div className="flex items-center gap-4 sm:gap-6">
-          <a href="mailto:comercial@revistaterra.co.mz" className="flex items-center gap-1.5 whitespace-nowrap font-medium transition-colors hover:text-[#047857]"><Mail size={14} aria-hidden />E-mail</a>
-          <Link href="/radio" className="flex items-center gap-1.5 whitespace-nowrap font-medium transition-colors hover:text-[#047857]">
+          <a href="mailto:comercial@revistaterra.co.mz" className="flex items-center gap-1.5 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]"><Mail size={14} aria-hidden />E-mail</a>
+          <Link href="/radio" className="flex items-center gap-1.5 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]">
             <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ background: '#e11d48' }} /><span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: '#e11d48' }} /></span>
             Rádio ao vivo
           </Link>
@@ -58,12 +58,12 @@ export default function TopThinBar() {
         <div className="flex items-center gap-3 sm:gap-4">
           <MiniTemp />
           <div className="flex items-center">
-            <button aria-label={search ? 'Fechar pesquisa' : 'Pesquisar'} aria-expanded={search} onClick={() => setSearch(!search)} className={ic} style={search ? { color: '#047857' } : undefined}>{search ? <X size={15} /> : <Search size={15} />}</button>
             {social.map((s) => (
               <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className={ic}>
                 <svg viewBox="0 0 24 24" className="h-[15px] w-[15px]" fill="currentColor" aria-hidden><path d={s.path} /></svg>
               </a>
             ))}
+            <button aria-label={search ? 'Fechar pesquisa' : 'Pesquisar'} aria-expanded={search} onClick={() => setSearch(!search)} className={ic} style={search ? { color: LIME } : undefined}>{search ? <X size={15} /> : <Search size={15} />}</button>
           </div>
         </div>
         <form role="search" onSubmit={(e) => e.preventDefault()} className={`absolute inset-x-3 top-full z-10 overflow-hidden shadow-lg transition-[max-height,opacity] duration-300 ${search ? 'max-h-24 opacity-100' : 'pointer-events-none max-h-0 opacity-0'}`} style={{ background: DARKER }}>

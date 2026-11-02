@@ -36,25 +36,25 @@ export default function HeaderUmaLinha() {
     <TopThinBar />
     <div className="relative h-[68px] lg:h-[82px]">
       <header className={`fixed inset-x-0 z-50 transition-[background-color,box-shadow] duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`} style={{ background: scrolled ? GREEN : '#fff', top }}>
-        <div className={`relative mx-auto flex max-w-[1300px] items-stretch px-3 transition-[height] duration-300 ${scrolled ? 'h-[56px]' : 'h-[64px] lg:h-[78px]'}`}>
-          <Link href="/" className={`flex shrink-0 items-center bg-white transition-[padding] duration-300 ${scrolled ? 'px-4' : 'pr-4'}`} aria-label="Revista Terra — A Voz do Agro e Ambiente">
+        <div className={`relative mx-auto flex max-w-[1300px] items-stretch px-3 lg:grid lg:grid-cols-[1fr_auto_1fr] transition-[height] duration-300 ${scrolled ? 'h-[58px]' : 'h-[66px] lg:h-[80px]'}`}>
+          <Link href="/" className={`flex shrink-0 items-center justify-self-start bg-white transition-[padding] duration-300 ${scrolled ? 'px-4' : 'pr-4'}`} aria-label="Revista Terra — A Voz do Agro e Ambiente">
             <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className={`w-auto transition-[height] duration-300 ${scrolled ? 'h-[40px]' : 'h-[46px] lg:h-[54px]'}`} />
           </Link>
 
-          <nav className="hidden flex-1 items-stretch px-2 lg:flex" aria-label="Menu principal">
+          <nav className="hidden items-stretch lg:flex" aria-label="Menu principal">
             {nav.map((m) => {
               const active = path === m.href;
               return (
-                <Link key={m.href} href={m.href} className={`relative flex items-center px-4 text-xs font-bold uppercase transition-colors hover:text-[#9BCB3C] ${scrolled ? 'text-white' : ''}`} style={scrolled ? (active ? { background: DARKER, color: LIME } : undefined) : { color: active ? GREEN : DARK }}>
+                <Link key={m.href} href={m.href} className={`relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors hover:text-[#9BCB3C] ${scrolled ? 'text-white' : ''}`} style={scrolled ? (active ? { background: DARKER, color: LIME } : undefined) : { color: active ? GREEN : DARK }}>
                   {m.label}
-                  {!scrolled && active && <i className="absolute inset-x-4 bottom-4 h-[3px]" style={{ background: LIME }} />}
+                  {!scrolled && active && <i className="absolute inset-x-2.5 bottom-4 h-[3px]" style={{ background: LIME }} />}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="ml-auto flex items-center lg:ml-0">
-            <a href="#" aria-label="Entrar" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={scrolled ? { background: LIME, color: '#064E3B' } : { background: '#064E3B', color: '#fff' }}><User size={16} aria-hidden />Entrar</a>
+          <div className="ml-auto flex items-center justify-self-end lg:ml-0">
+            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={scrolled ? { background: LIME, color: '#064E3B' } : { background: '#064E3B', color: '#fff' }}><User size={16} aria-hidden />Entrar</Link>
             <button aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)} className={`${icon} lg:hidden`}>
               {menu ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -69,7 +69,7 @@ export default function HeaderUmaLinha() {
             ))}
           </div>
         </nav>
-        <div className="h-1 transition-colors duration-300" style={{ background: scrolled ? DARKER : GREEN }} />
+        <div className="h-[2px] transition-colors duration-300" style={{ background: scrolled ? DARKER : GREEN }} />
       </header>
     </div>
     </>

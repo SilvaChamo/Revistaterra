@@ -3,7 +3,7 @@ import data from '@/data/terra.json';
 export const GREEN = '#047857';
 export const DARK = '#064E3B'; // tom do texto "TERRA" no logo
 export const LIME = '#9BCB3C'; // verde-lima de campo: botões, hovers e etiquetas de categoria
-export const TOPBAR = '#052B21'; // primeira barra (data, Entrar, Newsletter, Contactos): mais escura
+export const TOPBAR = '#054031'; // barra fina de cima: um pouco mais escura que o botão Entrar (#064E3B)na de cima: o verde mais escuro do site
 export const DARKER = '#053D2F'; // um pouco mais carregado: linha do menu e item activo
 
 export type Card = { category: string; title: string; excerpt: string; url: string; image: string | null; date?: string };
