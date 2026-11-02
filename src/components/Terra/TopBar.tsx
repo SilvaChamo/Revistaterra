@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import Today from './Today';
-import { DARK, DARKER, LIME } from '@/lib/terra';
+import { DARK, DARKER, LIME, TOPBAR } from '@/lib/terra';
 
 const link = 'transition-colors hover:text-[#9BCB3C]';
 
@@ -12,10 +12,10 @@ export default function TopBar() {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   return (
-    <div className="text-xs text-white" style={{ background: DARK }}>
+    <div className="text-xs text-white" style={{ background: TOPBAR }}>
       <div className="mx-auto flex max-w-[1300px] items-center justify-between gap-4 px-3 py-2">
-        <Today />
-        <nav className="flex items-center gap-5 font-medium" aria-label="Utilitários">
+        <span className="hidden sm:block"><Today /></span>
+        <nav className="ml-auto flex items-center gap-5 font-medium" aria-label="Utilitários">
           <a href="#" className={link}>Entrar</a>
           <button aria-expanded={open} onClick={() => setOpen(!open)} className={link} style={open ? { color: LIME } : undefined}>Newsletter</button>
           <Link href="/contacto" className={link}>Contactos</Link>
