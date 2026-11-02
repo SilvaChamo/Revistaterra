@@ -58,6 +58,10 @@ async function main() {
       app_metadata: { ...(existing.app_metadata || {}), [SITE_KEY]: { role: 'Administrador', approved: true } },
     };
     if (process.env.ADMIN_RESET_PASSWORD === '1') update.password = password;
+    // Nome de utilizador (para entrar só com o nome): só se a conta ainda não tiver um.
+    if (process.env.ADMIN_USERNAME && !(existing.user_metadata || {}).username) {
+      update.user_metadata = { ...(existing.user_metadata || {}), username: process.env.ADMIN_USERNAME };
+    }
     const { error } = await supabase.auth.admin.updateUserById(existing.id, update);
     if (error) throw error;
     console.log(`Acesso de Administrador a "${SITE_KEY}" acrescentado à conta existente.`);

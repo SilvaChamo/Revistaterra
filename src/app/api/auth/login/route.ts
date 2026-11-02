@@ -3,7 +3,8 @@ import { cookieOptions, SESSION_COOKIE, signSession } from '@/lib/local-session'
 import { mapRole, translateAuthError } from '@/lib/auth';
 import { verifyBootstrapAdmin } from '@/lib/bootstrap-admin';
 import { clearAttempts, tooManyAttempts } from '@/lib/rate-limit';
-import { siteAccess } from '@/lib/site-accounts';
+import { findSiteEmailByUsername, siteAccess } from '@/lib/site-accounts';
+import { serverDb } from '@/lib/antispam';
 
 function startSession(user: { id: string; email: string; name: string; role: 'admin' | 'editor' | 'contribuidor' | 'guest' }, extra: object = {}) {
   const res = NextResponse.json({ user, ...extra });
@@ -35,9 +36,16 @@ export async function POST(req: NextRequest) {
       return startSession({ ...bootstrap, role: 'admin' });
     }
 
-    // 2) Utilizadores do painel (Supabase Auth). Têm de ser e-mails.
+    // 2) Utilizadores do painel (Supabase Auth): entram com o e-mail ou com o nome de utilizador (ex.: "silva").
+    let email = login;
     if (!login.includes('@')) {
-      return NextResponse.json({ error: 'Utilizador ou palavra-passe incorrectos.' }, { status: 401 });
+      const resolved = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY
+        ? await findSiteEmailByUsername(serverDb(), login).catch(() => null)
+        : null;
+      if (!resolved) {
+        return NextResponse.json({ error: 'Utilizador ou palavra-passe incorrectos.' }, { status: 401 });
+      }
+      email = resolved;
     }
 
     const mode = process.env.AUTH_MODE || process.env.NEXT_PUBLIC_AUTH_MODE || 'supabase';
@@ -53,7 +61,7 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
-    const { data, error } = await supabase.auth.signInWithPassword({ email: login, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error || !data.user) {
       return NextResponse.json({ error: translateAuthError(error?.message || 'Credenciais inválidas') }, { status: 401 });
     }

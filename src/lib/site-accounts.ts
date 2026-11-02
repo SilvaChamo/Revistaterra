@@ -50,3 +50,26 @@ export async function findSiteUserByEmail(db: SupabaseClient, email: string): Pr
   }
   return null;
 }
+
+/**
+ * E-mail da conta deste site que corresponde a um nome de utilizador (user_metadata.username) ou, em alternativa,
+ * à parte do e-mail antes do @. Só contas deste site; se houver mais do que uma, não adivinha (null).
+ */
+export async function findSiteEmailByUsername(db: SupabaseClient, username: string): Promise<string | null> {
+  const wanted = username.trim().toLowerCase();
+  if (!wanted) return null;
+  const byName: User[] = [];
+  const byLocal: User[] = [];
+  for (let page = 1; page <= 10; page++) {
+    const { data, error } = await db.auth.admin.listUsers({ page, perPage: 1000 });
+    if (error || !data) return null;
+    for (const u of data.users) {
+      if (!isSiteAccount(u) || !u.email) continue;
+      if (String(u.user_metadata?.username || '').trim().toLowerCase() === wanted) byName.push(u);
+      else if (u.email.split('@')[0].toLowerCase() === wanted) byLocal.push(u);
+    }
+    if (data.users.length < 1000) break;
+  }
+  const hits = byName.length ? byName : byLocal;
+  return hits.length === 1 ? (hits[0].email as string) : null;
+}
