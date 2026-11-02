@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cleanText, clientIp, guardForm, hashIp, isEmail, serverDb, tooManyLinks } from '@/lib/antispam';
 
-const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos';
+const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
 /** Mensagem do formulário de contactos: protegida contra spam e guardada para o painel. */
 export async function POST(req: NextRequest) {

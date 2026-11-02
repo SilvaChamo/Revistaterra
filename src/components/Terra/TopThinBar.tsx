@@ -62,7 +62,7 @@ export default function TopThinBar() {
     <div className="relative z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR }}>
       <div className="relative mx-auto flex h-full max-w-[1300px] items-center justify-between gap-3 px-3">
         <div className="flex items-center gap-4 sm:gap-6">
-          <Link href="/radio" className="flex items-center gap-1.5 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]">
+          <Link href="/radio" className="flex items-center gap-3 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]">
             <span className="relative flex h-2.5 w-2.5" aria-hidden>
               <span className="absolute inline-flex h-full w-full rounded-full" style={{ background: '#39FF14', animation: 'terra-live 1.4s cubic-bezier(0,0,0.2,1) infinite' }} />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full" style={{ background: '#39FF14', boxShadow: '0 0 6px 1px #39FF14' }} />

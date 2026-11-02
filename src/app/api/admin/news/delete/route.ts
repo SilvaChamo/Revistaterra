@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     const { error } = await supabaseAdmin
       .from('news')
       .delete()
-      .eq('site_id', process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos') // só notícias deste site
+      .eq('site_id', process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra') // só notícias deste site
       .in('id', targetIds);
 
     if (error) {

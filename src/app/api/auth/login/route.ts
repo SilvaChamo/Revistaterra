@@ -60,11 +60,11 @@ export async function POST(req: NextRequest) {
 
     // Papel e aceitação vêm de app_metadata: só o painel/servidor (chave de serviço) os pode escrever.
     // user_metadata é editável pelo próprio utilizador e NUNCA decide permissões.
-    // O Supabase Auth é partilhado com outros sites: só entram as contas deste (app_metadata.entrecampos) e já aceites.
+    // O Supabase Auth é partilhado com outros sites: só entram as contas deste (app_metadata.revistaterra) e já aceites.
     const access = siteAccess(data.user);
     const meta = data.user.user_metadata || {};
     if (!access) {
-      return NextResponse.json({ error: 'Esta conta não tem acesso ao painel do EntreCAMPOS.' }, { status: 403 });
+      return NextResponse.json({ error: 'Esta conta não tem acesso ao painel da Revista Terra.' }, { status: 403 });
     }
     if (!access.approved) {
       return NextResponse.json(

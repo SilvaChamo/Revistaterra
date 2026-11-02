@@ -12,7 +12,7 @@ const fs = require('fs');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env.local'), quiet: true });
 const { createClient } = require('@supabase/supabase-js');
 
-const SITE = process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos';
+const SITE = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 const FROM = 'public-assets';
 const TO = process.env.NEXT_PUBLIC_STORAGE_BUCKET || process.env.STORAGE_BUCKET || 'entrecampos-media';
 const APPLY = process.argv.includes('--apply');

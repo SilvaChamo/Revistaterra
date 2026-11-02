@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import { SESSION_COOKIE, verifySession } from '@/lib/local-session';
 import { hasPermission } from '@/lib/permissions';
 
-const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos';
+const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
 /** Corrige a imagem de uma notícia deste site. Exige sessão do painel com permissão de editar artigos. */
 export async function repairNewsImage(newsId: string, newUrl: string) {

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cleanText, clientIp, guardForm, hashIp, isEmail, serverDb, tooManyLinks } from '@/lib/antispam';
 import { getAllPosts } from '@/lib/news-data';
 
-const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos';
+const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
 /** Comentário numa notícia: validado, protegido contra spam e guardado "pendente" até o painel o aprovar. */
 export async function POST(req: NextRequest) {

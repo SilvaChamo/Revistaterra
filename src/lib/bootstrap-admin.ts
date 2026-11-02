@@ -30,6 +30,6 @@ export function verifyBootstrapAdmin(login: string, password: string) {
   const passwordOk = candidate.length === expected.length && timingSafeEqual(candidate, expected);
   if (!passwordOk || !allowed.includes(login.trim().toLowerCase())) return null;
 
-  const email = allowed.find((l) => l.includes('@')) || 'admin@entrecampos.local';
+  const email = allowed.find((l) => l.includes('@')) || 'admin@revistaterra.local';
   return { id: 'bootstrap-admin', email, name: 'Administrador' };
 }

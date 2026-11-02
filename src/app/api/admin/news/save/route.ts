@@ -33,7 +33,7 @@ function getDisplayName(user: any): string {
   }
 }
 
-const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos';
+const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
 /** Só estes campos vêm do formulário; o resto (site_id, autor, views, datas…) é decidido no servidor. */
 const WRITABLE_FIELDS = ['title', 'slug', 'content', 'summary', 'category', 'categories', 'image_url', 'date'] as const;

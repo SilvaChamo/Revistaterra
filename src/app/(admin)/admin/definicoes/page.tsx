@@ -12,11 +12,11 @@ import {
 
 export default function DefinicoesGeraisPage() {
   const [formData, setFormData] = useState({
-    siteName: 'EntreCAMPOS',
+    siteName: 'Revista Terra',
     siteDescription: 'Portal de notícias agrícolas de Moçambique',
     logoUrl: '',
     faviconUrl: '',
-    contactEmail: 'admin@entrecamposblog.com',
+    contactEmail: 'comercial@revistaterra.co.mz',
     contactPhone: '',
     address: '',
     googleAnalyticsId: '',

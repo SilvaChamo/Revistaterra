@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
 import { getAllPosts } from '@/lib/news-data';
 
-const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos';
+const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

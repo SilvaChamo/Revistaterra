@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cleanText, guardForm, isEmail, serverDb } from '@/lib/antispam';
+import { SITE_KEY } from '@/lib/site-accounts';
 import { roleToMetadata, translateAuthError } from '@/lib/auth';
 
 /** Registo de conta: passa pelas protecções anti-spam no servidor antes de chegar ao Supabase Auth. */
@@ -26,8 +27,8 @@ export async function POST(req: NextRequest) {
       email,
       password,
       email_confirm: true,
-      app_metadata: { entrecampos: { role: 'Subscritor', approved: true, via: 'servidor' } },
-      user_metadata: { app: 'entrecampos', full_name: name, username: email.split('@')[0], role },
+      app_metadata: { [SITE_KEY]: { role: 'Subscritor', approved: true, via: 'servidor' } },
+      user_metadata: { app: SITE_KEY, full_name: name, username: email.split('@')[0], role },
     });
     // Resposta igual com ou sem erro de "e-mail já existe": não revela que e-mails estão registados (a base é partilhada).
     if (error && !/already|registered|exists/i.test(error.message)) {

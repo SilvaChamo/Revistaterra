@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuth, isUuid } from '@/lib/api-guard';
+import { SITE_KEY } from '@/lib/site-accounts';
 import { hasPermission } from '@/lib/permissions';
 
 const supabaseAdmin = createClient(
@@ -32,9 +33,9 @@ export async function POST(req: NextRequest) {
       password,
       email_confirm: true,
       // app_metadata só é escrito por aqui (chave de serviço): decide o papel e a aceitação.
-      app_metadata: { entrecampos: { role: roleLabel, approved: true, via: 'servidor' } },
+      app_metadata: { [SITE_KEY]: { role: roleLabel, approved: true, via: 'servidor' } },
       user_metadata: {
-        app: 'entrecampos',
+        app: SITE_KEY,
         username,
         full_name: `${firstName ?? ''} ${lastName ?? ''}`.trim(),
         first_name: firstName,

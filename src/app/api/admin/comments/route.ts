@@ -3,7 +3,7 @@ import { requireAuth } from '@/lib/api-guard';
 import { serverDb } from '@/lib/antispam';
 import { revalidateTag } from 'next/cache';
 
-const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos';
+const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 const STATUSES = ['pending', 'approved', 'spam', 'trash'] as const;
 const PERMISSIONS = ['rever_artigos', 'publicar_artigos'];
 

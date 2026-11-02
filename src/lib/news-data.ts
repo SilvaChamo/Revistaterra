@@ -45,7 +45,7 @@ const SUPABASE_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   '';
-const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'entrecampos';
+const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
 /** Domínio antigo (sem DNS) → site online, onde as imagens existem. */
 const ONLINE_HOST = 'https://entrecamposblog.com/';

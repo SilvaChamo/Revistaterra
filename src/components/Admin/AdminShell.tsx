@@ -433,7 +433,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           </button>
           <Link href="/" className="flex items-center gap-2 hover:text-[#72aee6]">
             <Settings className="w-4 h-4 max-sm:hidden" />
-            <span className="font-bold">EntreCampos</span>
+            <span className="font-bold">Revista Terra</span>
           </Link>
           
           <div className="flex items-center gap-3 lg:gap-4">

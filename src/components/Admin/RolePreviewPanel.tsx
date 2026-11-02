@@ -104,7 +104,7 @@ export default function RolePreviewPanel({ role }: RolePreviewPanelProps) {
             <div className="w-5 h-5 bg-[#00a651] rounded flex items-center justify-center">
               <span className="text-white text-xs font-bold">E</span>
             </div>
-            <span className="text-[13px] font-medium">EntreCAMPOS</span>
+            <span className="text-[13px] font-medium">Revista Terra</span>
           </div>
           <div className="mt-2 text-[11px] text-[#8c8f94]">
             Modo: {roleLabels[role]}

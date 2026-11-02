@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { DARK, GREEN, LIME } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
 
-export type RecentSet = { id: string; label: string; feature: Card[]; lists: Card[][]; side: Card[] };
+export type RecentSet = { id: string; label: string; feature: Card[] };
 
 const Pill = ({ children }: { children: React.ReactNode }) => (
   <span className="inline-block whitespace-nowrap rounded-br-md rounded-tl-md px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{children}</span>
@@ -31,47 +31,20 @@ export default function RecentNews({ sets }: { sets: RecentSet[] }) {
         </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-[1fr_1fr_240px]">
-        {s.feature.map((c, k) => (
-          <div key={c.title}>
-            <a href={c.url} className="group relative block h-[300px] overflow-hidden rounded-md bg-black" style={{ containerType: 'size' }}>
+      <div className="grid gap-5 md:grid-cols-3">
+        {s.feature.map((c) => (
+          <a key={c.title} href={c.url} className="group block" style={{ containerType: 'inline-size' }}>
+            <div className="relative h-[210px] overflow-hidden rounded-md bg-black">
               {c.image && <img src={c.image} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
-              <div className="absolute inset-x-4 bottom-0 border-t-2 bg-white px-4 pb-4 pt-0 text-center" style={{ borderColor: GREEN }}>
-                <div className="-mt-3"><Pill>{c.category}</Pill></div>
-                <h3 className="mt-2 font-bold leading-snug text-neutral-900" style={{ fontSize: 'clamp(13px, 5cqmin, 16px)' }}>{c.title}</h3>
-                <div className="mt-2 text-[11px] text-neutral-500">{c.date || 'Revista Terra'}</div>
-              </div>
-            </a>
-            <ul className="mt-3 divide-y divide-neutral-200 bg-white shadow-sm">
-              {s.lists[k].map((n) => (
-                <li key={n.title}>
-                  <a href={n.url} className="flex gap-3 p-3 hover:bg-neutral-50">
-                    {n.image && <img src={n.image} alt="" loading="lazy" decoding="async" className="h-14 w-[72px] shrink-0 rounded object-cover" />}
-                    <div>
-                      <span className="whitespace-nowrap text-[10px] font-bold uppercase" style={{ color: GREEN }}>{n.category}</span>
-                      <h4 className="mt-0.5 text-[13px] font-semibold leading-snug">{n.title}</h4>
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+            </div>
+            {/* o cartão de texto entra pela foto (margem negativa) e sai por baixo */}
+            <div className="relative z-10 mx-4 -mt-14 border-t-2 bg-white px-4 pb-4 text-center shadow-sm" style={{ borderColor: GREEN }}>
+              <div className="-mt-3"><Pill>{c.category}</Pill></div>
+              <h3 className="mt-2 font-bold leading-snug text-neutral-900" style={{ fontSize: 'clamp(12.5px, 4.7cqw, 15px)' }}>{c.title}</h3>
+              <div className="mt-2 text-[11px] text-neutral-500">{c.date || 'Revista Terra'}</div>
+            </div>
+          </a>
         ))}
-
-        <ul className="space-y-4 md:col-span-2 xl:col-span-1">
-          {s.side.map((n) => (
-            <li key={n.title}>
-              <a href={n.url} className="flex gap-3">
-                {n.image && <img src={n.image} alt="" loading="lazy" decoding="async" className="h-[96px] w-[96px] shrink-0 rounded object-cover" />}
-                <div>
-                  <Pill>{n.category}</Pill>
-                  <h4 className="mt-1.5 text-[13px] font-bold leading-snug">{n.title}</h4>
-                  <div className="mt-1 text-[11px] text-neutral-500">{n.date || 'Revista Terra'}</div>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );

@@ -8,7 +8,7 @@ import { mailConfigured, recoveryEmail, sendMail } from '@/lib/mailer';
  * forjado para enviar o token da vítima a um site falso): só com um destes. Configurável em SITE_ORIGINS
  * (lista separada por vírgulas; o primeiro é o principal).
  */
-const SITE_ORIGINS = (process.env.SITE_ORIGINS || 'https://entrecamposblog.com,https://www.entrecamposblog.com,http://localhost:3004,http://localhost:3005')
+const SITE_ORIGINS = (process.env.SITE_ORIGINS || 'https://revistaterra-moz.vercel.app,https://revistaterra-iota.vercel.app,http://localhost:3010,http://localhost:3005')
   .split(',')
   .map((o) => o.trim().replace(/\/$/, ''))
   .filter(Boolean);
@@ -18,8 +18,8 @@ function trustedOrigin(requestOrigin: string) {
 }
 
 /**
- * Recuperação de palavra-passe. O e-mail é enviado AQUI (SMTP próprio, modelo do EntreCAMPOS) e a ligação abre uma
- * página do EntreCAMPOS: não passa pelo e-mail partilhado do Supabase. Só contas deste site; a resposta é sempre a
+ * Recuperação de palavra-passe. O e-mail é enviado AQUI (SMTP próprio, modelo do Revista Terra) e a ligação abre uma
+ * página do Revista Terra: não passa pelo e-mail partilhado do Supabase. Só contas deste site; a resposta é sempre a
  * mesma, exista ou não a conta, para não revelar que e-mails estão registados.
  */
 export async function POST(req: NextRequest) {

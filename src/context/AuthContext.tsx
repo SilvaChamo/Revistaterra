@@ -110,7 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       /* sem armazenamento */
     }
-    localStorage.removeItem('entrecampos_user');
+    localStorage.removeItem('revistaterra_user');
   };
 
   const register = async (
@@ -128,11 +128,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
       options: {
         data: {
-          app: 'entrecampos',
+          app: 'revistaterra',
           full_name: name.trim(),
           username: email.trim().split('@')[0],
           role: roleToMetadata(safeRole),
-          site_id: 'entrecampos',
+          site_id: 'revistaterra',
         },
       },
     });

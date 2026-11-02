@@ -70,7 +70,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-[#f0f0f1] flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
         <div className="bg-[#1d2327] p-8 text-white text-center">
-          <h1 className="text-2xl font-bold mb-2">EntreCampos</h1>
+          <h1 className="text-2xl font-bold mb-2">Revista Terra</h1>
           <p className="text-gray-400 text-sm">Crie a sua conta para aceder ao painel</p>
         </div>
 

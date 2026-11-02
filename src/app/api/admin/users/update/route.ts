@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuth, isUuid } from '@/lib/api-guard';
 import { hasPermission } from '@/lib/permissions';
-import { getSiteUser, siteAccess, withSiteAccess } from '@/lib/site-accounts';
+import { getSiteUser, siteAccess, withSiteAccess, SITE_KEY } from '@/lib/site-accounts';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         last_name: lastName,
         alcunha: alcunha || '',
         displayNameType: displayNameType || 'full_name',
-        app: 'entrecampos',
+        app: SITE_KEY,
         // Cópia só para mostrar na interface; o papel que vale está em app_metadata.
         role: (touchesAccess ? role : undefined) ?? currentRole,
         bio: bio,

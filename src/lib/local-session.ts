@@ -17,7 +17,7 @@ function secret() {
   if (value) return value;
   // Sem segredo configurado qualquer pessoa poderia forjar uma sessão: só se aceita em desenvolvimento.
   if (process.env.NODE_ENV === 'production') throw new Error('AUTH_SECRET não está definido.');
-  return 'entrecampos-dev-secret-change-me';
+  return 'revistaterra-dev-secret-change-me';
 }
 
 export function signSession(payload: Omit<LocalSessionPayload, 'exp'>): string {

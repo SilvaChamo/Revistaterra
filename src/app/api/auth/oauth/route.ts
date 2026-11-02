@@ -8,7 +8,7 @@ import { siteAccess, withSiteAccess } from '@/lib/site-accounts';
 
 /**
  * Entrada com Google (o Supabase trata do OAuth). Recebe o token da sessão do Supabase, confirma-o no servidor e
- * abre a sessão do EntreCAMPOS. Registo livre: quem ainda não tem conta aqui fica como visitante, com entrada imediata.
+ * abre a sessão da Revista Terra. Registo livre: quem ainda não tem conta aqui fica como visitante, com entrada imediata.
  * Quem já tem outro papel mantém-no; contas suspensas (approved=false) não entram.
  */
 export async function POST(req: NextRequest) {
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       user = updated.user;
       access = siteAccess(user);
     }
-    if (!access?.approved) return NextResponse.json({ error: 'Esta conta está suspensa no EntreCAMPOS.' }, { status: 403 });
+    if (!access?.approved) return NextResponse.json({ error: 'Esta conta está suspensa na Revista Terra.' }, { status: 403 });
 
     const meta = user.user_metadata || {};
     const name = meta.full_name || meta.name || email.split('@')[0];

@@ -6,7 +6,7 @@ import { Heading, Overlay } from '@/components/Terra/Bits';
 import RecentNews, { type RecentSet } from '@/components/Terra/RecentNews';
 import { GREEN, allCards, makePicker, parseDate, terra, type Card } from '@/lib/terra';
 
-/** Dois cartões grandes (uma categoria cada), 3 notícias dessa categoria por baixo de cada um e 3 à direita. */
+/** Três cartões grandes, de categorias diferentes sempre que possível. */
 function buildSet(id: string, label: string, ordered: Card[]): RecentSet {
   const used = new Set<string>();
   const take = (pred: (c: Card) => boolean, n: number) => {
@@ -16,9 +16,8 @@ function buildSet(id: string, label: string, ordered: Card[]): RecentSet {
   };
   const a = take(() => true, 1)[0];
   const b = take((c) => c.category !== a.category, 1)[0];
-  const feature = [a, b];
-  const lists = feature.map((f) => { const l = take((c) => c.category === f.category, 3); return l.length < 3 ? [...l, ...take(() => true, 3 - l.length)] : l; });
-  return { id, label, feature, lists, side: take(() => true, 3) };
+  const c = take((x) => x.category !== a.category && x.category !== b.category, 1)[0] ?? take(() => true, 1)[0];
+  return { id, label, feature: [a, b, c] };
 }
 
 export const metadata = {

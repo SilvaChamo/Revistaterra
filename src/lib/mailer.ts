@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 
 /**
- * E-mail do EntreCAMPOS. Usa o mesmo servidor SMTP (Brevo) do Visualdesign, mas com remetente e modelos próprios:
+ * E-mail do Revista Terra. Usa o mesmo servidor SMTP (Brevo) do Visualdesign, mas com remetente e modelos próprios:
  * nada de páginas ou textos do Visualdesign. Variáveis: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SITE_EMAIL_FROM.
  */
 export function mailConfigured() {
@@ -18,17 +18,17 @@ export async function sendMail({ to, subject, html, text }: { to: string; subjec
     connectionTimeout: 10_000,
     socketTimeout: 15_000,
   });
-  await transport.sendMail({ from: process.env.SITE_EMAIL_FROM || 'EntreCAMPOS <noreply@entrecamposblog.com>', to, subject, html, text });
+  await transport.sendMail({ from: process.env.SITE_EMAIL_FROM || 'Revista Terra <noreply@revistaterra.co.mz>', to, subject, html, text });
 }
 
 const esc = (v: string) => v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-/** Modelo do e-mail de recuperação de palavra-passe (identidade EntreCAMPOS). */
+/** Modelo do e-mail de recuperação de palavra-passe (identidade Revista Terra). */
 export function recoveryEmail(link: string) {
   const safe = esc(link);
   return {
-    subject: 'EntreCAMPOS — criar nova palavra-passe',
-    text: `Recebemos um pedido para criar uma nova palavra-passe na sua conta EntreCAMPOS.\n\nAbra esta ligação (válida durante 1 hora):\n${link}\n\nSe não fez este pedido, ignore este e-mail: a sua palavra-passe não muda.\n\n— EntreCAMPOS · Agricultura Sustentável em Moçambique`,
+    subject: 'Revista Terra — criar nova palavra-passe',
+    text: `Recebemos um pedido para criar uma nova palavra-passe na sua conta Revista Terra.\n\nAbra esta ligação (válida durante 1 hora):\n${link}\n\nSe não fez este pedido, ignore este e-mail: a sua palavra-passe não muda.\n\n— Revista Terra · A Voz do Agro e Ambiente`,
     html: `<!doctype html><html lang="pt"><body style="margin:0;background:#f0f0f1;font-family:Arial,Helvetica,sans-serif;color:#2c3338">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-top:4px solid #d6101c">
@@ -41,7 +41,7 @@ export function recoveryEmail(link: string) {
 <p style="margin:0 0 20px;font-size:12px;word-break:break-all"><a href="${safe}" style="color:#2271b1">${safe}</a></p>
 <p style="margin:0;font-size:12px;color:#646970">Se não fez este pedido, ignore este e-mail: a sua palavra-passe não muda.</p>
 </td></tr>
-<tr><td style="background:#f6f7f7;padding:14px 28px;font-size:11px;color:#646970">EntreCAMPOS · Agricultura Sustentável em Moçambique</td></tr>
+<tr><td style="background:#f6f7f7;padding:14px 28px;font-size:11px;color:#646970">Revista Terra · A Voz do Agro e Ambiente</td></tr>
 </table></td></tr></table></body></html>`,
   };
 }
