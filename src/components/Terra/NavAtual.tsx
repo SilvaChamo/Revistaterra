@@ -41,6 +41,10 @@ export default function NavAtual() {
       <button aria-label={search ? 'Fechar pesquisa' : 'Pesquisar'} aria-expanded={search} onClick={() => setSearch(!search)} className="flex w-12 shrink-0 items-center justify-center text-white transition-colors hover:text-[#9BCB3C]" style={search ? { background: DARKER, color: LIME } : undefined}>
         <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="square" aria-hidden>{search ? <path d="M5 5l14 14M19 5L5 19" /> : <><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5L21 21" /></>}</svg>
       </button>
+      {/* entrar: no fim, depois da lupa */}
+      <a href="#" aria-label="Entrar" title="Entrar" className="flex w-12 shrink-0 items-center justify-center text-white transition-colors hover:text-[#9BCB3C]">
+        <svg viewBox="0 0 24 24" className="h-[19px] w-[19px]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="8" r="4" /><path d="M4.5 21c.6-4.2 3.7-6.5 7.5-6.5s6.9 2.3 7.5 6.5" /></svg>
+      </a>
       {/* campo de pesquisa: desliza para baixo, por baixo do ícone, aberto para a esquerda */}
       <form role="search" onSubmit={(e) => e.preventDefault()} className={`absolute inset-x-3 top-full z-40 overflow-hidden shadow-lg transition-[max-height,opacity] duration-300 ${search ? 'max-h-24 opacity-100' : 'pointer-events-none max-h-0 opacity-0'}`} style={{ background: DARKER }}>
         <div className="flex gap-2 p-3">
