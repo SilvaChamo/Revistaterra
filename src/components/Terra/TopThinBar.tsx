@@ -37,6 +37,19 @@ const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:tex
 export default function TopThinBar() {
   const [search, setSearch] = useState(false);
   const input = useRef<HTMLInputElement>(null);
+  // o separador central começa e termina onde começa e termina o menu (largura do menu + folga de cada lado)
+  const [tabW, setTabW] = useState<number | null>(null);
+  useEffect(() => {
+    const nav = document.querySelector('header nav[aria-label="Menu principal"]') as HTMLElement | null;
+    if (!nav) return;
+    const sync = () => setTabW(nav.getBoundingClientRect().width + 16);
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(nav);
+    window.addEventListener('resize', sync);
+    document.fonts?.ready.then(sync);
+    return () => { ro.disconnect(); window.removeEventListener('resize', sync); };
+  }, []);
   useEffect(() => {
     if (!search) return;
     input.current?.focus();
@@ -55,7 +68,7 @@ export default function TopThinBar() {
           </Link>
         </div>
         {/* separador central, em trapézio, por baixo da barra: morada, e-mail e telemóvel */}
-        <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center whitespace-nowrap px-8 text-[11px] font-normal xl:flex" style={{ background: TOPBAR, clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
+        <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center justify-center whitespace-nowrap px-4 text-[11px] font-normal xl:flex" style={{ width: tabW ?? undefined, background: TOPBAR, color: '#C9FDD8', clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
           <span>Rua da Resistência, Nº 1642, 3º Andar M</span>
           <span className="mx-2 opacity-60">|</span>
           <a href="mailto:comercial@revistaterra.co.mz" className="transition-colors hover:text-[#9BCB3C]">comercial@revistaterra.co.mz</a>
