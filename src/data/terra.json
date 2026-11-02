@@ -1,0 +1,399 @@
+{
+ "hero": [
+  {
+   "category": "Mercado",
+   "title": "Moçambique procura modelo para criar Reserva Alimentar Nacional",
+   "excerpt": "Experiência da Tanzânia orienta preparação de sistema que poderá reforçar a segurança alimentar e abrir mercado à produção dos pequenos agricultores Moçambique está a…",
+   "url": "https://revistaterraonline.com/destaques/mocambique-procura-modelo-para-criar-reserva-alimentar-nacional/",
+   "image": "https://revistaterraonline.com/wp-content/uploads/2024/07/Fome.jpeg"
+  },
+  {
+   "category": "Meio Ambiente",
+   "title": "Para onde aponta a nova visão legislativa do ambiente (?)",
+   "excerpt": "Moçambique poderá passar a ter um quadro legal ambiental mais abrangente, com maior peso das mudanças climáticas, da protecção dos ecossistemas e da participação…",
+   "url": "https://revistaterraonline.com/destaques/para-onde-aponta-a-nova-visao-legislativa-do-ambiente/",
+   "image": "/terra/OIP.webp"
+  },
+  {
+   "category": "Agricultura",
+   "title": "Pardal-de-bico-vermelho continua a desafiar sector agrícola",
+   "excerpt": "Autoridades descrevem a situação de pragas das culturas inimigas da produção agrícola, com destaque para cereais, como estando controlada no país, com excepção do…",
+   "url": "https://revistaterraonline.com/destaques/pardal-de-bico-vermelho-continua-a-desafiar-autoridades-agricolas/",
+   "image": "https://revistaterraonline.com/wp-content/uploads/2026/10/Pardais-de-bico.avif"
+  },
+  {
+   "category": "Agricultura",
+   "title": "El Niño: MAAP mobiliza brigadas para apoiar 1,2 milhões de produtores",
+   "excerpt": "O Ministério da Agricultura, Ambiente e Pescas (MAAP) mobilizou oito brigadas centrais para divulgar medidas de mitigação dos efeitos do El Niño, numa iniciativa…",
+   "url": "https://revistaterraonline.com/destaques/el-nino-maap-mobiliza-brigadas-para-apoiar-12-milhoes-de-produtores/",
+   "image": "https://revistaterraonline.com/wp-content/uploads/2025/02/seca-arroz-sem-chuva-d.jpg"
+  },
+  {
+   "category": "Agricultura",
+   "title": "Governo aloca mais 200 milhões de Meticais para recuperar infra-estruturas agrárias",
+   "excerpt": "Revisão do PESOE-2026 prevê reforçar orçamento para a reparação de diques, canais de rega e estações de bombagem afectados pelas cheias. O Governo prevê…",
+   "url": "https://revistaterraonline.com/destaques/governo-aloca-mais-200-milhoes-de-meticais-para-recuperar-infra-estruturas-agrarias/",
+   "image": "https://revistaterraonline.com/wp-content/uploads/2026/01/9c2001fe-3e8e-4346-9a72-6e843bb1cb99-585x439-1.jpeg"
+  },
+  {
+   "category": "",
+   "title": "Japão disponibiliza 1,6 milhões para assistência alimentar a vítimas do terrorismo",
+   "excerpt": "Cerca de  94 mil pessoas afectadas pelo terrorismo, na provincia de Cabo Delgado, vão beneficiar de  assistência alimentar, nos proximos dias, no âmbito de um…",
+   "url": "https://revistaterraonline.com/fora-de-campo/japao-disponibiliza-16-milhoes-para-assistencia-alimentar/",
+   "image": "https://revistaterraonline.com/wp-content/uploads/2026/10/ef189343-4933-450a-845c-4b2d18d54832-1536x1024-1.jpg"
+  },
+  {
+   "category": "",
+   "title": "Governo aprova proposta de orçamento para 2027",
+   "excerpt": "O Governo aprovou a proposta do Plano Económico e Social e Orçamento do Estado (PESOE) para 2027, que prevê uma despesa total de 511.162…",
+   "url": "https://revistaterraonline.com/fora-de-campo/governo-aprova-proposta-de-orcamento-para-2027/",
+   "image": "https://revistaterraonline.com/wp-content/uploads/2023/01/Exportacao-de-soja-1-e1673597805832.jpeg"
+  }
+ ],
+ "cards": [
+  {
+   "category": "Agricultura",
+   "title": "Extensionistas pedem fim de intermediários na isenção aduaneira",
+   "excerpt": "A Associação de Extensionistas Agrários de Moçambique (ANEA)…",
+   "url": "https://revistaterraonline.com/destaques/extensionista-pedem-fim-de-intermediarios-na-isencao-aduaneira/",
+   "image": "/terra/reuso-agua-na-agricultura-lavoura-759x455-1.webp",
+   "date": ""
+  },
+  {
+   "category": "Mercado",
+   "title": "Produtores da Moamba pedem protecção face à batata importada",
+   "excerpt": "Os produtores de batata-reno do distrito da Moamba,…",
+   "url": "https://revistaterraonline.com/destaques/produtores-da-moamba-pedem-proteccao-face-a-batata-importada/",
+   "image": "/terra/IMG-20261021-WA0138.jpg",
+   "date": ""
+  },
+  {
+   "category": "Sociedade",
+   "title": "Maputo projecta centros de reciclagem de resíduos sólidos",
+   "excerpt": "A cidade de Maputo poderá contar, brevemente, com…",
+   "url": "https://revistaterraonline.com/destaques/maputo-projecta-centros-de-reciclagem-de-residuos-solidos/",
+   "image": "/terra/Retoma.jpg",
+   "date": ""
+  },
+  {
+   "category": "Sociedade",
+   "title": "Alterações climáticas agravam riscos para a saúde em Moçambique",
+   "excerpt": "Especialista alerta para os impactos crescentes das alterações…",
+   "url": "https://revistaterraonline.com/destaques/alteracoes-climaticas-agravam-riscos-para-a-saude-em-mocambique/",
+   "image": "/terra/im-21926203.jpeg",
+   "date": ""
+  },
+  {
+   "category": "Tempo",
+   "title": "Depressão Tropical afecta estado do tempo no Sudeste do Oceano Índico",
+   "excerpt": "INAM monitora evolução da depressão que, para já,…",
+   "url": "https://revistaterraonline.com/destaques/depressao-tropical-afecta-estado-do-tempo-no-sudeste-do-oceano-indico/",
+   "image": "/terra/Ciclone-Tropical-Chido-1024x461-1.jpg",
+   "date": ""
+  },
+  {
+   "category": "Tempo",
+   "title": "Maputo poderá ter registado hoje a temperatura mais alta do ano",
+   "excerpt": "Capital do país tinha uma máxima prevista de…",
+   "url": "https://revistaterraonline.com/destaques/maputo-podera-ter-registado-hoje-a-temperatura-mais-alta-do-ano/",
+   "image": "/terra/images.jpeg",
+   "date": ""
+  },
+  {
+   "category": "Sociedade",
+   "title": "Moçambique distinguido pelo empoderamento das mulheres rurais",
+   "excerpt": "Moçambique foi, recentemente, distinguido, na capital italiana (Roma)…",
+   "url": "https://revistaterraonline.com/destaques/mocambique-distinguido-pelo-empoderamento-das-mulheres-rurais/",
+   "image": "/terra/IMG-20261019-WA0064.jpg",
+   "date": ""
+  },
+  {
+   "category": "Mercado",
+   "title": "Gergelim moçambicano reforça posição nos mercados europeu e japonês",
+   "excerpt": "Gergelim moçambicano passa nove meses sem rejeições nos…",
+   "url": "https://revistaterraonline.com/destaques/gergelim-mocambicano-reforca-posicao-nos-mercados-europeu-e-japones/",
+   "image": "/terra/gergelim-com-casca-768x768-1.png",
+   "date": ""
+  },
+  {
+   "category": "",
+   "title": "CNDS exige maior controlo sobre exploração de recursos naturais",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/cnds-exige-maior-controlo-sobre-exploracao-de-recursos-naturais/",
+   "image": "/terra/Mineracao-de-Ouro-na-Provincia-de-Manica.jpg",
+   "date": ""
+  },
+  {
+   "category": "",
+   "title": "Felisberto Navalha é o novo governador do BM",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/em-menos-de-24-horas-felisberto-navalha-passa-de-vice-a-governador-do-banco-de-mocambique/",
+   "image": "/terra/Felisberto-Navalha.jpeg",
+   "date": ""
+  },
+  {
+   "category": "",
+   "title": "Camaradas convocam 13.º Congresso para Julho de 2027",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/camaradas-convocam-13-o-congresso-para-julho-de-2027/",
+   "image": "/terra/IMG_20260826_130221.jpg",
+   "date": ""
+  },
+  {
+   "category": "",
+   "title": "Banco de Desenvolvimento pode reforçar financiamento a projectos nas zonas rurais",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/banco-de-desenvolvimento-pode-reforcar-financiamento-a-projectos-nas-zonas-rurais/",
+   "image": "/terra/AMOSTRA-DA-COLHEITA-NO-CEPAQ1-e1707735593272.jpg",
+   "date": ""
+  },
+  {
+   "category": "",
+   "title": "Sete mortos e mais de 30 por resgatar na derrocada de prédio na África do Sul",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/sete-mortos-e-mais-de-30-por-resgatar-na-derrocada-de-predio-na-africa-do-sul/",
+   "image": "/terra/Dezenas-de-pessoas-seguem-presas-apos-o-desabamento-de-predio-na-Africa-do-Sul-1024x559-1.jpg",
+   "date": ""
+  },
+  {
+   "category": "",
+   "title": "Eleições Gerais: Nova geração na Frelimo e continuidade na oposição",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/eleicoes-gerais-nova-geracao-na-frelimo-e-continuidade-na-oposicao/",
+   "image": "/terra/IMG-20240508-WA0007-e1715266817763.jpg",
+   "date": ""
+  },
+  {
+   "category": "",
+   "title": "Insurgentes matam e raptam no Niassa",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/insurgentes-matam-e-raptam-no-niassa/",
+   "image": "/terra/images-2.jpeg",
+   "date": ""
+  },
+  {
+   "category": "Clima",
+   "title": "Estudo aponta impacto das mudanças climáticas no PIB global",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/novo-estudo-aponta-impacto-do-aquecimento-global-no-arrefecimento-do-crescimento-do-pib-global/",
+   "image": "/terra/planetary-scale-heat-w.jpg",
+   "date": ""
+  },
+  {
+   "category": "Tempo",
+   "title": "Sul de Moçambique enfrenta pico de calor com temperaturas até 39 graus",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/destaques/sul-de-mocambique-enfrenta-pico-de-calor-com-temperaturas-ate-39-graus/",
+   "image": "/terra/2744409.jpeg",
+   "date": "Outubro 15, 2026"
+  },
+  {
+   "category": "Pesca",
+   "title": "Sector pesqueiro abre portas para mais de 2500 jovens empreendedores",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/destaques/sector-pesqueiro-abre-portas-para-mais-de-2500-jovens-empreendedores/",
+   "image": "/terra/IMG-20261010-WA0001.jpg",
+   "date": "Outubro 10, 2026"
+  },
+  {
+   "category": "Mercado",
+   "title": "Preço de referência da castanha de caju atinge novo recorde",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/destaques/preco-de-referencia-da-castanha-de-caju-atinge-novo-recorde/",
+   "image": "/terra/Castanha-10.jpg",
+   "date": "Outubro 7, 2026"
+  },
+  {
+   "category": "Meio Ambiente",
+   "title": "Moçambique acelera plano para eliminar mercúrio na mineração artesanal de ouro",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/destaques/mocambique-acelera-plano-para-eliminar-mercurio-na-mineracao-artesanal-de-ouro/",
+   "image": "/terra/Mineracao-de-Ouro-na-Provincia-de-Manica.jpg",
+   "date": "Outubro 2, 2026"
+  },
+  {
+   "category": "Agricultura",
+   "title": "BID manifesta interesse em financiar projectos agrários em Moçambique",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/destaques/bid-manifesta-interesse-em-financiar-projectos-agrarios-em-mocambique/",
+   "image": "/terra/OIP%281%29.webp",
+   "date": "Outubro 1, 2026"
+  },
+  {
+   "category": "Economia",
+   "title": "Agricultura entra no regime fiscal simplificado",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/destaques/agricultura-entra-no-regime-fiscal-simplificado/",
+   "image": "/terra/AGRIMOZ.jpg",
+   "date": "Setembro 29, 2026"
+  },
+  {
+   "category": "Energia",
+   "title": "CPMZ amplia corredor energético regional",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/cpmz-amplia-corredor-energetico-regional/",
+   "image": "/terra/images-4.jpeg",
+   "date": "Agosto 24, 2026"
+  },
+  {
+   "category": "Internacional",
+   "title": "Médio Oriente: Israel sem data para fim da guerra",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/medio-oriente-israel-sem-data-para-fim-da-guerra/",
+   "image": "/terra/transferir-5.jpeg",
+   "date": "Março 19, 2026"
+  },
+  {
+   "category": "Sociedade",
+   "title": "Mozambique LNG apoia vítimas das cheias no país",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/mozambique-lng-apoia-vitimas-das-cheias-no-pais/",
+   "image": "/terra/Maxime-Rabilloud-e-Rita-de-Almeida-apoio-as-vitimas-das-cheias1-scaled.jpg",
+   "date": "Fevereiro 13, 2026"
+  },
+  {
+   "category": "Sociedade",
+   "title": "Governo mobiliza 3,5 mil milhões de USD para repor estradas destruídas pelas cheias",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/governo-mobiliza-35-mil-milhoes-de-usd-para-repor-estradas-destruidas-pelas-cheias/",
+   "image": "/terra/chuvas-1-1024x461-1-585x263-1.jpg",
+   "date": "Fevereiro 4, 2026"
+  },
+  {
+   "category": "Política",
+   "title": "Daniel Chapo cancela ida a Davos devido às cheias",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/daniel-chapo-cancela-ida-a-davos-devido-as-cheias/",
+   "image": "/terra/davos-congress-1.jpg",
+   "date": "Janeiro 18, 2026"
+  },
+  {
+   "category": "Sociedade",
+   "title": "Morreu antiga Primeira Ministra Luísa Diogo",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/morreu-antiga-primeira-ministra-luisa-diogo/",
+   "image": "/terra/Luisa-Diogo.jpeg",
+   "date": "Janeiro 16, 2026"
+  },
+  {
+   "category": "Sociedade",
+   "title": "Chuvas causam 94 mortos desde o início da época chuvosa",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/chuvas-causam-94-mortos-desde-o-inicio-da-epoca-chuvosa/",
+   "image": "/terra/IMG-20251230-WA0030.jpg",
+   "date": "Janeiro 14, 2026"
+  },
+  {
+   "category": "",
+   "title": "Fim da linha para Nicolás Maduro",
+   "excerpt": "",
+   "url": "https://revistaterraonline.com/fora-de-campo/fim-da-linha-para-nicolas-maduro-em-actualizacao/",
+   "image": "/terra/nicolas-maduro-reuters.jpg",
+   "date": ""
+  }
+ ],
+ "authors": [
+  {
+   "author": "Kim Cruz",
+   "title": "O que a agricultura de Moçambique pode aprender com a Amazónia?",
+   "url": "https://revistaterraonline.com/opiniao/o-que-a-agricultura-de-mocambique-pode-aprender-com-a-amazonia/",
+   "image": "/terra/IMG-20260601-WA0010.jpg"
+  },
+  {
+   "author": "Editorial",
+   "title": "Transformar sem deixar ninguém para trás",
+   "url": "https://revistaterraonline.com/opiniao/34477/",
+   "image": "/terra/7a1c8100e0a8d7285df62198c52b660ba8eaf4c3edeba5471394fd89c66f170b.jpg"
+  },
+  {
+   "author": "Luca Bussotti",
+   "title": "Elefantes em risco de extinção em África",
+   "url": "https://revistaterraonline.com/opiniao/elefantes-em-risco-de-extincao-em-africa/",
+   "image": "/terra/WhatsApp-Image-2026-08-21-at-12.56.36.jpeg"
+  }
+ ],
+ "market": [
+  {
+   "pair": "AED/MZN",
+   "price": "17.40 MZN / 1 AED",
+   "change": "+0.09%"
+  },
+  {
+   "pair": "USD/MZN",
+   "price": "63.90 MZN / 1 USD",
+   "change": "+0.15%"
+  },
+  {
+   "pair": "AUD/MZN",
+   "price": "41.95 MZN / 1 AUD",
+   "change": "-0.11%"
+  },
+  {
+   "pair": "EUR/MZN",
+   "price": "74.25 MZN / 1 EUR",
+   "change": "-0.22%"
+  },
+  {
+   "pair": "JPY/MZN",
+   "price": "0.43 MZN / 1 JPY",
+   "change": "+0.05%"
+  }
+ ],
+ "radio": [
+  {
+   "time": "09:00",
+   "show": "CONVERSAS DE CLIMA"
+  },
+  {
+   "time": "09:00",
+   "show": "CONVERSAS DE CLIMA"
+  },
+  {
+   "time": "09:00",
+   "show": "CONVERSAS DE CLIMA"
+  },
+  {
+   "time": "09:00",
+   "show": "CONVERSAS DE CLIMA"
+  },
+  {
+   "time": "09:00",
+   "show": "CONVERSAS DE CLIMA"
+  },
+  {
+   "time": "15:00",
+   "show": "TECNO-AGRO"
+  },
+  {
+   "time": "15:30",
+   "show": "AGRO-JOVEM"
+  },
+  {
+   "time": "15:30",
+   "show": "CONEXÃO AGRO"
+  },
+  {
+   "time": "16:00",
+   "show": "AGRO-TECNO"
+  },
+  {
+   "time": "16:30",
+   "show": "AGRO-JOVEM"
+  }
+ ],
+ "cover": {
+  "title": "REVISTA TERRA  OUTUBRO 2026",
+  "issue": "24",
+  "url": "https://revistaterraonline.com/wp-content/uploads/2026/10/REVISTA-TERRA-ED-24-OUTUBRO-2026.pdf",
+  "image": "/terra/CAPA.jpg"
+ },
+ "menu": [
+  "Início",
+  "Rádio",
+  "Revista Digital",
+  "Podcasts",
+  "Cotações",
+  "Quem Somos",
+  "Contacto"
+ ]
+}
