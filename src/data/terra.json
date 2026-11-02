@@ -395,5 +395,479 @@
   "Cotações",
   "Quem Somos",
   "Contacto"
+ ],
+ "editions": [
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2026/09/Revista_Terra_Setembro_2026_Final.pdf",
+   "image": "/terra/Setembro-1.jpg",
+   "title": "Revista Terra Setembro 2026 Final"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2026/06/REVISTA-TERRA-JUNHO-ED-21-2026.pdf",
+   "image": "/terra/REVISTA-TERRA-JUNHO-ED-21-2026.jpg",
+   "title": "REVISTA TERRA JUNHO ED 21 2026"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2026/02/REVISTA-TERRA-JAN-ENG-2026.pdf",
+   "image": "/terra/DOC-20260206-WA0002-01.jpg",
+   "title": "REVISTA TERRA JAN ENG 2026"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2026/02/REVISTA-TERRA-2026-janeiro.pdf",
+   "image": "/terra/1770369126947_PT-REVISTA_page-0001-725x1024.jpg",
+   "title": "REVISTA TERRA 2026 janeiro"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/12/Revista-Terra-ED-18-Novembro-PT-2.pdf",
+   "image": "/terra/ed.png",
+   "title": "Revista Terra ED 18 Novembro PT 2"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/12/Revista-Terra-ED-18-Novembro-Pt.pdf",
+   "image": "/terra/ed2.png",
+   "title": "Revista Terra ED 18 Novembro Pt"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/07/Revita-Terra-Junho-Edicao-15-Bilingual.pdf",
+   "image": "/terra/Revita-Terra-Junho-Edicao-15-Bilingual.jpg",
+   "title": "Revita Terra Junho Edicao 15 Bilingual"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/10/REVISTA-TERRA-1.pdf",
+   "image": "/terra/REVISTA-TERRA-1-1-724x1024.png",
+   "title": "REVISTA TERRA 1"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/09/REVISTA-TERRA-AGOSTO-EDICAO-17-2025.pdf",
+   "image": "/terra/capa-16-pt-revista-copy-01.jpg",
+   "title": "REVISTA TERRA AGOSTO EDICAO 17 2025"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/02/REVISTA-TERRA-_FEVEREIERO-2025.pdf",
+   "image": "/terra/Edicao-XIII-FEVEREIRO-2025.jpg",
+   "title": "REVISTA TERRA  FEVEREIERO 2025"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/05/REVISTA-TERRA-EDICAO-XV-2025.pdf",
+   "image": "/terra/capa-revista-01.jpg",
+   "title": "REVISTA TERRA EDICAO XV 2025"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/03/revistaterra-Marco.pdf",
+   "image": "/terra/Capa-2.jpg",
+   "title": "revistaterra Marco"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2024/09/Agosto-2024.pdf",
+   "image": "/terra/Imagem-WhatsApp-2024-09-04-as-13.24.56_a6f67a8e.jpg",
+   "title": "Agosto 2024"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2025/01/Edicao-XII-Dezembro-2024.pdf",
+   "image": "/terra/dqwdqwd-01.png",
+   "title": "Edicao XII Dezembro 2024"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2024/10/Revista-Terra-Setembro-2024.pdf",
+   "image": "/terra/Revista-Terra-Setembro-2024.jpg",
+   "title": "Revista Terra Setembro 2024"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2024/07/REVISTA_TERRA-JULHO.pdf",
+   "image": "/terra/REVISTA_TERRA-JULHO-DIA-22.jpg",
+   "title": "REVISTA TERRA JULHO"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2024/02/REVISTA-TERRA-FEVEREIRO-2024.pdf",
+   "image": "/terra/REVISTA-TERRA-FEVEREIRO-2024.jpg",
+   "title": "REVISTA TERRA FEVEREIRO 2024"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2024/06/REVISTA_TERRA_JUNHO_2024.pdf",
+   "image": "/terra/FSDFSDF.jpg",
+   "title": "REVISTA TERRA JUNHO 2024"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2024/01/REVISTA-TERRA-DEZEMBRO.pdf",
+   "image": "/terra/REVISTA-TERRA-DEZEMBRO-1-724x1024.jpg",
+   "title": "REVISTA TERRA DEZEMBRO"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2024/01/Revista-Terra-JANEIRO-V-EDICAO.pdf",
+   "image": "/terra/revista-janeiro-2024-DIA-30-final-ULTIMO.jpg",
+   "title": "Revista Terra JANEIRO V EDICAO"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2024/04/REVISTA-TERRA-EDICAO-MARCO-2024.pdf",
+   "image": "/terra/REVISTA-TERRA-MARCO-2024.jpg",
+   "title": "REVISTA TERRA EDICAO MARCO 2024"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2023/12/REVISTA-TERRA_3.pdf",
+   "image": "/terra/REVISTA-TERRA_3-1-ewww-724x1024.jpg",
+   "title": "REVISTA TERRA 3"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2023/12/OUTUBRO-1.pdf",
+   "image": "/terra/REVISTA-TERRA-OUTUBRO.png",
+   "title": "OUTUBRO 1"
+  },
+  {
+   "pdf": "https://revistaterraonline.com/wp-content/uploads/2023/12/Revista-TERRA_2.pdf",
+   "image": "/terra/Revista-TERRA-1-724x1024.jpg",
+   "title": "Revista TERRA 2"
+  }
+ ],
+ "podcasts": [
+  {
+   "title": "Conversas Com Paulina — Episódio 2",
+   "url": "https://revistaterraonline.com/podcasts/conversas-com-paulina-episodio-2/",
+   "image": "/terra/Paulina-Chiziane.jpg",
+   "excerpt": "Paulina Chiziane continua a conversa sobre religião e os seus desdobramentos na sociedade."
+  },
+  {
+   "title": "Conversas Com Paulina Episódio 1",
+   "url": "https://revistaterraonline.com/podcasts/conversas-com-paulina-episodio-1/",
+   "image": "/terra/Paulina-Chiziane.jpg",
+   "excerpt": "A conceituada escritora, Paulina Chiziane, traz as suas reflexões sobre temas diversos, tendo como a religião e os…"
+  }
+ ],
+ "mercados": [
+  {
+   "title": "Maputo · Farinha de Trigo",
+   "url": "https://revistaterraonline.com/mercados/maputo-%c2%b7-farinha-de-trigo/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Maputo · Farinha de Milho",
+   "url": "https://revistaterraonline.com/mercados/maputo-%c2%b7-farinha-de-milho/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Maputo · Amendoim Pequeno",
+   "url": "https://revistaterraonline.com/mercados/maputo-%c2%b7-amendoim-pequeno/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Maputo · Feijão Manteiga",
+   "url": "https://revistaterraonline.com/mercados/maputo-%c2%b7-feijao-manteiga/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Maputo · Feijão Nhemba",
+   "url": "https://revistaterraonline.com/mercados/maputo-%c2%b7-feijao-nhemba/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Maputo · Arroz",
+   "url": "https://revistaterraonline.com/mercados/maputo-%c2%b7-arroz/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Maputo · Milho Branco",
+   "url": "https://revistaterraonline.com/mercados/maputo-%c2%b7-milho-branco/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Gaza · Farinha de Milho",
+   "url": "https://revistaterraonline.com/mercados/gaza-%c2%b7-farinha-de-milho/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Gaza · Amendoim",
+   "url": "https://revistaterraonline.com/mercados/gaza-%c2%b7-amendoim/",
+   "image": null,
+   "excerpt": ""
+  },
+  {
+   "title": "Gaza · Feijão Manteiga",
+   "url": "https://revistaterraonline.com/mercados/gaza-%c2%b7-feijao-manteiga/",
+   "image": null,
+   "excerpt": ""
+  }
+ ],
+ "icm": [
+  [
+   "Província",
+   "Milho",
+   "Arroz",
+   "Arroz em casca",
+   "Mapira",
+   "Mexoeira"
+  ],
+  [
+   "Niassa",
+   "15,61",
+   "67,20",
+   "—",
+   "15,00",
+   "—"
+  ],
+  [
+   "Cabo Delgado",
+   "17,46",
+   "28,12",
+   "—",
+   "25,55",
+   "40,83"
+  ],
+  [
+   "Nampula",
+   "19,32",
+   "22,00",
+   "—",
+   "20,00",
+   "30,00"
+  ],
+  [
+   "Zambézia",
+   "14,36",
+   "24,47",
+   "—",
+   "—",
+   "—"
+  ],
+  [
+   "Tete",
+   "15,93",
+   "59,33",
+   "—",
+   "—",
+   "—"
+  ],
+  [
+   "Sofala",
+   "22,08",
+   "40,00",
+   "—",
+   "24,20",
+   "14,00"
+  ],
+  [
+   "Manica",
+   "19,17",
+   "22,50",
+   "—",
+   "16,58",
+   "15,04"
+  ],
+  [
+   "Inhambane",
+   "48,33",
+   "—",
+   "41,00",
+   "60,00",
+   "—"
+  ],
+  [
+   "Gaza",
+   "21,40",
+   "—",
+   "25,67",
+   "—",
+   "—"
+  ],
+  [
+   "Maputo",
+   "44,58",
+   "70,63",
+   "—",
+   "—",
+   "—"
+  ]
+ ],
+ "icmLinks": [
+  {
+   "url": "https://icm.gov.mz/niassa/",
+   "name": "Cabo Delgado"
+  },
+  {
+   "url": "https://icm.gov.mz/cabo-delgado/",
+   "name": "Nampula"
+  },
+  {
+   "url": "https://icm.gov.mz/precos-indicativos-de-referencia/nampula/",
+   "name": "Zambézia"
+  },
+  {
+   "url": "https://icm.gov.mz/precos-indicativos-de-referencia/zambezia/",
+   "name": "Tete"
+  },
+  {
+   "url": "https://icm.gov.mz/tete-3/",
+   "name": "Sofala"
+  },
+  {
+   "url": "https://icm.gov.mz/sofala/",
+   "name": "Manica"
+  },
+  {
+   "url": "https://icm.gov.mz/precos-indicativos-de-referencia/manica/",
+   "name": "Inhambane"
+  },
+  {
+   "url": "https://icm.gov.mz/precos-indicativos-de-referencia/inhambane/",
+   "name": "Gaza"
+  },
+  {
+   "url": "https://icm.gov.mz/gaza/",
+   "name": "Maputo"
+  },
+  {
+   "url": "https://icm.gov.mz/maputo/",
+   "name": "Como ler estas cotações"
+  }
+ ],
+ "videos": [
+  {
+   "id": "7CLfTYr4nww",
+   "title": "MAIS AGRO"
+  },
+  {
+   "id": "gW_cy0kLjsM",
+   "title": "Conversa com Paulina Chiziane II"
+  },
+  {
+   "id": "IpEZdyVNXSM",
+   "title": "Conversa com Paulina Chiziane"
+  },
+  {
+   "id": "FKfTxuqFLjM",
+   "title": "Mais Agro Episódio 8"
+  },
+  {
+   "id": "nLg4MKLsf1k",
+   "title": "Mais Agro - Episódio 7"
+  }
+ ],
+ "provinces": [
+  {
+   "province": "Cabo Delgado",
+   "capital": "Pemba",
+   "lat": -12.973,
+   "lon": 40.517,
+   "key": "cabo-delgado",
+   "label": "Pemba"
+  },
+  {
+   "province": "Gaza",
+   "capital": "Xai-Xai",
+   "lat": -25.052,
+   "lon": 33.644,
+   "key": "gaza",
+   "label": "Xai-Xai"
+  },
+  {
+   "province": "Inhambane",
+   "capital": "Inhambane",
+   "lat": -23.865,
+   "lon": 35.383,
+   "key": "inhambane",
+   "label": "Inhambane"
+  },
+  {
+   "province": "Manica",
+   "capital": "Chimoio",
+   "lat": -19.116,
+   "lon": 33.484,
+   "key": "manica",
+   "label": "Chimoio"
+  },
+  {
+   "province": "Maputo Província",
+   "capital": "Matola",
+   "lat": -25.962,
+   "lon": 32.459,
+   "key": "maputo-provincia",
+   "label": "Matola"
+  },
+  {
+   "province": "Maputo Cidade",
+   "capital": "Maputo",
+   "lat": -25.966,
+   "lon": 32.583,
+   "key": "maputo-cidade",
+   "label": "Maputo"
+  },
+  {
+   "province": "Nampula",
+   "capital": "Nampula",
+   "lat": -15.116,
+   "lon": 39.266,
+   "key": "nampula",
+   "label": "Nampula"
+  },
+  {
+   "province": "Niassa",
+   "capital": "Lichinga",
+   "lat": -13.313,
+   "lon": 35.24,
+   "key": "niassa",
+   "label": "Lichinga"
+  },
+  {
+   "province": "Sofala",
+   "capital": "Beira",
+   "lat": -19.843,
+   "lon": 34.838,
+   "key": "sofala",
+   "label": "Beira"
+  },
+  {
+   "province": "Tete",
+   "capital": "Tete",
+   "lat": -16.156,
+   "lon": 33.586,
+   "key": "tete",
+   "label": "Tete"
+  },
+  {
+   "province": "Zambézia",
+   "capital": "Quelimane",
+   "lat": -17.878,
+   "lon": 36.889,
+   "key": "zambezia",
+   "label": "Quelimane"
+  }
+ ],
+ "radioFull": [
+  {
+   "time": "09:00",
+   "end": "11:00",
+   "show": "CONVERSAS DE CLIMA"
+  },
+  {
+   "time": "15:00",
+   "end": "18:00",
+   "show": "TECNO-AGRO"
+  },
+  {
+   "time": "15:30",
+   "end": "18:00",
+   "show": "AGRO-JOVEM"
+  },
+  {
+   "time": "15:30",
+   "end": "18:00",
+   "show": "CONEXÃO AGRO"
+  },
+  {
+   "time": "16:00",
+   "end": "18:00",
+   "show": "AGRO-TECNO"
+  },
+  {
+   "time": "16:30",
+   "end": "18:00",
+   "show": "AGRO-JOVEM"
+  }
  ]
 }

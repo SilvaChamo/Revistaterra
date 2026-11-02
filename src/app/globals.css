@@ -363,3 +363,9 @@ body {
 /* Barras de ferramentas fixas no scroll do painel: o conteúdo (main) é que rola, por isso a barra cola-se ao topo dele,
    logo por baixo da barra preta (e da barra vermelha do "ver como"). */
 .ec-admin .ec-sticky-bar { top: 0; }
+
+/* Faixa de cotações em movimento (Revista Terra) */
+@keyframes terra-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.terra-marquee { display: flex; width: max-content; animation: terra-marquee 60s linear infinite; }
+.terra-marquee-wrap:hover .terra-marquee { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .terra-marquee { animation: none; } }

@@ -18,7 +18,7 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
 
   return (
     <div
-      className="relative h-[260px] overflow-hidden bg-black sm:h-[360px] lg:h-[400px]"
+      className="relative h-[300px] overflow-hidden bg-black sm:h-[410px] lg:h-[470px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -35,7 +35,7 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
           <div className="absolute inset-x-0 bottom-0 p-4 pb-10 sm:p-8 sm:pb-12">
             <span className="mb-3 inline-block bg-[#047857] px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white">{it.category}</span>
             <h2 className="max-w-[90%] text-xl font-semibold leading-tight text-white sm:text-3xl">{it.title}</h2>
-            <p className="mt-2 hidden max-w-[80%] text-sm text-white/80 sm:line-clamp-2 sm:block">{it.excerpt}</p>
+            <p className="mt-2 hidden max-w-[80%] text-sm text-white/80 sm:block">{it.excerpt}</p>
           </div>
         </a>
       ))}

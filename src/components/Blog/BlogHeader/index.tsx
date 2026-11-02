@@ -75,7 +75,7 @@ export default async function BlogHead({ params }: Props) {
     return (
         <>
             <section className="pt-44">
-                <div className="container mx-auto max-w-[1200px]">
+                <div className="container mx-auto max-w-[1300px]">
                     <div className="grid md:grid-cols-12 grid-cols-1 items-center">
                         <div className="col-span-8">
                             <div className="flex flex-col sm:flex-row">

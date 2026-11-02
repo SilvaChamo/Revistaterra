@@ -4,8 +4,8 @@ import RevealOnView from "@/components/Expnews/RevealOnView";
 import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
-  title: 'EntreCAMPOS',
-  description: 'Jornal EntreCAMPOS',
+  title: 'Revista Terra',
+  description: 'Revista Terra — A Voz do Agro e Ambiente',
 };
 
 export default function RootLayout({
