@@ -12,7 +12,7 @@ export default function Sidebar({ only }: { only?: string[] }) {
   const recent = allCards.slice(5, 10);
   return (
     <StickyAside>
-      {show('tempo') && <Widget title="Tempo · Moçambique" flush fill dark><Weather /></Widget>}
+      {show('tempo') && <Widget title="Tempo · Moçambique" flush fill><Weather /></Widget>}
       {show('radio') && (
         <Widget title="Rádio +Agro">
           <RadioPlayer compact />
