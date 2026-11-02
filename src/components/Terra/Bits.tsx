@@ -24,10 +24,11 @@ export const Heading = ({ children, href }: { children: React.ReactNode; href?: 
   </div>
 );
 
-export const Widget = ({ title, children, flush = false }: { title: string; children: React.ReactNode; flush?: boolean }) => (
-  <div className="mb-5 bg-white shadow-sm">
+/** fill: em ecrãs largos tem a mesma altura do slide principal (430px). */
+export const Widget = ({ title, children, flush = false, fill = false }: { title: string; children: React.ReactNode; flush?: boolean; fill?: boolean }) => (
+  <div className={`mb-5 bg-white shadow-sm ${fill ? 'lg:flex lg:h-[430px] lg:flex-col' : ''}`}>
     <h3 className="whitespace-nowrap border-b border-neutral-300 px-5 py-3 text-xs font-medium uppercase tracking-wider text-neutral-600">{title}</h3>
-    <div className={flush ? '' : 'p-5'}>{children}</div>
+    <div className={`${flush ? '' : 'p-5'} ${fill ? 'lg:min-h-0 lg:flex-1' : ''}`}>{children}</div>
   </div>
 );
 
