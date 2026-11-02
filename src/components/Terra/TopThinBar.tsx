@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { Mail, Search, X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { DARK, DARKER, LIME, TOPBAR, social } from '@/lib/terra';
 
 export const THIN_BAR = 36; // altura da barra fina, em px
@@ -33,7 +33,7 @@ function MiniTemp() {
 
 const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:text-[#9BCB3C]';
 
-/** Barra fina por cima do cabeçalho (não fica fixa): e-mail e rádio à esquerda; temperatura, pesquisa e redes à direita. */
+/** Barra fina por cima do cabeçalho (não fica fixa): rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
 export default function TopThinBar() {
   const [search, setSearch] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -49,11 +49,18 @@ export default function TopThinBar() {
     <div className="relative z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR }}>
       <div className="relative mx-auto flex h-full max-w-[1300px] items-center justify-between gap-3 px-3">
         <div className="flex items-center gap-4 sm:gap-6">
-          <a href="mailto:comercial@revistaterra.co.mz" className="flex items-center gap-1.5 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]"><Mail size={14} aria-hidden />E-mail</a>
           <Link href="/radio" className="flex items-center gap-1.5 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]">
             <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ background: '#e11d48' }} /><span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: '#e11d48' }} /></span>
             Rádio ao vivo
           </Link>
+        </div>
+        {/* separador central, em trapézio, por baixo da barra: morada, e-mail e telemóvel */}
+        <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center whitespace-nowrap px-9 text-xs font-semibold xl:flex" style={{ background: TOPBAR, clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
+          <span>Rua da Resistência, Nº 1642, 3º Andar M</span>
+          <span className="mx-2 opacity-60">|</span>
+          <a href="mailto:comercial@revistaterra.co.mz" className="transition-colors hover:text-[#9BCB3C]">comercial@revistaterra.co.mz</a>
+          <span className="mx-2 opacity-60">|</span>
+          <a href="tel:+258821233910" className="transition-colors hover:text-[#9BCB3C]">+258821233910</a>
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
           <MiniTemp />
