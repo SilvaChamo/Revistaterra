@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Menu, User, X } from 'lucide-react';
-import { DARKER, GREEN, LIME, nav } from '@/lib/terra';
+import { DARKER, GREEN, LIME, TOPBAR, nav } from '@/lib/terra';
 import TopThinBar, { THIN_BAR } from './TopThinBar';
 
 /**
  * Cabeçalho principal: uma só linha branca (logo, menu e ícones; 78px + linha verde).
- * Ao fazer scroll passa a barra verde compacta de 60px, fixa no topo. O espaço no topo da página é mantido (sem saltos).
+ * Ao fazer scroll passa a barra compacta de 60px, na cor escura da barra de cima, fixa no topo. O espaço no topo da página é mantido (sem saltos).
  * Por cima fica uma barra fina que não fixa (e-mail, rádio, temperatura, pesquisa e redes); a principal sobe até ao topo e fica.
  */
 export default function HeaderUmaLinha() {
@@ -35,8 +35,8 @@ export default function HeaderUmaLinha() {
     <>
     <TopThinBar />
     <div className="relative h-[68px] lg:h-[82px]">
-      <header className={`fixed inset-x-0 z-50 transition-[background-color,box-shadow] duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`} style={{ background: scrolled ? GREEN : '#fff', top }}>
-        <div className={`relative mx-auto flex max-w-[1300px] items-stretch px-3 lg:grid lg:grid-cols-[1fr_auto_1fr] transition-[height] duration-300 ${scrolled ? 'h-[58px]' : 'h-[66px] lg:h-[80px]'}`}>
+      <header className={`fixed inset-x-0 z-50 transition-[background-color,box-shadow] duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`} style={{ background: scrolled ? TOPBAR : '#fff', top }}>
+        <div className={`relative mx-auto flex max-w-[1300px] items-stretch px-3 lg:grid lg:grid-cols-[1fr_auto_1fr] transition-[height] duration-300 ${scrolled ? 'h-[56px]' : 'h-[64px] lg:h-[78px]'}`}>
           <Link href="/" className={`flex shrink-0 items-center justify-self-start bg-white transition-[padding] duration-300 ${scrolled ? 'px-4' : 'pr-4'}`} aria-label="Revista Terra — A Voz do Agro e Ambiente">
             <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className={`w-auto transition-[height] duration-300 ${scrolled ? 'h-[40px]' : 'h-[46px] lg:h-[54px]'}`} />
           </Link>
@@ -55,7 +55,7 @@ export default function HeaderUmaLinha() {
           </nav>
 
           <div className="ml-auto flex items-center justify-self-end lg:ml-0">
-            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={{ background: DARKER, color: '#fff' }}><User size={16} aria-hidden />Entrar</Link>
+            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={{ background: DARKER, color: '#fff', boxShadow: scrolled ? 'inset 0 0 0 1px rgba(255,255,255,.22)' : undefined }}><User size={16} aria-hidden />Entrar</Link>
             <button aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)} className={`${icon} lg:hidden`}>
               {menu ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -70,7 +70,7 @@ export default function HeaderUmaLinha() {
             ))}
           </div>
         </nav>
-        <div className="h-[2px] transition-colors duration-300" style={{ background: scrolled ? DARKER : GREEN }} />
+        <div className="h-1 transition-colors duration-300" style={{ background: scrolled ? DARKER : GREEN }} />
       </header>
     </div>
     </>
