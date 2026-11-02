@@ -14,8 +14,9 @@ export default function StickyAside({ children }: { children: React.ReactNode })
     const el = ref.current;
     if (!el) return;
     const gap = 12;
+    const header = 60; // cabeçalho compacto fixo no topo
     const update = () => {
-      el.style.top = Math.min(gap, window.innerHeight - el.offsetHeight - gap) + 'px';
+      el.style.top = Math.min(header + gap, window.innerHeight - el.offsetHeight - gap) + 'px';
     };
     update();
     const ro = new ResizeObserver(update);
@@ -24,5 +25,5 @@ export default function StickyAside({ children }: { children: React.ReactNode })
     return () => { ro.disconnect(); window.removeEventListener('resize', update); };
   }, []);
 
-  return <aside ref={ref} className="lg:sticky lg:self-start" style={{ top: 12 }}>{children}</aside>;
+  return <aside ref={ref} className="lg:sticky lg:self-start" style={{ top: 72 }}>{children}</aside>;
 }
