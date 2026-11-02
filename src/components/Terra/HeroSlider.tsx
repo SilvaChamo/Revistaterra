@@ -18,7 +18,7 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
 
   return (
     <div
-      className="relative h-[300px] overflow-hidden bg-black sm:h-[410px] lg:h-[470px]"
+      className="relative h-[280px] overflow-hidden bg-black sm:h-[380px] lg:h-[430px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
