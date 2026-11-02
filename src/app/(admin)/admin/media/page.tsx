@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { supabase, STORAGE_BUCKET as BUCKET_NAME } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
+import { compressImage, extFor } from '@/lib/compress-image';
 import { 
   Trash2, 
   Archive, 
@@ -346,15 +347,19 @@ export default function MediaGallery() {
       const mimeType = editFormat === 'webp' ? 'image/webp' : editFormat === 'jpeg' ? 'image/jpeg' : selectedFile.metadata?.mimetype;
       const extension = editFormat === 'webp' ? '.webp' : editFormat === 'jpeg' ? '.jpg' : '.' + selectedFile.name.split('.').pop();
       
-      const blob: Blob = await new Promise((resolve) => {
+      const rawBlob: Blob = await new Promise((resolve) => {
         canvas.toBlob((b) => resolve(b!), mimeType, 0.85); // 0.85 qualidade otimizada
       });
+      // compressão silenciosa: WebP até 150 KB
+      const blob = await compressImage(rawBlob);
+      const finalMime = blob === rawBlob ? mimeType : blob.type;
+      const finalExt = blob === rawBlob ? extension : '.' + extFor(blob.type);
 
-      const newFileName = selectedFile.name.replace(/\.[^/.]+$/, "") + (editFormat !== 'original' ? `_edited${extension}` : extension);
+      const newFileName = selectedFile.name.replace(/\.[^/.]+$/, "") + (editFormat !== 'original' ? `_edited${finalExt}` : finalExt);
 
       const { error: uploadError } = await supabase.storage
         .from(BUCKET_NAME)
-        .upload(newFileName, blob, { contentType: mimeType, upsert: true });
+        .upload(newFileName, blob, { contentType: finalMime, upsert: true });
 
       if (uploadError) throw uploadError;
 
@@ -408,9 +413,12 @@ export default function MediaGallery() {
                   let successCount = 0;
                   
                   for (let i = 0; i < filesToUpload.length; i++) {
-                    const file = filesToUpload[i];
-                    const cleanName = `${Date.now()}-${file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\.-]/g, '_')}`;
-                    const { error } = await supabase.storage.from(BUCKET_NAME).upload(cleanName, file);
+                    const original = filesToUpload[i];
+                    const file = await compressImage(original); // compressão silenciosa: WebP até 150 KB
+                    const packed = file !== original;
+                    const safeName = original.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\.-]/g, '_');
+                    const cleanName = `${Date.now()}-${packed ? safeName.replace(/\.[^.]+$/, '') + '.' + extFor(file.type) : safeName}`;
+                    const { error } = await supabase.storage.from(BUCKET_NAME).upload(cleanName, file, packed ? { contentType: file.type } : undefined);
                     if (!error) successCount++;
                   }
                   

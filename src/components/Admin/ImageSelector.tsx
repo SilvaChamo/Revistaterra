@@ -5,6 +5,7 @@ import { X, ImageIcon, Upload, RefreshCw, Check, AlertCircle, Edit3 } from 'luci
 import { supabase, STORAGE_BUCKET as BUCKET_NAME } from '@/lib/supabase';
 import MediaLibrary from './MediaLibrary';
 import ImageEditor from './ImageEditor';
+import { compressImage, extFor } from '@/lib/compress-image';
 
 interface ImageSelectorProps {
   onSelect: (url: string) => void;
@@ -84,10 +85,17 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
         return;
       }
 
+      // compressão silenciosa: WebP até 150 KB
+      const packed = await compressImage(fileToUpload);
+      if (packed !== fileToUpload) {
+        fileName = fileName.replace(/\.[^./]+$/, '') + '.' + extFor(packed.type);
+        fileToUpload = packed;
+      }
+
       const { error } = await supabase.storage
         .from(BUCKET_NAME)
         .upload(fileName, fileToUpload, {
-          contentType: 'image/png',
+          contentType: fileToUpload.type || 'image/png',
         });
       
       if (error) throw error;

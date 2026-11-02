@@ -10,8 +10,6 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
   return (
     <nav style={{ background: GREEN }} aria-label="Menu principal">
-     {/* linha com a cor do item selecionado (verde mais escuro) */}
-     <div className="h-[3px]" style={{ background: DARKER }} />
      <div className="mx-auto max-w-[1300px] px-3">
       <button className="flex w-full items-center justify-between px-4 py-3 text-xs font-bold uppercase text-white sm:hidden" onClick={() => setOpen(!open)}>
         Menu <span>{open ? '✕' : '☰'}</span>
@@ -22,6 +20,8 @@ export default function Nav() {
         ))}
       </div>
      </div>
+     {/* linha por baixo do menu, na cor do item selecionado */}
+     <div className="h-[3px]" style={{ background: DARKER }} />
     </nav>
   );
 }

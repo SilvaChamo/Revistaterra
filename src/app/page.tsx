@@ -3,7 +3,23 @@ import Sidebar from '@/components/Terra/Sidebar';
 import HeroSlider from '@/components/Terra/HeroSlider';
 import VideoSpotlight from '@/components/Terra/VideoSpotlight';
 import { Heading, Overlay } from '@/components/Terra/Bits';
-import { GREEN, makePicker, terra } from '@/lib/terra';
+import RecentNews, { type RecentSet } from '@/components/Terra/RecentNews';
+import { GREEN, allCards, makePicker, parseDate, terra, type Card } from '@/lib/terra';
+
+/** Dois cartões grandes (uma categoria cada), 3 notícias dessa categoria por baixo de cada um e 3 à direita. */
+function buildSet(id: string, label: string, ordered: Card[]): RecentSet {
+  const used = new Set<string>();
+  const take = (pred: (c: Card) => boolean, n: number) => {
+    const out: Card[] = [];
+    for (const c of ordered) if (out.length < n && !used.has(c.title) && pred(c)) { used.add(c.title); out.push(c); }
+    return out;
+  };
+  const a = take(() => true, 1)[0];
+  const b = take((c) => c.category !== a.category, 1)[0];
+  const feature = [a, b];
+  const lists = feature.map((f) => { const l = take((c) => c.category === f.category, 3); return l.length < 3 ? [...l, ...take(() => true, 3 - l.length)] : l; });
+  return { id, label, feature, lists, side: take(() => true, 3) };
+}
 
 export const metadata = {
   title: 'Revista Terra — A Voz do Agro e Ambiente (proposta de layout)',
@@ -13,6 +29,12 @@ export const metadata = {
 
 export default function Home() {
   const take = makePicker();
+  const todas = allCards.filter((c) => c.image);
+  const recentSets: RecentSet[] = [
+    buildSet('todas', 'Todas', [...todas].sort((x, y) => Number(y.category === 'Sociedade' || y.category === 'Mercado') - Number(x.category === 'Sociedade' || x.category === 'Mercado'))),
+    buildSet('recentes', 'Recentes', [...todas].sort((x, y) => parseDate(y.date) - parseDate(x.date))),
+    buildSet('populares', 'Populares', todas),
+  ];
   const staff = take(4, ['Agricultura', 'Mercado']);
   const biz = take(4, ['Mercado', 'Economia', 'Agricultura']);
   const env = take(2, ['Meio Ambiente', 'Tempo', 'Clima']);
@@ -25,6 +47,8 @@ export default function Home() {
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0">
           <HeroSlider items={terra.hero} />
+
+          <RecentNews sets={recentSets} />
 
           <Heading>Destaques</Heading>
           <div className="grid gap-3 md:grid-cols-[1.45fr_1fr]">

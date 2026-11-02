@@ -369,3 +369,6 @@ body {
 .terra-marquee { display: flex; width: max-content; animation: terra-marquee 60s linear infinite; }
 .terra-marquee-wrap:hover .terra-marquee { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .terra-marquee { animation: none; } }
+
+/* Barra de progresso do slide principal */
+@keyframes terra-progress { from { width: 0; } to { width: 100%; } }

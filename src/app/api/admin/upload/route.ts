@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
+import { compressImageBuffer } from '@/lib/compress-image-server';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -35,13 +36,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'A imagem excede 8 MB' }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
+    // Compressão silenciosa: WebP até 150 KB
+    const packed = await compressImageBuffer(Buffer.from(await file.arrayBuffer()), file.type);
+    const buffer = packed.buffer;
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${packed.ext}`;
 
     const { data, error } = await supabaseAdmin.storage
       .from(bucket)
       .upload(fileName, buffer, {
-        contentType: file.type,
+        contentType: packed.mime,
         upsert: false
       });
 

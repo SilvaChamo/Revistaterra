@@ -21,7 +21,10 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Inter, Arial, sans-serif' }}>
       <header className="bg-white shadow-sm">
         <div className="mx-auto flex max-w-[1300px] items-center justify-between px-5 py-4">
-          <Link href="/" className="text-3xl font-extrabold tracking-tight" style={{ color: DARK }}>TERRA<span style={{ color: GREEN }}>online</span></Link>
+          <Link href="/" className="leading-none" aria-label="Revista Terra">
+            <span className="block text-[11px] font-bold uppercase tracking-[0.42em]" style={{ color: GREEN }}>Revista</span>
+            <span className="block text-[34px] font-extrabold tracking-tight" style={{ color: DARK }}>TERRA</span>
+          </Link>
           <span className="hidden text-xs text-neutral-500 sm:block">A Voz do Agro e Ambiente</span>
           <SearchBox />
         </div>
@@ -32,9 +35,9 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         {/* barra de cotações: só na largura do conteúdo */}
         <div className="mb-5 flex items-stretch bg-white text-[11px] text-neutral-600 shadow-sm">
           <div className="z-10 flex shrink-0 items-stretch text-white" style={{ background: DARK }}>
-            {/* quadrado com o símbolo T do ícone do site */}
+            {/* quadrado com o símbolo R do ícone do site */}
             <span className="flex w-10 items-center justify-center" style={{ background: GREEN }}>
-              <svg viewBox="12 12 40 40" className="h-6 w-6" aria-hidden><path d="M16 18h32v8H36v22h-8V26H16z" fill="#fff" /><path d="M40 44c0-8 5-12 10-12 0 8-4 12-10 12z" fill="#a7f3d0" /></svg>
+              <svg viewBox="14 12 40 40" className="h-6 w-6" aria-hidden><path fillRule="evenodd" d="M18 16H35C43 16 49 20.5 49 28C49 33.5 45.8 37.2 41 38.8L50 48H40L32 40H26V48H18ZM26 23V33H34.5C38 33 40.5 31.4 40.5 28C40.5 24.7 38 23 34.5 23Z" fill="#fff" /></svg>
             </span>
             <b className="flex items-center px-4 uppercase tracking-wide">Cotações do dia</b>
           </div>
@@ -48,7 +51,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       <footer className="mt-8 text-sm text-white" style={{ background: DARK }}>
         <div className="mx-auto grid max-w-[1300px] gap-8 px-6 py-8 md:grid-cols-4">
           <div>
-            <div className="text-xl font-extrabold">TERRA<span style={{ color: '#34d399' }}>online</span></div>
+            <div className="leading-none"><span className="block text-[10px] font-bold uppercase tracking-[0.42em] text-emerald-300">Revista</span><span className="block text-2xl font-extrabold">TERRA</span></div>
             <p className="mt-2 text-xs text-white/70">Jornalismo ao serviço do agro e do ambiente</p>
           </div>
           <div>

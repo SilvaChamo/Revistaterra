@@ -22,6 +22,7 @@ import {
   FileDown
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
+import { compressImage, extFor } from '@/lib/compress-image';
 
 interface MediaLibraryProps {
   onSelect?: (url: string) => void;
@@ -252,10 +253,24 @@ export default function MediaLibrary({ onSelect, isModal, externalSearchQuery }:
         fileName = activeFile.name.replace(/\.[^/.]+$/, "") + `_edited_${Date.now()}${pendingBlob.extension}`;
       }
 
+      // compressão silenciosa: WebP até 150 KB (ao substituir mantém o formato e o nome do original)
+      let upBlob: Blob = pendingBlob.blob;
+      let upMime: string = pendingBlob.mimeType;
+      if (!replace) {
+        const packed = await compressImage(upBlob);
+        if (packed !== upBlob) {
+          upBlob = packed;
+          upMime = packed.type;
+          fileName = fileName.replace(/\.[^./]+$/, '') + '.' + extFor(packed.type);
+        }
+      } else if (upMime === 'image/jpeg' || upMime === 'image/webp') {
+        upBlob = await compressImage(upBlob, { type: upMime });
+      }
+
       const { error: uploadError } = await supabase.storage
         .from(BUCKET_NAME)
-        .upload(fileName, pendingBlob.blob, { 
-          contentType: pendingBlob.mimeType,
+        .upload(fileName, upBlob, { 
+          contentType: upMime,
           upsert: true 
         });
 

@@ -33,3 +33,11 @@ export function makePicker(cards: Card[] = allCards) {
     return out;
   };
 }
+
+const MESES: Record<string, number> = { janeiro: 0, fevereiro: 1, março: 2, abril: 3, maio: 4, junho: 5, julho: 6, agosto: 7, setembro: 8, outubro: 9, novembro: 10, dezembro: 11 };
+/** "Outubro 15, 2026" → data (0 se não houver data). */
+export function parseDate(s?: string): number {
+  const m = s?.match(/^(\S+)\s+(\d+),\s+(\d{4})$/);
+  if (!m || MESES[m[1].toLowerCase()] === undefined) return 0;
+  return new Date(+m[3], MESES[m[1].toLowerCase()], +m[2]).getTime();
+}
