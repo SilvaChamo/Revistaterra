@@ -133,8 +133,8 @@ const HeaderOld: React.FC = () => {
         <div className="container mx-auto px-4 relative z-10 flex justify-center">
           <Link href="/">
             <Image
-              src="/images/logo.png"
-              alt="EntreCAMPOS"
+              src="/terra/logo-revista-terra.webp"
+              alt="Revista Terra"
               width={400}
               height={100}
               className="h-16 w-auto"

@@ -36,11 +36,13 @@ function Form() {
 
   return (
     <div className="min-h-screen bg-[#f0f0f1] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
-        <div className="bg-[#1d2327] p-8 text-white text-center">
-          <h1 className="text-2xl font-bold mb-2">Revista Terra</h1>
-          <p className="text-gray-400 text-sm">Criar nova palavra-passe</p>
+      <div className="w-full max-w-md">
+        {/* logotipo por fora do formulário, sobre o fundo */}
+        <div className="mb-5 flex flex-col items-center gap-1">
+          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={440} height={220} className="h-[84px] w-auto" />
+          <p className="text-sm text-gray-500">Criar nova palavra-passe</p>
         </div>
+      <div className="w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
         <form onSubmit={submit} className="p-8 space-y-6">
           {!token && <p className="text-sm text-red-700">Ligação inválida. <Link href="/recuperar-senha" className="underline">Peça uma nova.</Link></p>}
           {error && (
@@ -84,6 +86,7 @@ function Form() {
             </>
           )}
         </form>
+      </div>
       </div>
     </div>
   );

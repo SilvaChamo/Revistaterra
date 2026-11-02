@@ -72,7 +72,7 @@ export default function ExpShell({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/entrecampos-icon.jpg"
-          alt="EntreCAMPOS"
+          alt="Revista Terra"
           width={512}
           height={512}
           className="absolute left-3 top-8 h-10 w-10 -translate-y-1/2 rounded-md bg-white object-contain transition-[width,height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[open=true]/side:h-[52px] group-data-[open=true]/side:w-[52px]"
@@ -105,7 +105,7 @@ export default function ExpShell({
                 <span className="h-9 w-px bg-gray-200" />
                 <Link href="/" aria-label="EntreCAMPOS — início" className="shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/logo.png" alt="EntreCAMPOS" className="h-9 w-auto sm:h-10" />
+                  <img src="/terra/logo-revista-terra.webp" alt="Revista Terra" className="h-9 w-auto sm:h-10" />
                 </Link>
               </div>
               <div className="flex shrink-0 items-center gap-4 text-gray-700">
@@ -159,7 +159,7 @@ export default function ExpShell({
             <div>
               <h4 className={footTitle}>Sobre a empresa</h4>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/logo.png" alt="EntreCAMPOS" className="mb-5 -ml-[13px] h-14 w-auto" />
+              <img src="/terra/logo-revista-terra.webp" alt="Revista Terra" className="mb-5 -ml-[13px] h-14 w-auto" />
               <p className="text-[13px] leading-6">
                 O EntreCAMPOS é um jornal digital dedicado à agricultura sustentável, ao agro-negócio, ao ambiente e à vida das comunidades rurais em Moçambique.
               </p>

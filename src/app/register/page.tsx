@@ -68,12 +68,13 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-[#f0f0f1] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
-        <div className="bg-[#1d2327] p-8 text-white text-center">
-          <h1 className="text-2xl font-bold mb-2">Revista Terra</h1>
-          <p className="text-gray-400 text-sm">Crie a sua conta para aceder ao painel</p>
+      <div className="w-full max-w-md">
+        {/* logotipo por fora do formulário, sobre o fundo */}
+        <div className="mb-5 flex flex-col items-center gap-1">
+          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={440} height={220} className="h-[84px] w-auto" />
+          <p className="text-sm text-gray-500">Crie a sua conta para aceder ao painel</p>
         </div>
-
+      <div className="w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
           {error && (
             <div className="flex items-start gap-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -170,6 +171,7 @@ export default function RegisterPage() {
             </Link>
           </p>
         </form>
+      </div>
       </div>
     </div>
   );

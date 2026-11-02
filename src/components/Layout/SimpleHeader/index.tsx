@@ -23,8 +23,8 @@ const SimpleHeader = () => {
           {/* Logo */}
           <Link href="/inicio">
             <img 
-              src="/images/logo.png" 
-              alt="EntreCAMPOS" 
+              src="/terra/logo-revista-terra.webp" 
+              alt="Revista Terra" 
               className="h-14 w-auto"
             />
           </Link>

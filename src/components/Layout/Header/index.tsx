@@ -68,8 +68,8 @@ const Header = () => {
           {/* Logo */}
           <Link href="/inicio" className="mb-2">
             <img 
-              src="/images/logo.png" 
-              alt="EntreCAMPOS" 
+              src="/terra/logo-revista-terra.webp" 
+              alt="Revista Terra" 
               className="h-16 w-auto"
             />
           </Link>

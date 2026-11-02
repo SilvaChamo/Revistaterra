@@ -8,3 +8,4 @@
 /temp-all-media
 *.tsbuildinfo
 /src/app/cabecalhos
+/public/images

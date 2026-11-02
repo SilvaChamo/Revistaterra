@@ -65,7 +65,7 @@ const Footer = () => {
           <div>
             <Titulo>Sobre a empresa</Titulo>
             <Link href="/" className="block mb-4">
-              <img src="/images/logo.png" alt="EntreCAMPOS" className="h-12 w-auto" />
+              <img src="/terra/logo-revista-terra.webp" alt="Revista Terra" className="h-12 w-auto" />
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
               Jornal dedicado à agricultura, ao ambiente e à vida das comunidades rurais.
