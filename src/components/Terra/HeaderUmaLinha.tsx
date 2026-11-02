@@ -45,9 +45,10 @@ export default function HeaderUmaLinha() {
             {nav.map((m) => {
               const active = path === m.href;
               return (
-                <Link key={m.href} href={m.href} className={`relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors hover:text-[#9BCB3C] ${scrolled ? 'text-white' : ''}`} style={scrolled ? (active ? { background: DARKER, color: LIME } : undefined) : { color: active ? GREEN : DARK }}>
+                <Link key={m.href} href={m.href} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase ${scrolled ? 'text-white' : ''}`} style={scrolled ? (active ? { background: DARKER, color: LIME } : undefined) : { color: active ? GREEN : DARK }}>
                   {m.label}
-                  {!scrolled && active && <i className="absolute inset-x-2.5 bottom-4 h-[3px]" style={{ background: LIME }} />}
+                  {/* traço por baixo: aparece ao passar o rato e fica no item activo (cor da linha verde por baixo da barra; lima na barra compacta) */}
+                  <i aria-hidden className={`pointer-events-none absolute inset-x-2.5 h-[3px] origin-left transition-transform duration-200 ${scrolled ? 'bottom-3' : 'bottom-5'} ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} style={{ background: scrolled ? LIME : GREEN }} />
                 </Link>
               );
             })}
