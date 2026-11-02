@@ -52,16 +52,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#f0f0f1] flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
-        <div className="bg-[#1d2327] p-8 text-white text-center">
-          <div className="mx-auto mb-4 w-12 h-12 rounded bg-[#00a651]/10 border border-[#00a651]/30 flex items-center justify-center">
-            <span className="text-sm font-black tracking-tight">
-              <span className="text-[#00a651]">EC</span>
-            </span>
-          </div>
-          <h1 className="text-2xl font-bold mb-2">EntreCampos</h1>
-          <p className="text-gray-400 text-sm">Entre no painel de gestão</p>
-        </div>
-
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
           {error && (
             <div className="flex items-start gap-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
