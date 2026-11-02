@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Wordmark from './Wordmark';
 import NavAtual from './NavAtual';
-import NewsletterBarAtual from './NewsletterBarAtual';
+import HeaderButtons from './HeaderButtons';
 
-/** Cabeçalho actual: logotipo (imagem) ou nome em letras à esquerda, newsletter à direita, menu com redes sociais, pesquisa e entrar. */
+/** Cabeçalho actual: logotipo (imagem) ou nome em letras à esquerda, botões (Facebook, entrar, definições) à direita, menu com redes sociais, pesquisa e entrar. */
 export default function HeaderAtual({ logo = 'imagem' }: { logo?: 'imagem' | 'letras' }) {
   return (
     <header className="bg-white shadow-sm">
@@ -15,7 +15,7 @@ export default function HeaderAtual({ logo = 'imagem' }: { logo?: 'imagem' | 'le
             <img src="/terra/logotipo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={427} height={190} className="h-[62px] w-auto" />
           </Link>
         )}
-        <NewsletterBarAtual />
+        <HeaderButtons />
       </div>
       <NavAtual />
     </header>
