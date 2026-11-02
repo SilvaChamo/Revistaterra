@@ -2,19 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import HeaderAtual from './HeaderAtual';
+import HeaderBarra from './HeaderBarra';
 import HeaderModelo from './HeaderModelo';
 
 /**
- * Por defeito: cabeçalho com o logotipo (imagem) à esquerda.
- * Alternativas pelo endereço: ?logo=letras (nome em letras à esquerda) e ?cabecalho=modelo (nome em letras ao centro).
+ * Por defeito: cabeçalho em barra verde única.
+ * Os anteriores continuam acessíveis pelo endereço: ?cabecalho=atual (duas camadas) ou ?cabecalho=modelo (centrado, nome em letras).
  */
 export default function HeaderSwitch() {
-  const [v, setV] = useState<'modelo' | 'atual'>('atual');
-  const [logo, setLogo] = useState<'imagem' | 'letras'>('imagem');
+  const [v, setV] = useState<'barra' | 'atual' | 'modelo'>('barra');
   useEffect(() => {
-    const q = new URLSearchParams(window.location.search);
-    if (q.get('cabecalho') === 'modelo') setV('modelo');
-    if (q.get('logo') === 'letras') setLogo('letras');
+    const p = new URLSearchParams(window.location.search).get('cabecalho');
+    if (p === 'atual' || p === 'modelo') setV(p);
   }, []);
-  return v === 'modelo' ? <HeaderModelo /> : <HeaderAtual logo={logo} />;
+  return v === 'atual' ? <HeaderAtual /> : v === 'modelo' ? <HeaderModelo /> : <HeaderBarra />;
 }
