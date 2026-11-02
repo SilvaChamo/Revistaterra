@@ -1,7 +1,8 @@
 import data from '@/data/terra.json';
 
 export const GREEN = '#047857';
-export const DARK = '#064E3B';
+export const DARK = '#064E3B'; // tom do texto "TERRA" no logo
+export const DARKER = '#053D2F'; // um pouco mais carregado: linha do menu e item activo
 
 export type Card = { category: string; title: string; excerpt: string; url: string; image: string | null; date?: string };
 

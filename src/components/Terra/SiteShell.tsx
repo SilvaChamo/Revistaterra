@@ -30,9 +30,15 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
 
       <div className="mx-auto mt-5 max-w-[1300px] px-3">
         {/* barra de cotações: só na largura do conteúdo */}
-        <div className="mb-5 flex items-center bg-white text-[11px] text-neutral-600 shadow-sm">
-          <b className="z-10 shrink-0 bg-white px-5 py-2.5 uppercase" style={{ color: GREEN }}>Cotações do dia</b>
-          <div className="terra-marquee-wrap min-w-0 flex-1 overflow-hidden py-2.5">
+        <div className="mb-5 flex items-stretch bg-white text-[11px] text-neutral-600 shadow-sm">
+          <div className="z-10 flex shrink-0 items-stretch text-white" style={{ background: DARK }}>
+            {/* quadrado com o símbolo T do ícone do site */}
+            <span className="flex w-10 items-center justify-center" style={{ background: GREEN }}>
+              <svg viewBox="12 12 40 40" className="h-6 w-6" aria-hidden><path d="M16 18h32v8H36v22h-8V26H16z" fill="#fff" /><path d="M40 44c0-8 5-12 10-12 0 8-4 12-10 12z" fill="#a7f3d0" /></svg>
+            </span>
+            <b className="flex items-center px-4 uppercase tracking-wide">Cotações do dia</b>
+          </div>
+          <div className="terra-marquee-wrap flex min-w-0 flex-1 items-center overflow-hidden py-2.5">
             <div className="terra-marquee"><Row /><Row dup /></div>
           </div>
         </div>

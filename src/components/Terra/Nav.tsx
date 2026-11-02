@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { GREEN, nav } from '@/lib/terra';
+import { DARKER, GREEN, nav } from '@/lib/terra';
 
 export default function Nav() {
   const path = usePathname();
@@ -11,14 +11,14 @@ export default function Nav() {
   return (
     <nav style={{ background: GREEN }} aria-label="Menu principal">
      {/* linha com a cor do item selecionado (verde mais escuro) */}
-     <div className="h-[3px] bg-black/20" />
+     <div className="h-[3px]" style={{ background: DARKER }} />
      <div className="mx-auto max-w-[1300px] px-3">
       <button className="flex w-full items-center justify-between px-4 py-3 text-xs font-bold uppercase text-white sm:hidden" onClick={() => setOpen(!open)}>
         Menu <span>{open ? '✕' : '☰'}</span>
       </button>
       <div className={`${open ? 'flex' : 'hidden'} flex-col sm:flex sm:flex-row sm:flex-wrap`}>
         {nav.map((m) => (
-          <Link key={m.href} href={m.href} onClick={() => setOpen(false)} className={`px-4 py-3 text-xs font-bold uppercase text-white hover:bg-black/20 ${path === m.href ? 'bg-black/20' : ''}`}>{m.label}</Link>
+          <Link key={m.href} href={m.href} onClick={() => setOpen(false)} className="px-4 py-3 text-xs font-bold uppercase text-white hover:bg-black/20" style={path === m.href ? { background: DARKER } : undefined}>{m.label}</Link>
         ))}
       </div>
      </div>
