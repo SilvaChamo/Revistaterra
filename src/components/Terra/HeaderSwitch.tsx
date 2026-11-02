@@ -5,14 +5,16 @@ import HeaderAtual from './HeaderAtual';
 import HeaderModelo from './HeaderModelo';
 
 /**
- * Os dois cabeçalhos ficam guardados. Por defeito aparece o actual (logotipo à esquerda);
- * juntar ?cabecalho=modelo ao endereço mostra o centrado, ?cabecalho=atual volta ao actual.
+ * Por defeito: cabeçalho com o logotipo (imagem) à esquerda.
+ * Alternativas pelo endereço: ?logo=letras (nome em letras à esquerda) e ?cabecalho=modelo (nome em letras ao centro).
  */
 export default function HeaderSwitch() {
   const [v, setV] = useState<'modelo' | 'atual'>('atual');
+  const [logo, setLogo] = useState<'imagem' | 'letras'>('imagem');
   useEffect(() => {
-    const p = new URLSearchParams(window.location.search).get('cabecalho');
-    if (p === 'atual' || p === 'modelo') setV(p);
+    const q = new URLSearchParams(window.location.search);
+    if (q.get('cabecalho') === 'modelo') setV('modelo');
+    if (q.get('logo') === 'letras') setLogo('letras');
   }, []);
-  return v === 'modelo' ? <HeaderModelo /> : <HeaderAtual />;
+  return v === 'modelo' ? <HeaderModelo /> : <HeaderAtual logo={logo} />;
 }
