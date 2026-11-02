@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Menu, User, X } from 'lucide-react';
-import { DARK, DARKER, GREEN, LIME, nav } from '@/lib/terra';
+import { DARKER, GREEN, LIME, nav } from '@/lib/terra';
 import TopThinBar, { THIN_BAR } from './TopThinBar';
 
 /**
@@ -45,17 +45,17 @@ export default function HeaderUmaLinha() {
             {nav.map((m) => {
               const active = path === m.href;
               return (
-                <Link key={m.href} href={m.href} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase ${scrolled ? 'text-white' : ''}`} style={scrolled ? (active ? { background: DARKER, color: LIME } : undefined) : { color: active ? GREEN : DARK }}>
+                <Link key={m.href} href={m.href} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors hover:text-[#9BCB3C] ${active ? 'text-[#9BCB3C]' : scrolled ? 'text-white' : 'text-[#064E3B]'}`} style={scrolled && active ? { background: DARKER } : undefined}>
                   {m.label}
-                  {/* traço por baixo: aparece ao passar o rato e fica no item activo (cor da linha verde por baixo da barra; lima na barra compacta) */}
-                  <i aria-hidden className={`pointer-events-none absolute inset-x-2.5 h-[3px] origin-left transition-transform duration-200 ${scrolled ? 'bottom-3' : 'bottom-5'} ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} style={{ background: scrolled ? LIME : GREEN }} />
+                  {/* traço por baixo (só na barra branca): aparece ao passar o rato e fica no item activo; lima, como o texto. Na barra compacta não há traço */}
+                  {!scrolled && <i aria-hidden className={`pointer-events-none absolute inset-x-2.5 bottom-5 h-[3px] origin-left transition-transform duration-200 ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} style={{ background: LIME }} />}
                 </Link>
               );
             })}
           </nav>
 
           <div className="ml-auto flex items-center justify-self-end lg:ml-0">
-            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={scrolled ? { background: LIME, color: '#064E3B' } : { background: '#064E3B', color: '#fff' }}><User size={16} aria-hidden />Entrar</Link>
+            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={{ background: DARKER, color: '#fff' }}><User size={16} aria-hidden />Entrar</Link>
             <button aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)} className={`${icon} lg:hidden`}>
               {menu ? <X size={20} /> : <Menu size={20} />}
             </button>
