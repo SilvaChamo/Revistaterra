@@ -88,7 +88,7 @@ export default function Weather() {
         </div>
         <div className="mt-4 flex flex-wrap gap-1">
           {places.map((x, k) => (
-            <button key={x.key} onClick={() => setI(k)} className={`whitespace-nowrap px-2 py-1 text-[10px] ${k === i ? 'font-bold text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`} style={k === i ? { background: GREEN } : undefined}>{x.label}</button>
+            <button key={x.key} onClick={() => setI(k)} className={`whitespace-nowrap px-2 py-1 text-[10px] ${k === i ? 'text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`} style={k === i ? { background: GREEN } : undefined}>{x.label}</button>
           ))}
         </div>
       </div>
