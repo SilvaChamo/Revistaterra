@@ -45,7 +45,7 @@ export default function HeaderUmaLinha() {
             {nav.map((m) => {
               const active = path === m.href;
               return (
-                <Link key={m.href} href={m.href} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors hover:text-[#9BCB3C] ${active ? 'text-[#9BCB3C]' : scrolled ? 'text-white' : 'text-[#064E3B]'}`} style={scrolled && active ? { background: DARKER } : undefined}>
+                <Link key={m.href} href={m.href} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors hover:text-[#9BCB3C] ${active ? 'text-[#9BCB3C]' : scrolled ? 'text-white' : 'text-[#064E3B]'}`} style={scrolled && active ? { background: GREEN } : undefined}>
                   {m.label}
                   {/* traço por baixo (só na barra branca): aparece ao passar o rato e fica no item activo; lima, como o texto. Na barra compacta não há traço */}
                   {!scrolled && <i aria-hidden className={`pointer-events-none absolute inset-x-2.5 bottom-5 h-[3px] origin-left transition-transform duration-200 ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} style={{ background: LIME }} />}
@@ -55,7 +55,7 @@ export default function HeaderUmaLinha() {
           </nav>
 
           <div className="ml-auto flex items-center justify-self-end lg:ml-0">
-            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={{ background: DARKER, color: '#fff', boxShadow: scrolled ? 'inset 0 0 0 1px rgba(255,255,255,.22)' : undefined }}><User size={16} aria-hidden />Entrar</Link>
+            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={{ background: GREEN, color: '#fff' }}><User size={16} aria-hidden />Entrar</Link>
             <button aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)} className={`${icon} lg:hidden`}>
               {menu ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -70,7 +70,7 @@ export default function HeaderUmaLinha() {
             ))}
           </div>
         </nav>
-        <div className="h-1 transition-colors duration-300" style={{ background: scrolled ? DARKER : GREEN }} />
+        <div className="h-1 transition-colors duration-300" style={{ background: GREEN }} />
       </header>
     </div>
     </>

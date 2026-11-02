@@ -372,3 +372,7 @@ body {
 
 /* Barra de progresso do slide principal */
 @keyframes terra-progress { from { width: 0; } to { width: 100%; } }
+
+/* Pulsar do ponto "Rádio ao vivo" */
+@keyframes terra-live { 0% { transform: scale(1); opacity: .8; } 75%, 100% { transform: scale(2.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .terra-live-off { animation: none !important; } }
