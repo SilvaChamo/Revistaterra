@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Nav from './Nav';
+import NewsletterBar from './NewsletterBar';
 import { DARK, GREEN, terra } from '@/lib/terra';
 
 const ticker = terra.icm.slice(1).map((r) => ({ prov: r[0], milho: r[1] })).filter((r) => r.milho && r.milho !== '—');
@@ -19,12 +20,13 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Inter, Arial, sans-serif' }}>
       <header className="bg-white shadow-sm">
-        <div className="mx-auto flex max-w-[1300px] items-center justify-between px-5 py-4">
+        <div className="mx-auto flex max-w-[1300px] flex-wrap items-center justify-between gap-3 px-5 py-4">
           <Link href="/" className="leading-none" aria-label="Revista Terra">
             <span className="block text-[11px] font-bold uppercase tracking-[0.42em]" style={{ color: GREEN }}>Revista</span>
             <span className="block text-[34px] font-extrabold tracking-tight" style={{ color: DARK }}>TERRA</span>
+            <span className="mt-1 block whitespace-nowrap text-[11px] font-medium text-neutral-500">A Voz do Agro e Ambiente</span>
           </Link>
-          <span className="hidden text-xs text-neutral-500 sm:block">A Voz do Agro e Ambiente</span>
+          <NewsletterBar />
         </div>
         <Nav />
       </header>

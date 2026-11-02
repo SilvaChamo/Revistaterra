@@ -10,6 +10,12 @@ export type Card = { category: string; title: string; excerpt: string; url: stri
 export const terra = data;
 export const allCards: Card[] = data.cards.map((c) => ({ ...c, category: c.category || 'Fora de Campo' }));
 
+/** Redes sociais da Revista Terra (as únicas que o site actual indica). */
+export const social = [
+  { name: 'Facebook', href: 'https://web.facebook.com/profile.php?id=100089198332110', path: 'M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.5V21h3z' },
+  { name: 'YouTube', href: 'https://www.youtube.com/@revistaterramz', path: 'M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z' },
+];
+
 export const nav = [
   { label: 'Início', href: '/' },
   { label: 'Rádio', href: '/radio' },
