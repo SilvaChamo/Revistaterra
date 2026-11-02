@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { DARKER, GREEN, nav } from '@/lib/terra';
+import { DARKER, GREEN, LIME, nav } from '@/lib/terra';
 
 export default function Nav() {
   const path = usePathname();
@@ -16,7 +16,7 @@ export default function Nav() {
       </button>
       <div className={`${open ? 'flex' : 'hidden'} flex-col sm:flex sm:flex-row sm:flex-wrap`}>
         {nav.map((m) => (
-          <Link key={m.href} href={m.href} onClick={() => setOpen(false)} className="px-4 py-3 text-xs font-bold uppercase text-white hover:bg-black/20" style={path === m.href ? { background: DARKER } : undefined}>{m.label}</Link>
+          <Link key={m.href} href={m.href} onClick={() => setOpen(false)} className="px-4 py-3 text-xs font-bold uppercase text-white transition-colors hover:text-[#9BCB3C]" style={path === m.href ? { background: DARKER, color: LIME } : undefined}>{m.label}</Link>
         ))}
       </div>
      </div>

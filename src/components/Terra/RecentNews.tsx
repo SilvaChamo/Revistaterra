@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { DARK, GREEN } from '@/lib/terra';
+import { DARK, GREEN, LIME } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
 
 export type RecentSet = { id: string; label: string; feature: Card[]; lists: Card[][]; side: Card[] };
 
 const Pill = ({ children }: { children: React.ReactNode }) => (
-  <span className="inline-block whitespace-nowrap rounded-br-md rounded-tl-md px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white" style={{ background: GREEN }}>{children}</span>
+  <span className="inline-block whitespace-nowrap rounded-br-md rounded-tl-md px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{children}</span>
 );
 
 export default function RecentNews({ sets }: { sets: RecentSet[] }) {

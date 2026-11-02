@@ -1,8 +1,8 @@
-import { GREEN } from '@/lib/terra';
+import { DARK, GREEN, LIME } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
 
 export const Tag = ({ children }: { children: React.ReactNode }) => (
-  <span className="inline-block whitespace-nowrap px-2 py-[3px] text-[9px] font-bold uppercase tracking-wide text-white" style={{ background: GREEN }}>{children}</span>
+  <span className="inline-block whitespace-nowrap px-2 py-[3px] text-[9px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{children}</span>
 );
 
 /** A letra do título acompanha o tamanho do cartão (cqmin = 1% do lado menor), em vez de ter um tamanho fixo. */
@@ -20,13 +20,13 @@ export const Overlay = ({ c, className = '', big = false }: { c: Card; className
 export const Heading = ({ children, href }: { children: React.ReactNode; href?: string }) => (
   <div className="mb-3 mt-8 flex items-end justify-between">
     <h2 className="whitespace-nowrap border-b-2 text-[15px] font-bold uppercase" style={{ color: GREEN, borderColor: GREEN }}>{children}</h2>
-    {href && <a href={href} className="text-[11px] font-medium uppercase" style={{ color: GREEN }}>Ver tudo ›</a>}
+    {href && <a href={href} className="text-[11px] font-medium uppercase transition-colors hover:text-[#9BCB3C]" style={{ color: GREEN }}>Ver tudo ›</a>}
   </div>
 );
 
-/** fill: em ecrãs largos tem a mesma altura do slide principal (442px). */
+/** fill: em ecrãs largos tem a mesma altura do slide principal (430px). */
 export const Widget = ({ title, children, flush = false, fill = false }: { title: string; children: React.ReactNode; flush?: boolean; fill?: boolean }) => (
-  <div className={`mb-5 bg-white shadow-sm ${fill ? 'lg:flex lg:h-[442px] lg:flex-col' : ''}`}>
+  <div className={`mb-5 bg-white shadow-sm ${fill ? 'lg:flex lg:h-[430px] lg:flex-col' : ''}`}>
     <h3 className="whitespace-nowrap border-b border-neutral-300 px-5 py-3 text-xs font-medium uppercase tracking-wider text-neutral-600">{title}</h3>
     <div className={`${flush ? '' : 'p-5'} ${fill ? 'lg:min-h-0 lg:flex-1' : ''}`}>{children}</div>
   </div>
