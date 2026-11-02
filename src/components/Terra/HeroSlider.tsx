@@ -20,7 +20,7 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
   }, [i, paused, n]);
 
   return (
-    <div className="relative h-[290px] overflow-hidden rounded-md bg-black sm:h-[380px] lg:h-[430px]" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <div className="relative h-[290px] overflow-hidden bg-black sm:h-[380px] lg:h-[430px]" style={{ containerType: 'size' }} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       {items.map((it, k) => (
         <a
           key={it.title}
@@ -33,9 +33,9 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-[78px] px-5 sm:bottom-[92px] sm:px-14">
-            <span className="inline-block whitespace-nowrap rounded-br-md rounded-tl-md px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{it.category}</span>
-            <h2 className="mt-3 max-w-[92%] text-[22px] font-extrabold leading-tight text-white sm:max-w-[78%] sm:text-[32px]">{it.title}</h2>
-            {it.excerpt && <p className="mt-2 hidden max-w-[70%] text-sm leading-snug text-white/85 sm:block">{it.excerpt}</p>}
+            <span className="inline-block whitespace-nowrap px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{it.category}</span>
+            <h2 className="mt-3 max-w-[92%] font-extrabold leading-tight text-white sm:max-w-[78%]" style={{ fontSize: 'clamp(20px, 7.4cqmin, 34px)' }}>{it.title}</h2>
+            {it.excerpt && <p className="mt-2 hidden max-w-[70%] leading-snug text-white/85 sm:block" style={{ fontSize: 'clamp(12px, 3.4cqmin, 15px)' }}>{it.excerpt}</p>}
           </div>
         </a>
       ))}
@@ -48,9 +48,9 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
       </div>
 
       {/* pontos verticais: à esquerda, antes do título; terminam onde começam os botões (mesma base) e crescem para cima; o activo é maior */}
-      <div className="absolute bottom-5 left-2 z-10 flex h-9 w-4 flex-col-reverse items-center justify-start gap-2.5 sm:bottom-9 sm:left-5 sm:w-5">
+      <div className="absolute bottom-5 left-2 z-10 flex h-9 w-4 flex-col-reverse items-center justify-start gap-2 sm:bottom-9 sm:left-5 sm:w-5">
         {items.map((it, k) => (
-          <button key={it.title} aria-label={`Notícia ${k + 1}`} onClick={() => setI(k)} className={`shrink-0 rounded-full border border-white transition-all ${k === i ? 'h-3.5 w-3.5 bg-white' : 'h-2 w-2 bg-transparent hover:bg-white/60'}`} />
+          <button key={it.title} aria-label={`Notícia ${k + 1}`} onClick={() => setI(k)} className={`w-2 shrink-0 border border-white transition-all ${k === i ? 'h-6 bg-white' : 'h-2 bg-transparent hover:bg-white/60'}`} />
         ))}
       </div>
     </div>

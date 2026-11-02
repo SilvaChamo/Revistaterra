@@ -34,11 +34,11 @@ export default function RecentNews({ sets }: { sets: RecentSet[] }) {
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-[1fr_1fr_240px]">
         {s.feature.map((c, k) => (
           <div key={c.title}>
-            <a href={c.url} className="group relative block h-[300px] overflow-hidden rounded-md bg-black">
+            <a href={c.url} className="group relative block h-[300px] overflow-hidden rounded-md bg-black" style={{ containerType: 'size' }}>
               {c.image && <img src={c.image} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
               <div className="absolute inset-x-4 bottom-0 border-t-2 bg-white px-4 pb-4 pt-0 text-center" style={{ borderColor: GREEN }}>
                 <div className="-mt-3"><Pill>{c.category}</Pill></div>
-                <h3 className="mt-2 text-[15px] font-bold leading-snug text-neutral-900">{c.title}</h3>
+                <h3 className="mt-2 font-bold leading-snug text-neutral-900" style={{ fontSize: 'clamp(13px, 5cqmin, 16px)' }}>{c.title}</h3>
                 <div className="mt-2 text-[11px] text-neutral-500">{c.date || 'Revista Terra'}</div>
               </div>
             </a>

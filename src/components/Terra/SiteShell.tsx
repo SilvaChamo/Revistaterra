@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Nav from './Nav';
-import SearchBox from './SearchBox';
 import { DARK, GREEN, terra } from '@/lib/terra';
 
 const ticker = terra.icm.slice(1).map((r) => ({ prov: r[0], milho: r[1] })).filter((r) => r.milho && r.milho !== '—');
@@ -26,7 +25,6 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
             <span className="block text-[34px] font-extrabold tracking-tight" style={{ color: DARK }}>TERRA</span>
           </Link>
           <span className="hidden text-xs text-neutral-500 sm:block">A Voz do Agro e Ambiente</span>
-          <SearchBox />
         </div>
         <Nav />
       </header>
@@ -37,7 +35,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           <div className="z-10 flex shrink-0 items-stretch text-white" style={{ background: DARK }}>
             {/* quadrado com o símbolo R do ícone do site */}
             <span className="flex w-10 items-center justify-center" style={{ background: GREEN }}>
-              <svg viewBox="14 12 40 40" className="h-6 w-6" aria-hidden><path fillRule="evenodd" d="M18 16H35C43 16 49 20.5 49 28C49 33.5 45.8 37.2 41 38.8L50 48H40L32 40H26V48H18ZM26 23V33H34.5C38 33 40.5 31.4 40.5 28C40.5 24.7 38 23 34.5 23Z" fill="#fff" /></svg>
+              <svg viewBox="11 2 46 48" className="h-7 w-7" aria-hidden><path fillRule="evenodd" d="M18 16H35C43 16 49 20.5 49 28C49 33.5 45.8 37.2 41 38.8L50 48H40L32 40H26V48H18ZM26 23V33H34.5C38 33 40.5 31.4 40.5 28C40.5 24.7 38 23 34.5 23Z" fill="#fff" /><path d="M44 15C44 8 48 4 55 4C55 11 51 15 44 15Z" fill="#bef264" /></svg>
             </span>
             <b className="flex items-center px-4 uppercase tracking-wide">Cotações do dia</b>
           </div>
