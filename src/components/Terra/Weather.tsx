@@ -64,7 +64,7 @@ export default function Weather() {
     <div className="flex h-full flex-col" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       {/* Entre a linha do cabeçalho e a linha antes dos dias da semana (altura fixa: nada se desloca) */}
       <div className="relative h-[152px] shrink-0 overflow-hidden lg:h-auto lg:min-h-[152px] lg:flex-1 border-b border-neutral-300 bg-[#0e1a26] text-white">
-        <img src="/terra/clima-bg.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src="/terra/clima-bg.webp" alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-[#0b1a2b]/55 to-[#0b1a2b]/80" />
         <div className="relative flex h-full flex-col">
           {/* nuvem e dados: centrados entre a linha de cima (cabeçalho) e a linha de baixo */}

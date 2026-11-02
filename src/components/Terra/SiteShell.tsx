@@ -1,7 +1,12 @@
 import Link from 'next/link';
 import Nav from './Nav';
 import NewsletterBar from './NewsletterBar';
+import HeaderTools from './HeaderTools';
+import Today from './Today';
+import { Inter } from 'next/font/google';
 import { DARK, GREEN, terra } from '@/lib/terra';
+
+const logoFont = Inter({ subsets: ['latin'], weight: ['300', '800'], display: 'swap' });
 
 const ticker = terra.icm.slice(1).map((r) => ({ prov: r[0], milho: r[1] })).filter((r) => r.milho && r.milho !== '—');
 
@@ -19,14 +24,26 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   );
   return (
     <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Inter, Arial, sans-serif' }}>
-      <header className="bg-white shadow-sm">
-        <div className="mx-auto flex max-w-[1300px] flex-wrap items-center justify-between gap-3 px-5 py-4">
-          <Link href="/" className="leading-none" aria-label="Revista Terra">
-            <span className="block text-[11px] font-bold uppercase tracking-[0.42em]" style={{ color: GREEN }}>Revista</span>
-            <span className="block text-[34px] font-extrabold tracking-tight" style={{ color: DARK }}>TERRA</span>
-            <span className="mt-1 block whitespace-nowrap text-[11px] font-medium text-neutral-500">A Voz do Agro e Ambiente</span>
-          </Link>
-          <NewsletterBar />
+      <header>
+        {/* barra de cima: data à esquerda, newsletter à direita */}
+        <div className="text-xs text-white" style={{ background: DARK }}>
+          <div className="mx-auto flex max-w-[1300px] flex-wrap items-center justify-between gap-2 px-5 py-1.5">
+            <Today />
+            <NewsletterBar />
+          </div>
+        </div>
+        {/* cabeçalho: logo ao centro; redes e pesquisa à direita */}
+        <div className="bg-white">
+          <div className="relative mx-auto grid max-w-[1300px] items-center gap-3 px-5 py-5 sm:grid-cols-[1fr_auto_1fr]">
+            <div className="hidden sm:block" />
+            <Link href="/" className={`${logoFont.className} text-center leading-none`} aria-label="Revista Terra">
+              <span className="block whitespace-nowrap text-[30px] tracking-tight sm:text-[44px]" style={{ color: DARK }}>
+                <span className="font-extrabold">Revista</span> <span className="font-light">Terra</span>
+              </span>
+              <span className="mt-2 block whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.28em] text-neutral-500 sm:text-[11px]">A Voz do Agro e Ambiente</span>
+            </Link>
+            <HeaderTools />
+          </div>
         </div>
         <Nav />
       </header>
