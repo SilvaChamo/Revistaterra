@@ -55,7 +55,7 @@ export default function TopThinBar() {
           </Link>
         </div>
         {/* separador central, em trapézio, por baixo da barra: morada, e-mail e telemóvel */}
-        <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center whitespace-nowrap px-9 text-xs font-semibold xl:flex" style={{ background: TOPBAR, clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
+        <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center whitespace-nowrap px-8 text-[11px] font-normal xl:flex" style={{ background: TOPBAR, clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
           <span>Rua da Resistência, Nº 1642, 3º Andar M</span>
           <span className="mx-2 opacity-60">|</span>
           <a href="mailto:comercial@revistaterra.co.mz" className="transition-colors hover:text-[#9BCB3C]">comercial@revistaterra.co.mz</a>
