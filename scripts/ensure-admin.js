@@ -51,20 +51,16 @@ async function main() {
   const existing = await findUserByEmail(email);
 
   if (existing) {
-    const { error } = await supabase.auth.admin.updateUserById(existing.id, {
-      password,
+    // Conta que já existe (por exemplo a do EntreCampos): só se acrescenta o acesso a este site.
+    // A palavra-passe e os dados dos outros sites não se tocam (a menos que ADMIN_RESET_PASSWORD=1).
+    const update = {
       email_confirm: true,
       app_metadata: { ...(existing.app_metadata || {}), [SITE_KEY]: { role: 'Administrador', approved: true } },
-      user_metadata: {
-        ...(existing.user_metadata || {}),
-        app: SITE_KEY,
-        role: 'Administrador',
-        full_name: existing.user_metadata?.full_name || 'Administrador',
-        username: existing.user_metadata?.username || 'admin',
-      },
-    });
+    };
+    if (process.env.ADMIN_RESET_PASSWORD === '1') update.password = password;
+    const { error } = await supabase.auth.admin.updateUserById(existing.id, update);
     if (error) throw error;
-    console.log('Utilizador existente actualizado (password + role Administrador).');
+    console.log(`Acesso de Administrador a "${SITE_KEY}" acrescentado à conta existente.`);
   } else {
     const { error } = await supabase.auth.admin.createUser({
       email,

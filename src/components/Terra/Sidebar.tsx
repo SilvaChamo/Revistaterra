@@ -15,15 +15,15 @@ export default function Sidebar({ only }: { only?: string[] }) {
       {show('tempo') && <Widget title="Tempo · Moçambique" flush fill><Weather /></Widget>}
       {show('radio') && (
         <Widget title="Rádio +Agro">
-          <RadioPlayer compact />
-          <ul className="mt-4 border-t border-neutral-100 pt-2 text-[13px]">
+          <div className="bg-[#eaf3ed] p-3"><RadioPlayer compact /></div>
+          <ul className="mt-4 border-t border-neutral-300 pt-1 text-[13px]">
             {terra.radioFull.map((r) => (
-              <li key={r.time + r.show} className="flex gap-3 border-b border-neutral-100 py-2 last:border-0">
+              <li key={r.time + r.show} className="flex gap-3 border-b border-neutral-300 py-2 last:border-0">
                 <b className="w-[100px] shrink-0 whitespace-nowrap text-xs" style={{ color: GREEN }}>{r.time}–{r.end}</b><span className="whitespace-nowrap">{r.show}</span>
               </li>
             ))}
           </ul>
-          <Link href="/radio" className="mt-3 block text-[11px] font-bold uppercase" style={{ color: GREEN }}>Ver programação ›</Link>
+          <Link href="/radio" className="mt-3 block px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-wide text-white transition-colors hover:text-[#9BCB3C]" style={{ background: '#084030' }}>Ver programação ›</Link>
         </Widget>
       )}
       {show('cambio') && <Widget title="Câmbio"><Cambio /></Widget>}

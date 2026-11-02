@@ -51,8 +51,13 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#f0f0f1] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+      <div className="w-full max-w-md">
+        {/* logotipo por fora do formulário, sobre o fundo */}
+        <div className="mb-5 flex justify-center">
+          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className="h-[84px] w-auto mix-blend-multiply" />
+        </div>
+      <div className="w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
+        <form onSubmit={handleSubmit} className="p-8 space-y-4">
           {error && (
             <div className="flex items-start gap-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
@@ -118,7 +123,7 @@ export default function LoginPage() {
             )}
           </button>
 
-          <div className="flex items-center gap-3 text-xs text-gray-400">
+          <div className="-my-1 flex items-center gap-3 text-xs text-gray-400">
             <span className="h-px flex-1 bg-gray-200" />ou<span className="h-px flex-1 bg-gray-200" />
           </div>
           <button
@@ -136,19 +141,12 @@ export default function LoginPage() {
             Continuar com o Google
           </button>
 
-          <p className="text-center text-sm">
-            <Link href="/recuperar-senha" className="text-[#2271b1] hover:underline font-medium">
-              Esqueceu a palavra-passe?
-            </Link>
-          </p>
-
-          <p className="text-center text-sm text-gray-500">
-            Ainda não tem conta?{' '}
-            <Link href="/register" className="text-[#2271b1] hover:underline font-medium">
-              Registe-se aqui
-            </Link>
-          </p>
+          <div className="flex items-center justify-between gap-3 text-xs">
+            <Link href="/recuperar-senha" className="whitespace-nowrap text-[#2271b1] hover:underline font-medium">Recuperar senha</Link>
+            <Link href="/register" className="whitespace-nowrap text-[#2271b1] hover:underline font-medium">Registe-se aqui</Link>
+          </div>
         </form>
+      </div>
       </div>
     </div>
   );

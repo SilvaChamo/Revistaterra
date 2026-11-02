@@ -26,7 +26,10 @@ export default function RadioPlayer({ compact = false }: { compact?: boolean }) 
 
   return (
     <div className="flex items-center gap-4">
-      <button onClick={toggle} aria-label={playing ? 'Pausar' : 'Ouvir'} className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-xl text-white" style={{ background: GREEN }}>{playing ? '❚❚' : '▶'}</button>
+      <span className="relative flex h-14 w-14 shrink-0">
+        {!playing && <span aria-hidden className="absolute inset-0 rounded-full" style={{ background: GREEN, animation: 'terra-play 1.8s ease-out infinite' }} />}
+        <button onClick={toggle} aria-label={playing ? 'Pausar' : 'Ouvir'} className="relative flex h-14 w-14 items-center justify-center rounded-full text-xl text-white" style={{ background: GREEN }}>{playing ? '❚❚' : '▶'}</button>
+      </span>
       <div className="min-w-0">
         <div className="text-[11px] font-bold uppercase tracking-wide" style={{ color: GREEN }}>{playing ? '● Em directo' : 'Rádio +Agro'}</div>
         <div className={`font-semibold leading-snug ${compact ? 'text-sm' : 'text-lg'}`}>{now ? now.show : 'A voz do agro e ambiente'}</div>

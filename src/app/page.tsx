@@ -6,7 +6,7 @@ import { Heading, Overlay } from '@/components/Terra/Bits';
 import RecentNews, { type RecentSet } from '@/components/Terra/RecentNews';
 import { GREEN, allCards, makePicker, parseDate, terra, type Card } from '@/lib/terra';
 
-/** Três cartões grandes, de categorias diferentes sempre que possível. */
+/** Até 9 notícias para o carrossel, na ordem do separador. */
 function buildSet(id: string, label: string, ordered: Card[]): RecentSet {
   const used = new Set<string>();
   const take = (pred: (c: Card) => boolean, n: number) => {
@@ -14,10 +14,7 @@ function buildSet(id: string, label: string, ordered: Card[]): RecentSet {
     for (const c of ordered) if (out.length < n && !used.has(c.title) && pred(c)) { used.add(c.title); out.push(c); }
     return out;
   };
-  const a = take(() => true, 1)[0];
-  const b = take((c) => c.category !== a.category, 1)[0];
-  const c = take((x) => x.category !== a.category && x.category !== b.category, 1)[0] ?? take(() => true, 1)[0];
-  return { id, label, feature: [a, b, c] };
+  return { id, label, feature: take(() => true, 9) };
 }
 
 export const metadata = {
