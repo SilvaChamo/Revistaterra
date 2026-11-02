@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import Nav from './Nav';
-import NewsletterBar from './NewsletterBar';
+import HeaderSwitch from './HeaderSwitch';
 import { DARK, GREEN, terra } from '@/lib/terra';
 
 const ticker = terra.icm.slice(1).map((r) => ({ prov: r[0], milho: r[1] })).filter((r) => r.milho && r.milho !== '—');
@@ -19,15 +18,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   );
   return (
     <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Inter, Arial, sans-serif' }}>
-      <header className="bg-white shadow-sm">
-        <div className="mx-auto flex max-w-[1300px] flex-wrap items-center justify-between gap-3 px-3 py-3">
-          <Link href="/" className="block shrink-0" aria-label="Revista Terra — A Voz do Agro e Ambiente">
-            <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className="h-[62px] w-auto" />
-          </Link>
-          <NewsletterBar />
-        </div>
-        <Nav />
-      </header>
+      <HeaderSwitch />
 
       <div className="mx-auto mt-5 max-w-[1300px] px-3">
         {/* barra de cotações: só na largura do conteúdo */}

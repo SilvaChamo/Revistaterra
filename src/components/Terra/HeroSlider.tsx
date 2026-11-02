@@ -34,8 +34,8 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-[78px] px-5 sm:bottom-[92px] sm:px-14">
             <span className="inline-block whitespace-nowrap px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{it.category}</span>
-            <h2 className="mt-3 max-w-[92%] font-extrabold leading-tight text-white sm:max-w-[78%]" style={{ fontSize: 'clamp(20px, 7.4cqmin, 34px)' }}>{it.title}</h2>
-            {it.excerpt && <p className="mt-2 hidden max-w-[70%] leading-snug text-white/85 sm:block" style={{ fontSize: 'clamp(12px, 3.4cqmin, 15px)' }}>{it.excerpt}</p>}
+            <h2 className="mt-3 max-w-[92%] font-extrabold leading-tight text-white sm:max-w-[78%]" style={{ fontSize: 'clamp(19px, 6.9cqmin, 32px)' }}>{it.title}</h2>
+            {it.excerpt && <p className="mt-2 hidden max-w-[70%] leading-snug text-white/85 sm:block" style={{ fontSize: 'clamp(11.5px, 3.1cqmin, 14px)' }}>{it.excerpt}</p>}
           </div>
         </a>
       ))}

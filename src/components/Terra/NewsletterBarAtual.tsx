@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { DARK, GREEN } from '@/lib/terra';
 
 /** Subscrição da newsletter na barra de cima: campo de texto e botão à direita. */
-export default function NewsletterBar() {
+export default function NewsletterBarAtual() {
   const [done, setDone] = useState(false);
   return (
     <form onSubmit={(e) => { e.preventDefault(); setDone(true); }} className="flex w-full items-center gap-3 sm:w-auto">
