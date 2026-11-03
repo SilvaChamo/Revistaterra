@@ -36,8 +36,6 @@ export default async function Home() {
     buildSet('recentes', 'Recentes', [...todas].sort((x, y) => parseDate(y.date) - parseDate(x.date))),
     buildSet('populares', 'Populares', todas),
   ];
-  const staff = take(4, ['Agricultura', 'Mercado']);
-  const biz = take(4, ['Mercado', 'Economia', 'Agricultura']);
   const env = take(2, ['Meio Ambiente', 'Tempo', 'Clima']);
   const soc = take(3, ['Sociedade']);
   const out = take(3, ['Fora de Campo']);
@@ -50,31 +48,6 @@ export default async function Home() {
           <HeroSlider items={hero.length ? hero : terra.hero} />
 
           <RecentNews sets={recentSets} />
-
-          <Heading>Destaques</Heading>
-          <div className="grid gap-3 md:grid-cols-[1.45fr_1fr]">
-            <div className="flex flex-col">
-              <Overlay c={staff[0]} big className="h-[260px]" />
-              {staff[0].excerpt && <div className="flex-1 p-4 text-sm text-white" style={{ background: GREEN }}>{staff[0].excerpt}</div>}
-            </div>
-            <div className="grid gap-3">{staff.slice(1).map((c) => <Overlay key={c.title} c={c} className="h-[150px]" />)}</div>
-          </div>
-
-          <Heading href="/mercados">Mercado e Economia</Heading>
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="bg-white">
-              <Overlay c={biz[0]} big className="h-[200px]" />
-              {biz[0].excerpt && <p className="p-4 text-sm text-neutral-500">{biz[0].excerpt}</p>}
-            </div>
-            <div className="grid gap-3">
-              {biz.slice(1).map((c) => (
-                <a key={c.title} href={c.url} className="bg-white p-4 hover:shadow-md">
-                  <span className="text-[10px] font-bold uppercase" style={{ color: GREEN }}>{c.category}</span>
-                  <h3 className="mt-1 text-sm font-semibold leading-snug">{c.title}</h3>
-                </a>
-              ))}
-            </div>
-          </div>
 
           <Heading>Ambiente e Clima</Heading>
           <div className="grid gap-3 sm:grid-cols-2">{env.map((c) => <Overlay key={c.title} c={c} big className="h-[230px]" />)}</div>

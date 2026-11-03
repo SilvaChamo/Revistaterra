@@ -28,8 +28,8 @@ function MiniTemp() {
 
 const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:text-[#9BCB3C]';
 
-/** Barra fina por cima do cabeçalho (fica fixa no topo, com o menu por baixo): rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
-export default function TopThinBar() {
+/** Barra fina por cima do cabeçalho. Ao fazer scroll sobe e esconde todo o conteúdo (rádio, temperatura, redes), deixando só a parte saliente do separador em trapézio sobre o menu: rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
+export default function TopThinBar({ offset = 0 }: { offset?: number }) {
   const radio = useRadio();
   const [search, setSearch] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -56,7 +56,7 @@ export default function TopThinBar() {
 
   return (
     <div style={{ height: THIN_BAR }}>
-    <div className="fixed inset-x-0 top-0 z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR }}>
+    <div className="fixed inset-x-0 top-0 z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR, transform: `translateY(-${offset}px)` }}>
       <div className="relative mx-auto flex h-full max-w-[1300px] items-center justify-between gap-3 px-3">
         <div className="flex items-center gap-4 sm:gap-6">
           <Link href="/radio" className="flex items-center gap-3 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]">
