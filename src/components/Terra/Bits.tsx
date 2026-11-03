@@ -27,7 +27,7 @@ export const Heading = ({ children, href }: { children: React.ReactNode; href?: 
 /** fill: em ecrãs largos tem a mesma altura do slide principal (430px). */
 export const Widget = ({ title, children, flush = false, fill = false, dark = false, green = false }: { title: string; children: React.ReactNode; flush?: boolean; fill?: boolean; dark?: boolean; green?: boolean }) => (
   <div className={`mb-5 bg-white shadow-sm ${fill ? 'lg:flex lg:h-[430px] lg:flex-col' : ''}`}>
-    <h3 className={`whitespace-nowrap px-5 py-3 text-xs font-medium uppercase tracking-wider ${dark || green ? 'text-white' : 'border-b border-neutral-300 text-neutral-600'}`} style={green ? { background: GREEN } : dark ? { background: '#084030' } : undefined}>{title}</h3>
+    <h3 className={`whitespace-nowrap px-5 py-3 text-xs font-medium uppercase tracking-wider ${green ? 'border-b-2 border-[#8DF43A] text-white' : dark ? 'text-white' : 'border-b border-neutral-300 text-neutral-600'}`} style={green ? { background: GREEN } : dark ? { background: '#084030' } : undefined}>{title}</h3>
     <div className={`${flush ? '' : 'p-5'} ${fill ? 'lg:min-h-0 lg:flex-1' : ''}`}>{children}</div>
   </div>
 );
