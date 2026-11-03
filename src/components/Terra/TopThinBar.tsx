@@ -28,17 +28,17 @@ function MiniTemp() {
 
 const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:text-[#9BCB3C]';
 
-/** Barra fina por cima do cabeçalho (não fica fixa): rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
+/** Barra fina por cima do cabeçalho (fica fixa no topo, com o menu por baixo): rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
 export default function TopThinBar() {
   const radio = useRadio();
   const [search, setSearch] = useState(false);
   const input = useRef<HTMLInputElement>(null);
-  // o separador central começa e termina onde começa e termina o menu (largura do menu + folga de cada lado)
+  // o separador central: a sua base recta (sem os cantos inclinados de 12px) tem exactamente a largura do menu, para o fundo verde do item activo nunca sair dela
   const [tabW, setTabW] = useState<number | null>(null);
   useEffect(() => {
     const nav = document.querySelector('header nav[aria-label="Menu principal"]') as HTMLElement | null;
     if (!nav) return;
-    const sync = () => setTabW(nav.getBoundingClientRect().width + 16);
+    const sync = () => setTabW(nav.getBoundingClientRect().width + 24);
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(nav);
@@ -55,7 +55,8 @@ export default function TopThinBar() {
   }, [search]);
 
   return (
-    <div className="relative z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR }}>
+    <div style={{ height: THIN_BAR }}>
+    <div className="fixed inset-x-0 top-0 z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR }}>
       <div className="relative mx-auto flex h-full max-w-[1300px] items-center justify-between gap-3 px-3">
         <div className="flex items-center gap-4 sm:gap-6">
           <Link href="/radio" className="flex items-center gap-3 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]">
@@ -65,8 +66,8 @@ export default function TopThinBar() {
             </span>
             Rádio ao vivo
           </Link>
-          {/* A rádio continua ao mudar de página: enquanto toca, há sempre um botão para a desligar */}
-          {radio.playing && <button type="button" onClick={radio.toggle} aria-label="Desligar a rádio" className="-ml-2 flex h-5 items-center border border-white/60 px-1.5 text-[9px] font-bold uppercase tracking-wide transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] sm:-ml-4">❚❚ Parar</button>}
+          {/* A rádio continua ao mudar de página: o botão fica sempre à vista (Parar enquanto toca; depois de parar, volta a Ouvir) */}
+          <button type="button" onClick={radio.toggle} aria-label={radio.playing ? 'Desligar a rádio' : 'Ouvir a rádio'} className="-ml-2 flex h-5 items-center gap-1 border border-white/60 px-1.5 text-[9px] font-bold uppercase tracking-wide transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] sm:-ml-4">{radio.playing ? '❚❚' : '▶'}<span className="hidden sm:inline">{radio.playing ? ' Parar' : ' Ouvir'}</span></button>
         </div>
         {/* separador central, em trapézio, por baixo da barra: morada, e-mail e telemóvel */}
         <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center justify-center whitespace-nowrap px-4 text-[11px] font-normal xl:flex" style={{ width: tabW ?? undefined, background: TOPBAR, color: '#C9FDD8', clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
@@ -94,6 +95,7 @@ export default function TopThinBar() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

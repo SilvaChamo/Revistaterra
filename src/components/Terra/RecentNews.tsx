@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DARK, GREEN, LIME } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
+import ShareLink from './ShareLink';
 
 export type RecentSet = { id: string; label: string; feature: Card[] };
 
@@ -14,7 +15,7 @@ const Pill = ({ children }: { children: React.ReactNode }) => (
 const arrow = 'flex h-7 w-7 items-center justify-center border border-neutral-300 bg-white text-neutral-700 transition-colors hover:border-[#9BCB3C] hover:bg-[#9BCB3C] hover:text-[#064E3B]';
 
 /** Carrossel em ciclo infinito: uma notícia por slide, 3 visíveis (1 no telemóvel). */
-export default function RecentNews({ sets }: { sets: RecentSet[] }) {
+export default function RecentNews({ sets, related = {} }: { sets: RecentSet[]; related?: Record<string, Pick<Card, 'title' | 'url' | 'date'>[]> }) {
   const [tab, setTab] = useState(sets[0].id);
   const s = sets.find((x) => x.id === tab) ?? sets[0];
   const items = s.feature;
@@ -76,17 +77,37 @@ export default function RecentNews({ sets }: { sets: RecentSet[] }) {
         <div className="flex" onTransitionEnd={settle} style={{ transform: `translateX(calc(-${idx} * 100% / ${vis}))`, transition: anim ? 'transform 500ms ease' : 'none' }}>
           {ext.map((c, k) => (
             <div key={k} className="box-border shrink-0 px-2.5" style={{ width: `${100 / vis}%` }}>
-              <a href={c.url} className="group block" style={{ containerType: 'inline-size' }}>
-                <div className="relative h-[210px] overflow-hidden bg-black">
-                  {c.image && <img src={c.image} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
-                </div>
+              <div className="group block" style={{ containerType: 'inline-size' }}>
+                <a href={c.url} className="block">
+                  <div className="relative h-[210px] overflow-hidden bg-black">
+                    {c.image && <img src={c.image} alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
+                  </div>
+                </a>
                 {/* o cartão de texto entra pela foto (margem negativa) e sai por baixo */}
-                <div className="relative z-10 mx-4 -mt-14 border-t-2 bg-white px-4 pb-4 text-center shadow-sm" style={{ borderColor: GREEN }}>
-                  <div className="-mt-3"><Pill>{c.category}</Pill></div>
-                  <h3 className="mt-2 font-bold leading-snug text-neutral-900" style={{ fontSize: 'clamp(12.5px, 4.7cqw, 15px)' }}>{c.title}</h3>
-                  {c.date && <div className="mt-2 text-[11px] text-neutral-500">{c.date}</div>}
+                <div className="relative z-10 mx-4 -mt-14 border-t-2 bg-white text-center shadow-sm" style={{ borderColor: GREEN }}>
+                  <div className="px-4">
+                    <div className="-mt-3"><Pill>{c.category}</Pill></div>
+                    {/* no máximo 3 linhas de título, para os cartões não desalinharem o carrossel */}
+                    <h3 className="mt-2 line-clamp-3 font-bold leading-snug text-neutral-900" style={{ fontSize: 'clamp(12.5px, 4.7cqw, 15px)', minHeight: '4.125em' }}><a href={c.url}>{c.title}</a></h3>
+                  </div>
+                  {/* linha a separar o título: data à esquerda e Partilhar à direita */}
+                  <div className="mt-3 flex items-center justify-between border-t border-neutral-200 px-4 py-2 text-[11px] text-neutral-500">
+                    <span>{c.date}</span>
+                    <ShareLink path={c.url} title={c.title} className="text-neutral-500" />
+                  </div>
                 </div>
-              </a>
+                {/* até 3 notícias da mesma categoria: título e data, numa só coluna, sem fundo, separadas apenas por linhas horizontais */}
+                {(related[c.url] ?? []).length > 0 && (
+                  <ul className="mx-4 mt-3 divide-y divide-neutral-300 border-b border-neutral-300">
+                    {(related[c.url] ?? []).map((n) => (
+                      <li key={n.url} className="px-1 py-2.5">
+                        <a href={n.url} className="line-clamp-2 text-[12px] font-semibold leading-snug text-neutral-900 hover:text-[#047857]">{n.title}</a>
+                        {n.date && <div className="mt-1 text-[11px] text-neutral-500">{n.date}</div>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           ))}
         </div>

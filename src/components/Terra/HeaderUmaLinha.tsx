@@ -4,26 +4,24 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { BookOpen, Facebook, Home, Mail, Menu, Mic, Radio, TrendingUp, User, Users } from 'lucide-react';
-import { DARKER, GREEN, LIME, TOPBAR, nav, social } from '@/lib/terra';
+import { DARKER, GREEN, LIME, nav, social } from '@/lib/terra';
 import TopThinBar, { THIN_BAR } from './TopThinBar';
 
 const NAV_ICONS: Record<string, typeof Home> = { '/': Home, '/radio': Radio, '/revista-digital': BookOpen, '/podcasts': Mic, '/cotacoes': TrendingUp, '/quem-somos': Users, '/contacto': Mail };
 
 /**
  * Cabeçalho principal: uma só linha branca (logo, menu e ícones; 78px + linha verde).
- * Ao fazer scroll passa a barra compacta de 60px, na cor escura da barra de cima, fixa no topo. O espaço no topo da página é mantido (sem saltos).
- * Por cima fica uma barra fina que não fixa (e-mail, rádio, temperatura, pesquisa e redes); a principal sobe até ao topo e fica.
+ * Ao fazer scroll passa a barra compacta de 56px, sempre com fundo branco. O espaço no topo da página é mantido (sem saltos).
+ * Por cima fica a barra fina (rádio, temperatura, pesquisa e redes, com o separador em trapézio a espreitar sobre o menu): também fica fixa, por isso o efeito mantém-se com o menu fixo.
  */
 export default function HeaderUmaLinha() {
   const path = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
-  const [top, setTop] = useState(THIN_BAR);
 
   useEffect(() => {
     const on = () => {
       const y = window.scrollY;
-      setTop(Math.max(0, THIN_BAR - y)); // a barra principal sobe com a página até ao topo e aí fica
       setScrolled((s) => (s ? y > 20 : y > 70)); // histerese: evita piscar perto do limite
     };
     on();
@@ -38,13 +36,13 @@ export default function HeaderUmaLinha() {
     return () => window.removeEventListener('keydown', onKey);
   }, [menu]);
 
-  const icon = `flex items-center justify-center transition-colors hover:text-[#9BCB3C] ${scrolled ? 'text-white' : 'text-neutral-800'}`;
+  const icon = `flex items-center justify-center transition-colors hover:text-[#9BCB3C] text-neutral-800`;
 
   return (
     <>
     <TopThinBar />
     <div className="relative h-[68px] lg:h-[82px]">
-      <header className={`fixed inset-x-0 z-50 transition-[background-color,box-shadow] duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`} style={{ background: scrolled ? TOPBAR : '#fff', top }}>
+      <header className={`fixed inset-x-0 z-50 transition-[background-color,box-shadow] duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`} style={{ background: '#fff', top: THIN_BAR }}>
         <div className={`relative mx-auto flex max-w-[1300px] items-stretch px-3 lg:grid lg:grid-cols-[1fr_auto_1fr] transition-[height] duration-300 ${scrolled ? 'h-[56px]' : 'h-[64px] lg:h-[78px]'}`}>
           {/* Telemóvel: logótipo encostado à esquerda */}
           <Link href="/" className="flex shrink-0 items-center self-center bg-white lg:hidden" aria-label="Revista Terra — A Voz do Agro e Ambiente">
@@ -54,23 +52,24 @@ export default function HeaderUmaLinha() {
             <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={446} height={220} className={`w-auto transition-[height] duration-300 ${scrolled ? 'h-[40px]' : 'h-[46px] lg:h-[54px]'}`} />
           </Link>
 
-          <nav className="hidden items-stretch lg:flex" aria-label="Menu principal">
+          {/* xl:pt-[10px]: o menu começa por baixo do separador em trapézio da barra de cima, ficando centrado na parte visível da barra */}
+          <nav className="hidden items-stretch lg:flex xl:pt-[10px]" aria-label="Menu principal">
             {nav.map((m) => {
               const active = path === m.href;
               return (
-                <Link key={m.href} href={m.href} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors hover:text-[#9BCB3C] ${active ? 'text-[#9BCB3C]' : scrolled ? 'text-white' : 'text-[#064E3B]'}`} style={scrolled && active ? { background: GREEN } : undefined}>
-                  {m.label}
-                  {/* traço por baixo (só na barra branca): aparece ao passar o rato e fica no item activo; lima, como o texto. Na barra compacta não há traço */}
-                  {!scrolled && <i aria-hidden className={`pointer-events-none absolute inset-x-2.5 bottom-5 h-[3px] origin-left transition-transform duration-200 ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} style={{ background: LIME }} />}
+                <Link key={m.href} href={m.href} aria-current={active ? 'page' : undefined} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors duration-300 ${active ? 'text-white' : 'text-[#064E3B] hover:text-white'}`}>
+                  {/* fundo verde que sobe de baixo ao passar o rato e que fica no item activo */}
+                  <i aria-hidden className={`pointer-events-none absolute inset-0 origin-bottom transition-transform duration-300 ease-out ${active ? 'scale-y-100' : 'scale-y-0 group-hover:scale-y-100'}`} style={{ background: GREEN }} />
+                  <span className="relative">{m.label}</span>
                 </Link>
               );
             })}
           </nav>
 
           {/* Telemóvel, da esquerda para a direita: pesquisa, Entrar e Menu (o último, encostado à direita) */}
-          <div className={`ml-auto flex shrink-0 items-center gap-2.5 lg:hidden ${scrolled ? 'text-white' : 'text-gray-700'}`}>
+          <div className={`ml-auto flex shrink-0 items-center gap-2.5 lg:hidden text-gray-700`}>
             <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-1.5 whitespace-nowrap px-3 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:opacity-90" style={{ background: GREEN }}><User size={16} aria-hidden />Entrar</Link>
-            <button type="button" onClick={() => setMenu(!menu)} aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} className={`flex h-9 w-9 shrink-0 items-center justify-center border transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] ${scrolled ? 'border-white/60' : 'border-gray-400'}`}><Menu className="h-5 w-5" /></button>
+            <button type="button" onClick={() => setMenu(!menu)} aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} className={`flex h-9 w-9 shrink-0 items-center justify-center border transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] border-gray-400`}><Menu className="h-5 w-5" /></button>
           </div>
           <div className="ml-auto hidden items-center justify-self-end lg:ml-0 lg:flex">
             <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={{ background: GREEN, color: '#fff' }}><User size={16} aria-hidden />Entrar</Link>
@@ -78,7 +77,7 @@ export default function HeaderUmaLinha() {
 
         </div>
 
-        <div className="h-1 transition-colors duration-300" style={{ background: GREEN }} />
+        <div className="h-0.5" style={{ background: GREEN }} />
       </header>
     </div>
     {/* Telemóvel: painel do menu à direita, por cima do conteúdo (220px), com fundo que o fecha */}
