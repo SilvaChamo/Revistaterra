@@ -20,7 +20,7 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
   }, [i, paused, n]);
 
   return (
-    <div className="relative h-[390px] overflow-hidden bg-black sm:h-[380px] lg:h-[430px]" style={{ containerType: 'size' }} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <div className="relative h-[310px] overflow-hidden bg-black sm:h-[380px] lg:h-[430px]" style={{ containerType: 'size' }} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       {items.map((it, k) => (
         <a
           key={it.title}
@@ -32,10 +32,10 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
           {it.image && <img src={it.image} alt="" decoding="async" loading={k === 0 ? 'eager' : 'lazy'} className="h-full w-full object-cover" />}
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-          <div className="absolute inset-x-0 bottom-[104px] pl-9 pr-5 sm:bottom-[92px] sm:px-14">
+          <div className="absolute inset-x-0 bottom-[72px] pl-9 pr-5 sm:bottom-[92px] sm:px-14">
             <span className="inline-block whitespace-nowrap px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{it.category}</span>
-            <h2 className="mt-4 max-w-[92%] max-sm:line-clamp-3 font-extrabold leading-tight text-white sm:max-w-[78%]" style={{ fontSize: 'clamp(19px, 6.9cqmin, 32px)' }}>{it.title}</h2>
-            {it.excerpt && <p className="mt-2 max-w-[92%] line-clamp-3 leading-snug text-white/85 sm:line-clamp-none sm:max-w-[70%]" style={{ fontSize: 'clamp(11.5px, 3.1cqmin, 14px)' }}>{it.excerpt}</p>}
+            <h2 className="mt-3 max-w-[92%] max-sm:line-clamp-3 font-extrabold leading-tight text-white sm:max-w-[78%]" style={{ fontSize: 'clamp(19px, 6.9cqmin, 32px)' }}>{it.title}</h2>
+            {it.excerpt && <p className="mt-3 max-w-[92%] line-clamp-3 leading-snug text-white/85 sm:line-clamp-none sm:max-w-[70%]" style={{ fontSize: 'clamp(11.5px, 3.1cqmin, 14px)' }}>{it.excerpt}</p>}
           </div>
         </a>
       ))}
