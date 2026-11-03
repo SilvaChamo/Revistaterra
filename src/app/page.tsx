@@ -2,7 +2,7 @@ import SiteShell from '@/components/Terra/SiteShell';
 import Sidebar from '@/components/Terra/Sidebar';
 import HeroSlider from '@/components/Terra/HeroSlider';
 import VideoSpotlight from '@/components/Terra/VideoSpotlight';
-import { Heading, Overlay } from '@/components/Terra/Bits';
+import { Heading, NewsCard, Overlay } from '@/components/Terra/Bits';
 import RecentNews, { type RecentSet } from '@/components/Terra/RecentNews';
 import { GREEN, makePicker, parseDate, terra, type Card } from '@/lib/terra';
 import { loadCards, loadHero } from '@/lib/terra-news';
@@ -56,15 +56,7 @@ export default async function Home() {
           <VideoSpotlight />
 
           <Heading>Sociedade</Heading>
-          <div className="grid gap-3 md:grid-cols-3">
-            {soc.map((c) => (
-              <div key={c.title} className="bg-white">
-                <Overlay c={c} className="h-[170px]" />
-                {c.excerpt && <p className="p-4 text-xs text-neutral-500">{c.excerpt}</p>}
-                <div className="border-t border-neutral-100 px-4 py-3 text-[11px] text-neutral-500">{c.date || 'Revista Terra'}</div>
-              </div>
-            ))}
-          </div>
+          <div className="grid gap-3 md:grid-cols-3">{soc.map((c) => <NewsCard key={c.title} c={c} />)}</div>
 
           <Heading>Fora de Campo</Heading>
           <div className="grid gap-3 md:grid-cols-3">{out.map((c) => <Overlay key={c.title} c={c} className="h-[190px]" />)}</div>

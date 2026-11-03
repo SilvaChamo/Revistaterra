@@ -1,5 +1,6 @@
 import { DARK, GREEN, LIME } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
+import ShareLink from './ShareLink';
 
 export const Tag = ({ children }: { children: React.ReactNode }) => (
   <span className="inline-block whitespace-nowrap px-2 py-[3px] text-[9px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{children}</span>
@@ -15,6 +16,29 @@ export const Overlay = ({ c, className = '', big = false }: { c: Card; className
       <h3 className="mt-[1.6cqmin] font-semibold leading-snug text-white" style={{ fontSize: big ? 'clamp(16px, 8.2cqmin, 21px)' : 'clamp(13px, 7.6cqmin, 15px)' }}>{c.title}</h3>
     </div>
   </a>
+);
+
+/**
+ * Cartão de notícia com o texto por baixo da foto: etiqueta, título, descrição (mínimo 3 linhas),
+ * linha separadora e, por baixo, a data à esquerda e o ícone de partilha à direita.
+ * Todo o espaço interior é 16px (p-4 / gap-3), como no carrossel das Notícias recentes.
+ */
+export const NewsCard = ({ c, imageClassName = 'h-[170px]' }: { c: Card; imageClassName?: string }) => (
+  <article className="group flex h-full flex-col bg-white shadow-sm">
+    <a href={c.url} className={`relative block shrink-0 overflow-hidden bg-black ${imageClassName}`}>
+      {c.image && <img src={c.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
+    </a>
+    <div className="flex flex-1 flex-col gap-3 p-4">
+      <div><Tag>{c.category}</Tag></div>
+      <h3 className="line-clamp-2 min-h-[2.75em] text-[13px] font-bold leading-snug text-neutral-900"><a href={c.url} className="hover:text-[#047857]">{c.title}</a></h3>
+      {/* descrição com pelo menos 3 linhas de altura, para os cartões ficarem alinhados */}
+      <p className="line-clamp-4 min-h-[4.5em] text-xs leading-normal text-neutral-500">{c.excerpt}</p>
+    </div>
+    <div className="flex items-center justify-between border-t border-neutral-200 px-4 py-3 text-[11px] text-neutral-500">
+      <span>{c.date || 'Revista Terra'}</span>
+      <ShareLink path={c.url} title={c.title} iconOnly className="text-neutral-500" />
+    </div>
+  </article>
 );
 
 export const Heading = ({ children, href }: { children: React.ReactNode; href?: string }) => (

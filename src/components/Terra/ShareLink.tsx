@@ -13,7 +13,7 @@ const POPUP_W = 176;
 const ROW_H = 26;
 const POPUP_H = 8 * ROW_H + 8; // 8 linhas + padding
 
-export default function ShareLink({ path, title, className = '' }: { path: string; title: string; className?: string }) {
+export default function ShareLink({ path, title, className = '', iconOnly = false }: { path: string; title: string; className?: string; iconOnly?: boolean }) {
   const button = useRef<HTMLButtonElement>(null);
   const [pos, setPos] = useState<{ top: number; left: number; above: boolean } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -66,10 +66,12 @@ export default function ShareLink({ path, title, className = '' }: { path: strin
         onClick={toggle}
         aria-haspopup="true"
         aria-expanded={!!pos}
+        aria-label="Partilhar"
+        title="Partilhar"
         className={`inline-flex items-center gap-1 hover:text-[#047857] ${className}`}
       >
-        <Share2 className="h-3 w-3" />
-        Partilhar
+        <Share2 className={iconOnly ? 'h-3.5 w-3.5' : 'h-3 w-3'} />
+        {!iconOnly && 'Partilhar'}
       </button>
       {pos &&
         createPortal(
