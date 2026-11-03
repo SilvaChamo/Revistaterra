@@ -43,7 +43,7 @@ export default function HeaderUmaLinha() {
   return (
     <>
     <TopThinBar offset={THIN_BAR - top} />
-    <div className="relative h-[68px] lg:h-[82px]">
+    <div className="relative h-[66px] lg:h-[80px]">
       <header className={`fixed inset-x-0 z-50 transition-[background-color,box-shadow] duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`} style={{ background: '#fff', top }}>
         <div className={`relative mx-auto flex max-w-[1300px] items-stretch px-3 lg:grid lg:grid-cols-[1fr_auto_1fr] transition-[height] duration-300 ${scrolled ? 'h-[56px]' : 'h-[64px] lg:h-[78px]'}`}>
           {/* Telemóvel: logótipo encostado à esquerda */}
