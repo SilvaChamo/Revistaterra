@@ -13,7 +13,7 @@ export function nowOnAir(): { show: string; time: string } | null {
 
 export default function RadioPlayer({ compact = false }: { compact?: boolean }) {
   // o áudio vive no RadioProvider (raiz do site): continua a tocar ao mudar de página
-  const { playing, toggle } = useRadio();
+  const { playing, loading, toggle } = useRadio();
   const [now, setNow] = useState<ReturnType<typeof nowOnAir>>(null);
   useEffect(() => { setNow(nowOnAir()); const id = setInterval(() => setNow(nowOnAir()), 60000); return () => clearInterval(id); }, []);
 
@@ -24,7 +24,7 @@ export default function RadioPlayer({ compact = false }: { compact?: boolean }) 
         <button onClick={toggle} aria-label={playing ? 'Pausar' : 'Ouvir'} className="relative flex h-14 w-14 items-center justify-center rounded-full text-xl text-white" style={{ background: GREEN }}>{playing ? '❚❚' : '▶'}</button>
       </span>
       <div className="min-w-0">
-        <div className="text-[11px] font-bold uppercase tracking-wide" style={{ color: GREEN }}>{playing ? '● Em directo' : 'Rádio +Agro'}</div>
+        <div className="text-[11px] font-bold uppercase tracking-wide" style={{ color: GREEN }}>{loading ? 'A ligar…' : playing ? '● Em directo' : 'Rádio +Agro'}</div>
         <div className={`font-semibold leading-snug ${compact ? 'text-sm' : 'text-lg'}`}>{now ? now.show : 'A voz do agro e ambiente'}</div>
         <div className="text-xs text-neutral-500">{now ? `Agora no ar · ${now.time}` : 'Sintonize em qualquer altura'}</div>
       </div>

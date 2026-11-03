@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 
 const STREAM = 'https://stream.zeno.fm/zux5ls5nfw9tv';
 
-type RadioCtx = { playing: boolean; toggle: () => void };
-const Ctx = createContext<RadioCtx>({ playing: false, toggle: () => {} });
+type RadioCtx = { playing: boolean; loading: boolean; toggle: () => void };
+const Ctx = createContext<RadioCtx>({ playing: false, loading: false, toggle: () => {} });
 export const useRadio = () => useContext(Ctx);
 
 /**
@@ -18,8 +18,16 @@ export default function RadioProvider({ children }: { children: React.ReactNode 
   const router = useRouter();
   const audio = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const get = () => (audio.current ??= new Audio());
+  const get = () => {
+    if (!audio.current) {
+      const a = new Audio();
+      a.preload = 'none';
+      audio.current = a;
+    }
+    return audio.current;
+  };
 
   const toggle = useCallback(() => {
     const a = get();
@@ -29,19 +37,25 @@ export default function RadioProvider({ children }: { children: React.ReactNode 
       a.removeAttribute('src');
       a.load();
       setPlaying(false);
+      setLoading(false);
     } else {
+      // resposta imediata no botão; o som entra assim que o directo tiver dados
+      setPlaying(true);
+      setLoading(true);
       a.src = STREAM;
-      a.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+      a.play().catch(() => { setPlaying(false); setLoading(false); });
     }
   }, []);
 
   // Se o directo falhar ou terminar, o botão volta ao estado "ouvir".
   useEffect(() => {
     const a = get();
-    const off = () => { if (!a.src) return; setPlaying(false); };
+    const off = () => { if (!a.src) return; setPlaying(false); setLoading(false); };
+    const on = () => setLoading(false);
     a.addEventListener('error', off);
     a.addEventListener('ended', off);
-    return () => { a.removeEventListener('error', off); a.removeEventListener('ended', off); };
+    a.addEventListener('playing', on);
+    return () => { a.removeEventListener('error', off); a.removeEventListener('ended', off); a.removeEventListener('playing', on); };
   }, []);
 
   // Ligações internas sem recarregar a página (as que já usam <Link> tratam de si; as <a href> normais passam por aqui).
@@ -65,5 +79,5 @@ export default function RadioProvider({ children }: { children: React.ReactNode 
     return () => document.removeEventListener('click', onClick);
   }, [router]);
 
-  return <Ctx.Provider value={{ playing, toggle }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ playing, loading, toggle }}>{children}</Ctx.Provider>;
 }
