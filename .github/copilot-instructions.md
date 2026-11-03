@@ -1,0 +1,1 @@
+Antes de qualquer alteração, lê e cumpre OBRIGATORIAMENTE as regras do projecto em `regras.md` (raiz do repositório).

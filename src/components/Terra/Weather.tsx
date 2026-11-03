@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { GREEN, terra } from '@/lib/terra';
 import { useWeather } from './WeatherProvider';
 
@@ -21,6 +21,22 @@ export default function Weather() {
   const { data, failed, retry } = useWeather();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
+
+  // posição do fundo verde: segue o botão activo (e reajusta se a largura mudar)
+  const tabs = useRef<HTMLDivElement>(null);
+  const [pill, setPill] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
+  useLayoutEffect(() => {
+    const box = tabs.current;
+    if (!box || !data) return;
+    const place = () => {
+      const b = box.querySelectorAll('button')[i] as HTMLElement | undefined;
+      if (b) setPill({ x: b.offsetLeft, y: b.offsetTop, w: b.offsetWidth, h: b.offsetHeight });
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(box);
+    return () => ro.disconnect();
+  }, [i, data]);
 
   useEffect(() => {
     if (!data || paused) return;
@@ -58,9 +74,11 @@ export default function Weather() {
             <div key={d.label}><div className="capitalize text-neutral-500">{d.label}</div><div className="text-lg" title={wmo(d.code)[0]}>{wmo(d.code)[1]}</div><b>{d.max}°</b> <span className="text-neutral-400">{d.min}°</span></div>
           ))}
         </div>
-        <div className="mt-4 flex flex-wrap gap-1">
+        <div ref={tabs} className="relative mt-4 flex flex-wrap gap-1">
+          {/* fundo verde único que desliza até à província escolhida */}
+          <span aria-hidden className={`pointer-events-none absolute left-0 top-0 ${pill ? 'transition-all duration-300 ease-out' : ''}`} style={{ background: GREEN, opacity: pill ? 1 : 0, width: pill?.w, height: pill?.h, transform: `translate(${pill?.x ?? 0}px, ${pill?.y ?? 0}px)` }} />
           {places.map((x, k) => (
-            <button key={x.key} onClick={() => setI(k)} className={`whitespace-nowrap px-2 py-1 text-[10px] ${k === i ? 'text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-[#9BCB3C] hover:text-[#064E3B]'}`} style={k === i ? { background: GREEN } : undefined}>{x.label}</button>
+            <button key={x.key} onClick={() => setI(k)} className={`relative whitespace-nowrap px-2 py-1 text-[10px] transition-colors duration-300 ${k === i ? 'text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-[#9BCB3C] hover:text-[#064E3B]'}`} style={k === i && pill ? { background: 'transparent' } : k === i ? { background: GREEN } : undefined}>{x.label}</button>
           ))}
         </div>
       </div>
