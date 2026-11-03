@@ -492,7 +492,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         )}
         {/* Sidebar (Menu Lateral): no telemóvel é uma gaveta (fechada ao entrar); no ecrã grande, a barra de sempre */}
         <aside
-          className={`bg-[#1d2327] flex-shrink-0 transition-transform duration-200 max-lg:fixed max-lg:bottom-0 max-lg:right-0 max-lg:top-12 max-lg:z-[95] max-lg:w-72 max-lg:max-w-[85vw] max-lg:overflow-y-auto ${
+          className={`bg-[#1d2327] flex-shrink-0 transition-transform duration-200 max-lg:fixed max-lg:bottom-0 max-lg:right-0 max-lg:top-12 max-lg:z-[95] max-lg:w-64 max-lg:max-w-[80vw] max-lg:overflow-y-auto ${
             mobileMenuOpen ? 'max-lg:translate-x-0' : 'max-lg:translate-x-full'
           } lg:transition-all ${isSidebarOpen ? 'lg:w-56' : 'lg:w-0 lg:overflow-hidden'}`}
         >

@@ -89,10 +89,10 @@ export default function TopThinBar() {
             <button aria-label={search ? 'Fechar pesquisa' : 'Pesquisar'} aria-expanded={search} onClick={() => setSearch(!search)} className={ic} style={search ? { color: LIME } : undefined}>{search ? <X size={15} /> : <Search size={15} />}</button>
           </div>
         </div>
-        <form role="search" onSubmit={(e) => e.preventDefault()} className={`absolute inset-x-3 top-full z-10 overflow-hidden shadow-lg transition-[max-height,opacity] duration-300 ${search ? 'max-h-24 opacity-100' : 'pointer-events-none max-h-0 opacity-0'}`} style={{ background: DARKER }}>
+        <form role="search" action="/noticias" method="get" className={`absolute inset-x-3 top-full z-10 overflow-hidden shadow-lg transition-[max-height,opacity] duration-300 ${search ? 'max-h-24 opacity-100' : 'pointer-events-none max-h-0 opacity-0'}`} style={{ background: DARKER }}>
           <div className="flex gap-2 p-3">
-            <input ref={input} tabIndex={search ? 0 : -1} type="search" placeholder="O que procura?" className="min-w-0 flex-1 bg-white px-3 py-2 text-sm text-neutral-900 outline-none" />
-            <button tabIndex={search ? 0 : -1} className="px-4 text-xs font-bold uppercase" style={{ background: LIME, color: DARK }}>Procurar</button>
+            <input ref={input} name="q" required tabIndex={search ? 0 : -1} type="search" placeholder="O que procura?" className="min-w-0 flex-1 bg-white px-3 py-2 text-sm text-neutral-900 outline-none" />
+            <button type="submit" tabIndex={search ? 0 : -1} className="px-4 text-xs font-bold uppercase" style={{ background: LIME, color: DARK }}>Procurar</button>
           </div>
         </form>
       </div>

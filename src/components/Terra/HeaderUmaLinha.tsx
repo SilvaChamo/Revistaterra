@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { BookOpen, Facebook, Home, Mail, Menu, Mic, Radio, Search, TrendingUp, User, Users } from 'lucide-react';
+import { BookOpen, Facebook, Home, Mail, Menu, Mic, Radio, TrendingUp, User, Users } from 'lucide-react';
 import { DARKER, GREEN, LIME, TOPBAR, nav, social } from '@/lib/terra';
 import TopThinBar, { THIN_BAR } from './TopThinBar';
 
@@ -69,7 +69,6 @@ export default function HeaderUmaLinha() {
 
           {/* Telemóvel, da esquerda para a direita: pesquisa, Entrar e Menu (o último, encostado à direita) */}
           <div className={`ml-auto flex shrink-0 items-center gap-2.5 lg:hidden ${scrolled ? 'text-white' : 'text-gray-700'}`}>
-            <Link href="/noticias" aria-label="Pesquisar" className="flex h-9 w-7 items-center justify-center hover:text-[#9BCB3C]"><Search className="h-4 w-4" /></Link>
             <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-1.5 whitespace-nowrap px-3 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:opacity-90" style={{ background: GREEN }}><User size={16} aria-hidden />Entrar</Link>
             <button type="button" onClick={() => setMenu(!menu)} aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} className={`flex h-9 w-9 shrink-0 items-center justify-center border transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] ${scrolled ? 'border-white/60' : 'border-gray-400'}`}><Menu className="h-5 w-5" /></button>
           </div>

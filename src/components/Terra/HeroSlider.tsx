@@ -20,7 +20,7 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
   }, [i, paused, n]);
 
   return (
-    <div className="relative h-[340px] overflow-hidden bg-black sm:h-[380px] lg:h-[430px]" style={{ containerType: 'size' }} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <div className="relative h-[390px] overflow-hidden bg-black sm:h-[380px] lg:h-[430px]" style={{ containerType: 'size' }} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       {items.map((it, k) => (
         <a
           key={it.title}
@@ -34,8 +34,8 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
           <div className="absolute inset-x-0 bottom-[104px] pl-9 pr-5 sm:bottom-[92px] sm:px-14">
             <span className="inline-block whitespace-nowrap px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{it.category}</span>
-            <h2 className="mt-4 max-w-[92%] font-extrabold leading-tight text-white sm:max-w-[78%]" style={{ fontSize: 'clamp(19px, 6.9cqmin, 32px)' }}>{it.title}</h2>
-            {it.excerpt && <p className="mt-2 hidden max-w-[70%] leading-snug text-white/85 sm:block" style={{ fontSize: 'clamp(11.5px, 3.1cqmin, 14px)' }}>{it.excerpt}</p>}
+            <h2 className="mt-4 max-w-[92%] max-sm:line-clamp-3 font-extrabold leading-tight text-white sm:max-w-[78%]" style={{ fontSize: 'clamp(19px, 6.9cqmin, 32px)' }}>{it.title}</h2>
+            {it.excerpt && <p className="mt-2 max-w-[92%] line-clamp-3 leading-snug text-white/85 sm:line-clamp-none sm:max-w-[70%]" style={{ fontSize: 'clamp(11.5px, 3.1cqmin, 14px)' }}>{it.excerpt}</p>}
           </div>
         </a>
       ))}

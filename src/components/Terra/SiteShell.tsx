@@ -17,7 +17,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
     </div>
   );
   return (
-    <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Inter, Arial, sans-serif' }}>
+    <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Verdana, sans-serif' }}>
       <HeaderSwitch />
 
       <div className="mx-auto mt-5 max-w-[1300px] px-3">
