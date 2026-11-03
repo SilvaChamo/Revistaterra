@@ -19,6 +19,7 @@ export async function uploadToBucket(file: Blob, name: string, opts: { upsert?: 
   try {
     const res = await fetch('/api/admin/upload', { method: 'POST', body: form, credentials: 'include' });
     const json = await res.json().catch(() => ({}));
+    if (res.status === 413) return { error: new Error('A imagem é demasiado grande para ser enviada (máximo cerca de 4 MB). Reduza-a e tente de novo.') };
     if (!res.ok) return { error: new Error(json.error || 'Falha no carregamento da imagem.') };
     return { error: null, path: json.path, url: json.url };
   } catch (e: any) {
