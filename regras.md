@@ -32,3 +32,8 @@ Estas regras são obrigatórias para todos os agentes de IA (Claude, Copilot, Cu
 ## 7. Autonomia
 - O responsável vê apenas o resultado final e não tem acesso ao que o agente faz por dentro.
 - Nunca mandar o responsável fazer o que o agente consegue fazer. Se é possível fazer, fazer.
+
+## 8. Actualizações da página
+- No ambiente local, o código de actualização nunca pode desligar a página nem obrigar a fechá-la e reabri-la. Apenas actualizar (hot reload), sem parar o servidor.
+- No site online, uma actualização nunca pode impedir o utilizador de fazer algo. Não bloquear ecrãs, formulários ou acções enquanto se actualiza.
+- A actualização deve ser apenas um breve "piscar" para mostrar a informação nova.
