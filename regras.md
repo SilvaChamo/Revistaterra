@@ -37,3 +37,7 @@ Estas regras são obrigatórias para todos os agentes de IA (Claude, Copilot, Cu
 - No ambiente local, o código de actualização nunca pode desligar a página nem obrigar a fechá-la e reabri-la. Apenas actualizar (hot reload), sem parar o servidor.
 - No site online, uma actualização nunca pode impedir o utilizador de fazer algo. Não bloquear ecrãs, formulários ou acções enquanto se actualiza.
 - A actualização deve ser apenas um breve "piscar" para mostrar a informação nova.
+
+## 9. Pré-visualização local
+- A pré-visualização local deve mostrar sempre duas vistas: mobile e PC (desktop).
+- Qualquer alteração deve ser verificada nas duas vistas antes de ser dada como concluída.
