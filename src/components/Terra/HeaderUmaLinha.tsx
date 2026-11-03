@@ -18,10 +18,12 @@ export default function HeaderUmaLinha() {
   const path = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
+  const [top, setTop] = useState(THIN_BAR);
 
   useEffect(() => {
     const on = () => {
       const y = window.scrollY;
+      setTop(Math.max(0, THIN_BAR - y)); // a barra de cima sobe com a página (e o menu sobe atrás dela) até ao topo
       setScrolled((s) => (s ? y > 20 : y > 70)); // histerese: evita piscar perto do limite
     };
     on();
@@ -40,9 +42,9 @@ export default function HeaderUmaLinha() {
 
   return (
     <>
-    <TopThinBar />
+    <TopThinBar offset={THIN_BAR - top} />
     <div className="relative h-[68px] lg:h-[82px]">
-      <header className={`fixed inset-x-0 z-50 transition-[background-color,box-shadow] duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`} style={{ background: '#fff', top: THIN_BAR }}>
+      <header className={`fixed inset-x-0 z-50 transition-[background-color,box-shadow] duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`} style={{ background: '#fff', top }}>
         <div className={`relative mx-auto flex max-w-[1300px] items-stretch px-3 lg:grid lg:grid-cols-[1fr_auto_1fr] transition-[height] duration-300 ${scrolled ? 'h-[56px]' : 'h-[64px] lg:h-[78px]'}`}>
           {/* Telemóvel: logótipo encostado à esquerda */}
           <Link href="/" className="flex shrink-0 items-center self-center bg-white lg:hidden" aria-label="Revista Terra — A Voz do Agro e Ambiente">
@@ -57,9 +59,11 @@ export default function HeaderUmaLinha() {
             {nav.map((m) => {
               const active = path === m.href;
               return (
-                <Link key={m.href} href={m.href} aria-current={active ? 'page' : undefined} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors duration-300 ${active ? 'text-white' : 'text-[#064E3B] hover:text-white'}`}>
-                  {/* fundo verde que sobe de baixo ao passar o rato e que fica no item activo */}
-                  <i aria-hidden className={`pointer-events-none absolute inset-0 origin-bottom transition-transform duration-300 ease-out ${active ? 'scale-y-100' : 'scale-y-0 group-hover:scale-y-100'}`} style={{ background: GREEN }} />
+                <Link key={m.href} href={m.href} aria-current={active ? 'page' : undefined} className={`group relative flex items-center px-2.5 text-xs font-bold uppercase transition-colors duration-300 ${scrolled && active ? 'text-white' : active ? 'text-[#9BCB3C]' : 'text-[#064E3B] hover:text-[#9BCB3C]'}`}>
+                  {/* só o item activo do menu fixo (com scroll) leva o fundo verde */}
+                  {scrolled && active && <i aria-hidden className="pointer-events-none absolute inset-0" style={{ background: GREEN }} />}
+                  {/* o hover é sempre uma linha por baixo do item; no item activo sem scroll a linha fica fixa */}
+                  {!(scrolled && active) && <i aria-hidden className={`pointer-events-none absolute inset-x-2.5 ${scrolled ? 'bottom-2' : 'bottom-4'} h-[3px] origin-left transition-transform duration-200 ${active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} style={{ background: LIME }} />}
                   <span className="relative">{m.label}</span>
                 </Link>
               );
