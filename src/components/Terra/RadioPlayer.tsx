@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GREEN, terra } from '@/lib/terra';
-
-const STREAM = 'https://stream.zeno.fm/zux5ls5nfw9tv';
+import { useRadio } from './RadioProvider';
 const mins = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
 
 export function nowOnAir(): { show: string; time: string } | null {
@@ -13,16 +12,10 @@ export function nowOnAir(): { show: string; time: string } | null {
 }
 
 export default function RadioPlayer({ compact = false }: { compact?: boolean }) {
-  const ref = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = useState(false);
+  // o áudio vive no RadioProvider (raiz do site): continua a tocar ao mudar de página
+  const { playing, toggle } = useRadio();
   const [now, setNow] = useState<ReturnType<typeof nowOnAir>>(null);
   useEffect(() => { setNow(nowOnAir()); const id = setInterval(() => setNow(nowOnAir()), 60000); return () => clearInterval(id); }, []);
-
-  const toggle = () => {
-    const a = ref.current; if (!a) return;
-    if (playing) { a.pause(); a.removeAttribute('src'); a.load(); setPlaying(false); }
-    else { a.src = STREAM; a.play().then(() => setPlaying(true)).catch(() => setPlaying(false)); }
-  };
 
   return (
     <div className="flex items-center gap-4">
@@ -35,7 +28,6 @@ export default function RadioPlayer({ compact = false }: { compact?: boolean }) 
         <div className={`font-semibold leading-snug ${compact ? 'text-sm' : 'text-lg'}`}>{now ? now.show : 'A voz do agro e ambiente'}</div>
         <div className="text-xs text-neutral-500">{now ? `Agora no ar · ${now.time}` : 'Sintonize em qualquer altura'}</div>
       </div>
-      <audio ref={ref} preload="none" />
     </div>
   );
 }
