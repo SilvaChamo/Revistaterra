@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { supabase, STORAGE_BUCKET as BUCKET_NAME } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import { compressImage, extFor } from '@/lib/compress-image';
+import { uploadToBucket } from '@/lib/upload-client';
 import { 
   Trash2, 
   Archive, 
@@ -357,9 +358,7 @@ export default function MediaGallery() {
 
       const newFileName = selectedFile.name.replace(/\.[^/.]+$/, "") + (editFormat !== 'original' ? `_edited${finalExt}` : finalExt);
 
-      const { error: uploadError } = await supabase.storage
-        .from(BUCKET_NAME)
-        .upload(newFileName, blob, { contentType: finalMime, upsert: true });
+      const { error: uploadError } = await uploadToBucket(blob, newFileName, { upsert: true });
 
       if (uploadError) throw uploadError;
 
@@ -418,7 +417,7 @@ export default function MediaGallery() {
                     const packed = file !== original;
                     const safeName = original.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\.-]/g, '_');
                     const cleanName = `${Date.now()}-${packed ? safeName.replace(/\.[^.]+$/, '') + '.' + extFor(file.type) : safeName}`;
-                    const { error } = await supabase.storage.from(BUCKET_NAME).upload(cleanName, file, packed ? { contentType: file.type } : undefined);
+                    const { error } = await uploadToBucket(file, cleanName);
                     if (!error) successCount++;
                   }
                   

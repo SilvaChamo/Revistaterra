@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const file = formData.get('file') as File;
     const bucket = (formData.get('bucket') as string) || 'avatars';
+    const wantedName = String(formData.get('name') || '');
+    const upsert = formData.get('upsert') === 'true';
 
     if (!file) {
       return NextResponse.json({ error: 'Nenhum ficheiro enviado' }, { status: 400 });
@@ -39,13 +41,15 @@ export async function POST(req: NextRequest) {
     // Compressão silenciosa: WebP até 150 KB
     const packed = await compressImageBuffer(Buffer.from(await file.arrayBuffer()), file.type);
     const buffer = packed.buffer;
-    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${packed.ext}`;
+    // Nome pedido (galeria): só letras, números, ponto, hífen e sublinhado, sem pastas; senão, um nome aleatório.
+    const base = wantedName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\.[^.]*$/, '').replace(/[^\w-]+/g, '_').replace(/^[_.-]+/, '').slice(0, 100);
+    const fileName = base ? `${base}.${packed.ext}` : `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${packed.ext}`;
 
     const { data, error } = await supabaseAdmin.storage
       .from(bucket)
       .upload(fileName, buffer, {
         contentType: packed.mime,
-        upsert: false
+        upsert
       });
 
     if (error) {
@@ -57,7 +61,7 @@ export async function POST(req: NextRequest) {
       .from(bucket)
       .getPublicUrl(fileName);
 
-    return NextResponse.json({ url: publicUrl });
+    return NextResponse.json({ url: publicUrl, path: fileName });
   } catch (err: any) {
     console.error('Erro no servidor de upload:', err.message);
     return NextResponse.json({ error: err.message }, { status: 500 });

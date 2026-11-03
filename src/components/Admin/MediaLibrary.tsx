@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 import { compressImage, extFor } from '@/lib/compress-image';
+import { uploadToBucket } from '@/lib/upload-client';
 
 interface MediaLibraryProps {
   onSelect?: (url: string) => void;
@@ -267,12 +268,7 @@ export default function MediaLibrary({ onSelect, isModal, externalSearchQuery }:
         upBlob = await compressImage(upBlob, { type: upMime });
       }
 
-      const { error: uploadError } = await supabase.storage
-        .from(BUCKET_NAME)
-        .upload(fileName, upBlob, { 
-          contentType: upMime,
-          upsert: true 
-        });
+      const { error: uploadError } = await uploadToBucket(upBlob, fileName, { upsert: true });
 
       if (uploadError) throw uploadError;
 

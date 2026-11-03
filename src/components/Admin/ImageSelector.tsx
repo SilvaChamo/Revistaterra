@@ -6,6 +6,7 @@ import { supabase, STORAGE_BUCKET as BUCKET_NAME } from '@/lib/supabase';
 import MediaLibrary from './MediaLibrary';
 import ImageEditor from './ImageEditor';
 import { compressImage, extFor } from '@/lib/compress-image';
+import { uploadToBucket } from '@/lib/upload-client';
 
 interface ImageSelectorProps {
   onSelect: (url: string) => void;
@@ -92,19 +93,10 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
         fileToUpload = packed;
       }
 
-      const { error } = await supabase.storage
-        .from(BUCKET_NAME)
-        .upload(fileName, fileToUpload, {
-          contentType: fileToUpload.type || 'image/png',
-        });
-      
-      if (error) throw error;
-      
-      const { data } = supabase.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(fileName);
-      
-      onSelect(data.publicUrl);
+      const up = await uploadToBucket(fileToUpload, fileName);
+      if (up.error) throw up.error;
+
+      onSelect(up.url || supabase.storage.from(BUCKET_NAME).getPublicUrl(up.path || fileName).data.publicUrl);
       onClose();
     } catch (err: any) {
       alert('Erro ao carregar: ' + err.message);
