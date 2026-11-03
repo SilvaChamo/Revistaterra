@@ -393,11 +393,11 @@ export default function MediaGallery() {
     <div className="min-h-screen text-[#2c3338] p-6">
       <div className="w-full">
         {/* Header Estilo WP */}
-        <div className="pt-0 pb-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-normal">Biblioteca multimédia</h1>
-            <label className="px-3 py-1 bg-white border border-[#047857] text-[#047857] rounded-[3px] text-sm font-semibold hover:bg-[#f6f7f7] cursor-pointer transition-all">
+        <div className="ec-media-ctl pt-0 pb-4 max-md:pb-2">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 max-md:gap-2">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 max-md:gap-y-1.5">
+            <h1 className="text-xl font-normal md:text-2xl">Biblioteca multimédia</h1>
+            <label className="inline-flex items-center whitespace-nowrap px-3 py-1 bg-white border border-[#047857] text-[#047857] rounded-[3px] text-sm font-semibold hover:bg-[#f6f7f7] cursor-pointer transition-all">
               {uploading ? 'A carregar...' : 'Adicionar ficheiros multimédia'}
               <input 
                 type="file" 
@@ -432,7 +432,7 @@ export default function MediaGallery() {
           </div>
 
           <div className="flex items-center gap-2 max-md:w-full">
-          <div className="relative max-md:flex-1">
+          <div className="relative max-md:hidden">
             <input 
               type="text" 
               placeholder="Procurar itens multimédia..."
@@ -448,7 +448,7 @@ export default function MediaGallery() {
                 onClick={() => setView((v) => (v === 'arquivo' ? 'galeria' : 'arquivo'))}
                 title={view === 'arquivo' ? 'Voltar à galeria' : 'Arquivadas'}
                 aria-pressed={view === 'arquivo'}
-                className={`inline-flex h-8 w-8 items-center justify-center rounded-md border ${view === 'arquivo' ? 'border-[#047857] bg-[#047857] text-white' : 'border-[#ccd0d4] bg-white text-[#50575e] hover:bg-[#f6f7f7]'}`}
+                className={`inline-flex h-8 w-8 max-md:h-9 max-md:w-9 items-center justify-center rounded-md border ${view === 'arquivo' ? 'border-[#047857] bg-[#047857] text-white' : 'border-[#ccd0d4] bg-white text-[#50575e] hover:bg-[#f6f7f7]'}`}
               >
                 <Archive className="w-4 h-4" />
               </button>
@@ -456,7 +456,7 @@ export default function MediaGallery() {
                 onClick={() => setView((v) => (v === 'lixo' ? 'galeria' : 'lixo'))}
                 title={view === 'lixo' ? 'Voltar à galeria' : 'Lixo'}
                 aria-pressed={view === 'lixo'}
-                className={`inline-flex h-8 w-8 items-center justify-center rounded-md border ${view === 'lixo' ? 'border-[#d63638] bg-[#d63638] text-white' : 'border-[#ccd0d4] bg-white text-[#50575e] hover:bg-[#f6f7f7]'}`}
+                className={`inline-flex h-8 w-8 max-md:h-9 max-md:w-9 items-center justify-center rounded-md border ${view === 'lixo' ? 'border-[#d63638] bg-[#d63638] text-white' : 'border-[#ccd0d4] bg-white text-[#50575e] hover:bg-[#f6f7f7]'}`}
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -467,9 +467,9 @@ export default function MediaGallery() {
       </div>
 
         {/* Toolbar de Filtros - AGORA FIXA */}
-        <div className="ec-sticky-bar sticky z-40 bg-[#f0f0f1] pt-4 pb-4">
-          <div className="flex flex-col md:flex-row items-center justify-between bg-white border border-[#ccd0d4] p-2 gap-2 shadow-sm">
-            <div className="flex max-w-full flex-wrap items-center gap-2">
+        <div className="ec-media-ctl md:ec-sticky-bar md:sticky z-40 bg-[#f0f0f1] pt-4 pb-4 max-md:pt-0 max-md:pb-2">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between bg-white border border-[#ccd0d4] p-2 gap-2 shadow-sm">
+            <div className="flex max-w-full flex-wrap items-center gap-2 max-md:w-full">
               {isBulkMode && (
                 <input 
                   type="checkbox" 
@@ -487,19 +487,19 @@ export default function MediaGallery() {
               
               <button 
                 onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-[#f0f0f1] text-[#047857]' : 'text-[#50575e] hover:text-[#047857]'}`}
+                className={`inline-flex items-center justify-center p-1.5 max-md:h-9 max-md:w-9 rounded-md ${viewMode === 'list' ? 'bg-[#f0f0f1] text-[#047857]' : 'text-[#50575e] hover:text-[#047857]'}`}
               >
-                <ListIcon className="w-5 h-5" />
+                <ListIcon className="w-4 h-4 md:w-5 md:h-5" />
               </button>
               <button 
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md ${viewMode === 'grid' ? 'bg-[#f0f0f1] text-[#047857]' : 'text-[#50575e] hover:text-[#047857]'}`}
+                className={`inline-flex items-center justify-center p-1.5 max-md:h-9 max-md:w-9 rounded-md ${viewMode === 'grid' ? 'bg-[#f0f0f1] text-[#047857]' : 'text-[#50575e] hover:text-[#047857]'}`}
               >
-                <LayoutGrid className="w-5 h-5" />
+                <LayoutGrid className="w-4 h-4 md:w-5 md:h-5" />
               </button>
 
               <select 
-                className="ml-2 h-8 text-sm border-[#ccd0d4] rounded-md bg-white px-2"
+                className="ml-2 h-8 text-sm border-[#ccd0d4] rounded-md bg-white px-2 max-md:ml-0 max-md:min-w-0 max-md:flex-1"
                 value={fileTypeFilter}
                 onChange={(e) => setFileTypeFilter(e.target.value)}
               >
@@ -510,9 +510,10 @@ export default function MediaGallery() {
                 <option value="pdf">PDF</option>
                 <option value="audio">Áudio</option>
               </select>
-              
+              {/* telemóvel: quebra de linha — a 2.ª linha leva as datas e a selecção em massa */}
+              <span aria-hidden className="max-md:basis-full md:hidden" />
               <select 
-                className="h-8 text-sm border-[#ccd0d4] rounded-md bg-white px-2"
+                className="h-8 text-sm border-[#ccd0d4] rounded-md bg-white px-2 max-md:min-w-0 max-md:flex-1 max-md:text-xs"
                 value={dateFilter}
                 onChange={(e) => setDateFilter(e.target.value)}
               >
@@ -521,16 +522,18 @@ export default function MediaGallery() {
                   <option key={year} value={year.toString()}>{year}</option>
                 ))}
               </select>
+              <span className="whitespace-nowrap px-1 text-[13px] text-[#50575e] md:hidden">{filteredFiles.length} itens</span>
 
+              <div className="contents max-md:hidden">
               {!isBulkMode ? (
                 <button 
                   onClick={() => setIsBulkMode(true)}
-                  className="ml-2 h-8 px-4 text-sm font-semibold border border-[#ccd0d4] rounded-md bg-white hover:bg-[#f6f7f7] whitespace-nowrap"
+                  className="ml-2 h-8 px-4 text-sm font-semibold border border-[#ccd0d4] rounded-md bg-white hover:bg-[#f6f7f7] whitespace-nowrap max-md:ml-0 max-md:flex-none max-md:px-2 max-md:text-xs"
                 >
                   Seleção em massa
                 </button>
               ) : (
-                <div className="flex items-center gap-3 ml-2 flex-nowrap">
+                <div className="flex items-center gap-3 ml-2 max-md:ml-0 max-md:flex-1 max-md:flex-wrap flex-nowrap">
                   {canSeeTrash && view === 'galeria' && (
                     <span
                       onClick={selectedIds.size > 0 ? () => archive(Array.from(selectedIds)) : undefined}
@@ -561,13 +564,14 @@ export default function MediaGallery() {
                   </button>
                 </div>
               )}
+              </div>
             </div>
 
-            <div className="flex items-center gap-4 flex-nowrap">
+            <div className="flex items-center gap-4 flex-nowrap max-md:w-full max-md:justify-center">
               {/* Paginação Superior */}
               <div className="flex items-center gap-2 text-[13px] text-[#50575e] whitespace-nowrap">
-                <span>{filteredFiles.length} itens</span>
-                <div className="flex items-center gap-1 ml-2">
+                <span className="max-md:hidden">{filteredFiles.length} itens</span>
+                <div className="flex items-center gap-1 md:ml-2">
                   <button 
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
@@ -588,6 +592,59 @@ export default function MediaGallery() {
                 </div>
               </div>
             </div>
+          {/* Telemóvel: selecção em massa por cima da pesquisa */}
+          <div className="flex w-full md:hidden">
+              {!isBulkMode ? (
+                <button 
+                  onClick={() => setIsBulkMode(true)}
+                  className="ml-2 h-8 px-4 text-sm font-semibold border border-[#ccd0d4] rounded-md bg-white hover:bg-[#f6f7f7] whitespace-nowrap max-md:ml-0 max-md:w-full max-md:text-sm"
+                >
+                  Seleção em massa
+                </button>
+              ) : (
+                <div className="flex items-center gap-3 ml-2 max-md:ml-0 max-md:flex-1 max-md:flex-wrap flex-nowrap">
+                  {canSeeTrash && view === 'galeria' && (
+                    <span
+                      onClick={selectedIds.size > 0 ? () => archive(Array.from(selectedIds)) : undefined}
+                      className={`text-sm whitespace-nowrap ${selectedIds.size > 0 ? 'text-[#047857] cursor-pointer hover:underline' : 'text-gray-400 cursor-not-allowed'}`}
+                    >
+                      Arquivar ({selectedIds.size})
+                    </span>
+                  )}
+                  {view !== 'arquivo' && <span 
+                    onClick={selectedIds.size > 0 ? deleteSelected : undefined}
+                    className={`text-sm whitespace-nowrap ${selectedIds.size > 0 ? 'text-[#d63638] cursor-pointer hover:underline' : 'text-gray-400 cursor-not-allowed'}`}
+                  >
+                    {showTrash ? 'Eliminar para sempre' : 'Mover para o lixo'} ({selectedIds.size})
+                  </span>}
+                  {special && (
+                    <span
+                      onClick={selectedIds.size > 0 ? () => restore(Array.from(selectedIds)) : undefined}
+                      className={`text-sm whitespace-nowrap ${selectedIds.size > 0 ? 'text-[#047857] cursor-pointer hover:underline' : 'text-gray-400 cursor-not-allowed'}`}
+                    >
+                      Restaurar ({selectedIds.size})
+                    </span>
+                  )}
+                  <button 
+                    onClick={() => { setIsBulkMode(false); setSelectedIds(new Set()); }}
+                    className="h-8 px-4 text-sm font-semibold border border-[#ccd0d4] rounded-md bg-white hover:bg-[#f6f7f7] whitespace-nowrap"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              )}
+          </div>
+          {/* Telemóvel: motor de busca no fim, na largura total do conteúdo */}
+          <div className="relative w-full md:hidden">
+            <input
+              type="text"
+              placeholder="Procurar itens multimédia..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-8 w-full pl-8 pr-2 border border-[#ccd0d4] rounded-[3px] text-sm outline-none focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
+            />
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#50575e]" />
+          </div>
           </div>
         </div>
 
