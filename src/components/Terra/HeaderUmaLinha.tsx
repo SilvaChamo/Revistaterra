@@ -56,7 +56,7 @@ export default function HeaderUmaLinha() {
 
           <div className="ml-auto flex items-center justify-self-end lg:ml-0">
             <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={{ background: GREEN, color: '#fff' }}><User size={16} aria-hidden />Entrar</Link>
-            <button aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)} className={`ml-2 h-9 w-9 shrink-0 border-2 ${scrolled ? 'border-white' : 'border-[#064E3B]'} ${icon} lg:hidden`}>
+            <button aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)} className={`ml-2 h-9 w-9 shrink-0 border ${scrolled ? 'border-white' : 'border-[#064E3B]'} ${icon} lg:hidden`}>
               {menu ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
