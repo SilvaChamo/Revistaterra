@@ -17,7 +17,7 @@ export default function VideoSpotlight() {
   const v = vids[i];
   const pick = (k: number) => { setI(k); setPlaying(true); };
   return (
-    <div className="grid overflow-hidden bg-neutral-900 shadow-sm md:grid-cols-[1fr_320px]">
+    <div className="grid overflow-hidden bg-neutral-900 shadow-sm md:grid-cols-[1fr_340px]">
       {/* vídeo activo: capa com botão de play; ao clicar, toca aqui mesmo */}
       <div className="relative aspect-video bg-black">
         {playing ? (
@@ -33,18 +33,22 @@ export default function VideoSpotlight() {
       {/* lista: o vídeo activo em verde no topo, os outros por baixo */}
       <div className="relative min-h-0 max-md:max-h-[360px]">
         <div className="max-md:max-h-[360px] md:absolute md:inset-0 overflow-y-auto">
-          <div className="flex items-center gap-3 px-4 py-4 text-white" style={{ background: GREEN }}>
+          <div className="flex items-center gap-3 px-3 py-4 text-white" style={{ background: GREEN }}>
             <Play size={20} />
-            <span className="text-[13px] font-bold leading-snug">{v.title}</span>
+            <span className="min-w-0 truncate text-[12px] font-bold" title={v.title}>{v.title}</span>
           </div>
           <ul>
             {vids.map((x, k) => k === i ? null : (
               <li key={x.id} className="border-b border-white/10 last:border-b-0">
-                <button onClick={() => pick(k)} className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-white/10">
-                  <img src={`https://i.ytimg.com/vi/${x.id}/mqdefault.jpg`} alt="" loading="lazy" className="h-12 w-[72px] shrink-0 object-cover" />
-                  <span className="min-w-0">
-                    <span className="line-clamp-2 block text-[13px] font-semibold leading-snug text-white">{x.title}</span>
-                    <span className="mt-1 block text-[11px] text-neutral-400">{serie(x.title)}</span>
+                <button onClick={() => pick(k)} className="flex w-full items-center gap-2.5 px-3 py-3 text-left transition-colors hover:bg-white/10">
+                  <img src={`https://i.ytimg.com/vi/${x.id}/mqdefault.jpg`} alt="" loading="lazy" className="h-10 w-[60px] shrink-0 object-cover" />
+                  <span className="min-w-0 flex-1">
+                    {/* linha 1: botão play + série; linha 2: título (só duas linhas no cartão) */}
+                    <span className="flex items-center gap-1.5">
+                      <span className="flex h-4 w-4 shrink-0 items-center justify-center text-white" style={{ background: GREEN }}><Play size={10} /></span>
+                      <span className="truncate text-[11px] text-neutral-400">{serie(x.title)}</span>
+                    </span>
+                    <span className="mt-1 block truncate text-[12px] font-semibold text-white" title={x.title}>{x.title}</span>
                   </span>
                 </button>
               </li>
