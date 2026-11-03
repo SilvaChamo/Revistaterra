@@ -15,7 +15,7 @@ const Pill = ({ children }: { children: React.ReactNode }) => (
 const arrow = 'flex h-7 w-7 items-center justify-center border border-neutral-300 bg-white text-neutral-700 transition-colors hover:border-[#9BCB3C] hover:bg-[#9BCB3C] hover:text-[#064E3B]';
 
 /** Carrossel em ciclo infinito: uma notícia por slide, 3 visíveis (1 no telemóvel). */
-export default function RecentNews({ sets, related = {} }: { sets: RecentSet[]; related?: Record<string, Pick<Card, 'title' | 'url' | 'date'>[]> }) {
+export default function RecentNews({ sets }: { sets: RecentSet[] }) {
   const [tab, setTab] = useState(sets[0].id);
   const s = sets.find((x) => x.id === tab) ?? sets[0];
   const items = s.feature;
@@ -96,17 +96,6 @@ export default function RecentNews({ sets, related = {} }: { sets: RecentSet[]; 
                     <ShareLink path={c.url} title={c.title} className="text-neutral-500" />
                   </div>
                 </div>
-                {/* até 3 notícias da mesma categoria: título e data, numa só coluna, sem fundo, separadas apenas por linhas horizontais */}
-                {(related[c.url] ?? []).length > 0 && (
-                  <ul className="mx-4 mt-3 divide-y divide-neutral-300 border-b border-neutral-300">
-                    {(related[c.url] ?? []).map((n) => (
-                      <li key={n.url} className="px-1 py-2.5">
-                        <a href={n.url} className="line-clamp-2 text-[12px] font-semibold leading-snug text-neutral-900 hover:text-[#047857]">{n.title}</a>
-                        {n.date && <div className="mt-1 text-[11px] text-neutral-500">{n.date}</div>}
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </div>
             </div>
           ))}

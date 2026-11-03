@@ -30,9 +30,6 @@ export default async function Home() {
   const allCards = (await loadCards()).map((c) => ({ ...c, category: c.category || 'Fora de Campo' }));
   const hero = await loadHero();
   const take = makePicker(allCards);
-  // 3 notícias da mesma categoria de cada cartão do carrossel (por baixo dele)
-  const related: Record<string, Pick<Card, 'title' | 'url' | 'date'>[]> = {};
-  for (const c of allCards) related[c.url] = allCards.filter((x) => x.category === c.category && x.url !== c.url).slice(0, 3).map(({ title, url, date }) => ({ title, url, date }));
   const todas = allCards.filter((c) => c.image);
   const recentSets: RecentSet[] = [
     buildSet('todas', 'Todas', [...todas].sort((x, y) => Number(y.category === 'Sociedade' || y.category === 'Mercado') - Number(x.category === 'Sociedade' || x.category === 'Mercado'))),
@@ -52,7 +49,7 @@ export default async function Home() {
         <main className="min-w-0">
           <HeroSlider items={hero.length ? hero : terra.hero} />
 
-          <RecentNews sets={recentSets} related={related} />
+          <RecentNews sets={recentSets} />
 
           <Heading>Destaques</Heading>
           <div className="grid gap-3 md:grid-cols-[1.45fr_1fr]">
@@ -115,9 +112,10 @@ export default async function Home() {
           <Heading>Mais notícias</Heading>
           <div className="grid gap-3 sm:grid-cols-2">
             {more.map((c) => (
-              <a key={c.title} href={c.url} className="flex gap-3 bg-white p-3 hover:shadow-md">
-                {c.image && <img src={c.image} alt="" loading="lazy" className="h-20 w-28 shrink-0 object-cover" />}
-                <div>
+              <a key={c.title} href={c.url} className="flex overflow-hidden bg-white hover:shadow-md">
+                {/* a foto preenche o cartão de ponta a ponta (sem margens à volta) */}
+                {c.image && <img src={c.image} alt="" loading="lazy" className="min-h-20 w-28 shrink-0 self-stretch object-cover" />}
+                <div className="p-3">
                   <span className="text-[10px] font-bold uppercase" style={{ color: GREEN }}>{c.category}{c.date ? ` · ${c.date}` : ''}</span>
                   <h3 className="mt-1 text-[13px] font-semibold leading-snug">{c.title}</h3>
                 </div>
