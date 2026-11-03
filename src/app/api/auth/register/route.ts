@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     // A conta é criada AQUI, no servidor, depois de passar o anti-spam (a base recusa registos directos de contas
-    // da Revista Terra: ver sql/contas-entrecampos.sql).
+    // da Revista Terra: ver sql/contas-site.sql).
     const { error } = await serverDb().auth.admin.createUser({
       email,
       password,

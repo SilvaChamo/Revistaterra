@@ -54,7 +54,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* logotipo por fora do formulário, sobre o fundo */}
         <div className="mb-5 flex justify-center">
-          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className="h-[84px] w-auto mix-blend-multiply" />
+          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={446} height={220} className="h-[84px] w-auto mix-blend-multiply" />
         </div>
       <div className="w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
         <form onSubmit={handleSubmit} className="p-8 space-y-4">
@@ -75,7 +75,7 @@ export default function LoginPage() {
                   type="text"
                   autoComplete="username"
                   placeholder="E-mail ou utilizador"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#2271b1] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-transparent outline-none transition-all"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
@@ -92,7 +92,7 @@ export default function LoginPage() {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   minLength={6}
-                  className="w-full pl-10 pr-11 py-2 border border-gray-300 focus:ring-2 focus:ring-[#2271b1] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-10 pr-11 py-2 border border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-transparent outline-none transition-all"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
@@ -111,7 +111,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#2271b1] text-white font-bold hover:bg-[#135e96] transition-all shadow-md flex items-center justify-center gap-2 group disabled:opacity-70"
+            className="w-full py-3 bg-[#047857] text-white font-bold hover:bg-[#065f46] transition-all shadow-md flex items-center justify-center gap-2 group disabled:opacity-70"
           >
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -142,8 +142,8 @@ export default function LoginPage() {
           </button>
 
           <div className="flex items-center justify-between gap-3 text-xs">
-            <Link href="/recuperar-senha" className="whitespace-nowrap text-[#2271b1] hover:underline font-medium">Recuperar senha</Link>
-            <Link href="/register" className="whitespace-nowrap text-[#2271b1] hover:underline font-medium">Registe-se aqui</Link>
+            <Link href="/recuperar-senha" className="whitespace-nowrap text-[#047857] hover:underline font-medium">Recuperar senha</Link>
+            <Link href="/register" className="whitespace-nowrap text-[#047857] hover:underline font-medium">Registe-se aqui</Link>
           </div>
         </form>
       </div>

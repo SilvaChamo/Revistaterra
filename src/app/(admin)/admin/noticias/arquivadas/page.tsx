@@ -91,7 +91,7 @@ export default function ArquivadasPage() {
           <span className="text-sm font-medium text-blue-700">{selectedIds.size} selecionado(s)</span>
           <button
             onClick={() => restore(Array.from(selectedIds))}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#00a651] text-white text-sm rounded-md hover:bg-[#008f46]"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#047857] text-white text-sm rounded-md hover:bg-[#008f46]"
           >
             <RotateCcw className="w-3.5 h-3.5" /> Restaurar
           </button>
@@ -142,7 +142,7 @@ export default function ArquivadasPage() {
                   <div className="flex items-center justify-center gap-2">
                     <button
                       onClick={() => restore([item.id])}
-                      className="flex items-center gap-1 px-2 py-1 text-[11px] font-semibold bg-[#00a651] text-white rounded hover:bg-[#008f46]"
+                      className="flex items-center gap-1 px-2 py-1 text-[11px] font-semibold bg-[#047857] text-white rounded hover:bg-[#008f46]"
                     >
                       <RotateCcw className="w-3 h-3" /> Restaurar
                     </button>

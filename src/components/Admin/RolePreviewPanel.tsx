@@ -101,7 +101,7 @@ export default function RolePreviewPanel({ role }: RolePreviewPanelProps) {
       <aside className="w-44 bg-[#1d2327] text-[#f0f0f1] flex-shrink-0 flex flex-col">
         <div className="px-4 py-3 border-b border-[#2c3338]">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 bg-[#00a651] rounded flex items-center justify-center">
+            <div className="w-5 h-5 bg-[#047857] rounded flex items-center justify-center">
               <span className="text-white text-xs font-bold">E</span>
             </div>
             <span className="text-[13px] font-medium">Revista Terra</span>
@@ -118,7 +118,7 @@ export default function RolePreviewPanel({ role }: RolePreviewPanelProps) {
               onClick={() => setCurrentView(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-2 text-[13px] transition-colors border-l-[3px] border-transparent text-left ${
                 currentView === item.id
-                  ? 'bg-[#00a651] text-white border-[#00a651]' 
+                  ? 'bg-[#047857] text-white border-[#047857]' 
                   : 'text-[#f0f0f1] hover:text-white hover:bg-[#2c3338]'
               }`}
             >

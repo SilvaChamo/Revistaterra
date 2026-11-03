@@ -35,7 +35,7 @@ export default function RedirecionamentosPage() {
           <h1 className="text-2xl font-bold text-[#1d2327]">Redirecionamentos de Login</h1>
           <p className="text-[#50575e] mt-1">Configure para onde cada tipo de utilizador é redirecionado após login/logout</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-[#2271b1] text-white rounded-md hover:bg-[#135e96]">
+        <button className="flex items-center gap-2 px-4 py-2 bg-[#047857] text-white rounded-md hover:bg-[#065f46]">
           <Plus className="w-4 h-4" /> Novo Redirecionamento
         </button>
       </div>
@@ -117,7 +117,7 @@ export default function RedirecionamentosPage() {
                   </button>
                   <button 
                     onClick={() => handleSave(redirect.id)}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#2271b1] text-white rounded-md hover:bg-[#135e96]"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#047857] text-white rounded-md hover:bg-[#065f46]"
                   >
                     <Save className="w-4 h-4" /> Guardar
                   </button>
@@ -126,8 +126,8 @@ export default function RedirecionamentosPage() {
             ) : (
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-[#2271b1]/10 rounded-lg flex items-center justify-center">
-                    <LogIn className="w-5 h-5 text-[#2271b1]" />
+                  <div className="w-10 h-10 bg-[#047857]/10 rounded-lg flex items-center justify-center">
+                    <LogIn className="w-5 h-5 text-[#047857]" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -144,7 +144,7 @@ export default function RedirecionamentosPage() {
                 <div className="flex items-center gap-2">
                   <button 
                     onClick={() => handleEdit(redirect)}
-                    className="p-2 text-[#2271b1] hover:bg-blue-50 rounded-md"
+                    className="p-2 text-[#047857] hover:bg-blue-50 rounded-md"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>

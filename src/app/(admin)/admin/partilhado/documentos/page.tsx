@@ -53,7 +53,7 @@ export default function DocumentosPage() {
             placeholder="Pesquisar documentos..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full h-10 pl-10 pr-4 border border-[#ccd0d4] rounded-md focus:border-[#2271b1] focus:outline-none"
+            className="w-full h-10 pl-10 pr-4 border border-[#ccd0d4] rounded-md focus:border-[#047857] focus:outline-none"
           />
         </div>
       </div>
@@ -90,7 +90,7 @@ export default function DocumentosPage() {
                 <td className="px-4 py-3 text-[#50575e]">{doc.date}</td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-1">
-                    <button className="p-1.5 text-[#2271b1] hover:bg-blue-50 rounded" title="Visualizar">
+                    <button className="p-1.5 text-[#047857] hover:bg-blue-50 rounded" title="Visualizar">
                       <Eye className="w-4 h-4" />
                     </button>
                     <button className="p-1.5 text-green-600 hover:bg-green-50 rounded" title="Download">

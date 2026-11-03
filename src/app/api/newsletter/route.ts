@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     if (!isEmail(email)) return NextResponse.json({ error: 'Indique um e-mail válido.' }, { status: 400 });
 
     const { error } = await serverDb()
-      .from('entrecampos_newsletter')
+      .from('revistaterra_newsletter')
       .upsert({ email, ip_hash: hashIp(clientIp(req)) }, { onConflict: 'email', ignoreDuplicates: true });
     if (error) throw error;
     return NextResponse.json({ ok: true, message: 'Subscrição feita. Obrigado!' });

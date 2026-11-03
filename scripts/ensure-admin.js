@@ -51,7 +51,7 @@ async function main() {
   const existing = await findUserByEmail(email);
 
   if (existing) {
-    // Conta que já existe (por exemplo a do EntreCampos): só se acrescenta o acesso a este site.
+    // Conta que já existe (por exemplo a da Revista Terra): só se acrescenta o acesso a este site.
     // A palavra-passe e os dados dos outros sites não se tocam (a menos que ADMIN_RESET_PASSWORD=1).
     const update = {
       email_confirm: true,

@@ -1,5 +1,5 @@
 -- ============================================================
--- ENTRECAMPOS — schema no Supabase self-hosted
+-- REVISTA TERRA — schema no Supabase self-hosted
 -- (supabase.visualdesignmoz.com)
 -- Executar no SQL Editor do Studio OU via scripts/setup-selfhosted.js
 -- ============================================================
@@ -8,14 +8,14 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- ------------------------------------------------------------
--- Sites partilhados nesta instância (entrecampos, baseagrodata, …)
+-- Sites partilhados nesta instância (revistaterra, baseagrodata, …)
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.sites (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   domain TEXT,
   logo_url TEXT,
-  storage_bucket TEXT NOT NULL DEFAULT 'entrecampos-media',
+  storage_bucket TEXT NOT NULL DEFAULT 'revistaterra-media',
   storage_driver TEXT NOT NULL DEFAULT 'supabase'
     CHECK (storage_driver IN ('supabase', 'hetzner_s3')),
   s3_public_base_url TEXT,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS public.sites (
 
 INSERT INTO public.sites (id, name, domain, storage_bucket, storage_driver)
 VALUES
-  ('entrecampos', 'EntreCAMPOS', 'entrecampos.co.mz', 'entrecampos-media', 'supabase'),
+  ('revistaterra', 'Revista Terra', 'revistaterra.co.mz', 'revistaterra-media', 'supabase'),
   ('baseagrodata', 'BaseAgroData', 'baseagrodata.com', 'news-images', 'supabase')
 ON CONFLICT (id) DO UPDATE SET
   name = EXCLUDED.name,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS public.news (
   views INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  site_id TEXT NOT NULL DEFAULT 'entrecampos' REFERENCES public.sites(id),
+  site_id TEXT NOT NULL DEFAULT 'revistaterra' REFERENCES public.sites(id),
   slug VARCHAR(255),
   status VARCHAR(32) NOT NULL DEFAULT 'published',
   author_id UUID,
@@ -82,7 +82,7 @@ END $$;
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.media_assets (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  site_id TEXT NOT NULL DEFAULT 'entrecampos' REFERENCES public.sites(id),
+  site_id TEXT NOT NULL DEFAULT 'revistaterra' REFERENCES public.sites(id),
   filename TEXT NOT NULL,
   original_name TEXT,
   mime_type TEXT,
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS public.media_assets (
   height INTEGER,
   storage_driver TEXT NOT NULL DEFAULT 'supabase'
     CHECK (storage_driver IN ('supabase', 'hetzner_s3')),
-  bucket TEXT NOT NULL DEFAULT 'entrecampos-media',
+  bucket TEXT NOT NULL DEFAULT 'revistaterra-media',
   object_key TEXT NOT NULL,
   public_url TEXT NOT NULL,
   uploaded_by UUID,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS public.ec_users (
   website TEXT,
   avatar_url TEXT,
   articles_count INTEGER NOT NULL DEFAULT 0,
-  site_id TEXT DEFAULT 'entrecampos' REFERENCES public.sites(id),
+  site_id TEXT DEFAULT 'revistaterra' REFERENCES public.sites(id),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -153,29 +153,29 @@ CREATE POLICY "ec_users_auth_read" ON public.ec_users
 -- Storage bucket (metadados). Objectos reais podem ir para Hetzner.
 -- ------------------------------------------------------------
 INSERT INTO storage.buckets (id, name, public)
-SELECT 'entrecampos-media', 'entrecampos-media', true
-WHERE NOT EXISTS (SELECT 1 FROM storage.buckets WHERE id = 'entrecampos-media');
+SELECT 'revistaterra-media', 'revistaterra-media', true
+WHERE NOT EXISTS (SELECT 1 FROM storage.buckets WHERE id = 'revistaterra-media');
 
 INSERT INTO storage.buckets (id, name, public)
 SELECT 'news-images', 'news-images', true
 WHERE NOT EXISTS (SELECT 1 FROM storage.buckets WHERE id = 'news-images');
 
-DROP POLICY IF EXISTS "entrecampos_media_public_read" ON storage.objects;
-CREATE POLICY "entrecampos_media_public_read"
+DROP POLICY IF EXISTS "revistaterra_media_public_read" ON storage.objects;
+CREATE POLICY "revistaterra_media_public_read"
 ON storage.objects FOR SELECT
-USING (bucket_id IN ('entrecampos-media', 'news-images'));
+USING (bucket_id IN ('revistaterra-media', 'news-images'));
 
-DROP POLICY IF EXISTS "entrecampos_media_auth_write" ON storage.objects;
-CREATE POLICY "entrecampos_media_auth_write"
+DROP POLICY IF EXISTS "revistaterra_media_auth_write" ON storage.objects;
+CREATE POLICY "revistaterra_media_auth_write"
 ON storage.objects FOR INSERT
-WITH CHECK (bucket_id IN ('entrecampos-media', 'news-images') AND auth.role() = 'authenticated');
+WITH CHECK (bucket_id IN ('revistaterra-media', 'news-images') AND auth.role() = 'authenticated');
 
-DROP POLICY IF EXISTS "entrecampos_media_auth_update" ON storage.objects;
-CREATE POLICY "entrecampos_media_auth_update"
+DROP POLICY IF EXISTS "revistaterra_media_auth_update" ON storage.objects;
+CREATE POLICY "revistaterra_media_auth_update"
 ON storage.objects FOR UPDATE
-USING (bucket_id IN ('entrecampos-media', 'news-images') AND auth.role() = 'authenticated');
+USING (bucket_id IN ('revistaterra-media', 'news-images') AND auth.role() = 'authenticated');
 
-DROP POLICY IF EXISTS "entrecampos_media_auth_delete" ON storage.objects;
-CREATE POLICY "entrecampos_media_auth_delete"
+DROP POLICY IF EXISTS "revistaterra_media_auth_delete" ON storage.objects;
+CREATE POLICY "revistaterra_media_auth_delete"
 ON storage.objects FOR DELETE
-USING (bucket_id IN ('entrecampos-media', 'news-images') AND auth.role() = 'authenticated');
+USING (bucket_id IN ('revistaterra-media', 'news-images') AND auth.role() = 'authenticated');

@@ -166,8 +166,8 @@ export default function PartilhadoPage() {
             onClick={handleBack} 
             className="flex items-center gap-2 px-4 bg-white border border-[#ccd0d4] rounded-lg hover:bg-[#f6f7f7] transition-colors"
           >
-            <ChevronLeft className="w-5 h-5 text-[#2271b1]" />
-            <span className="text-sm text-[#2271b1] font-medium">Voltar</span>
+            <ChevronLeft className="w-5 h-5 text-[#047857]" />
+            <span className="text-sm text-[#047857] font-medium">Voltar</span>
           </button>
         )}
         <div className="flex flex-col justify-center">
@@ -204,7 +204,7 @@ export default function PartilhadoPage() {
                       setFilterType(e.target.value as 'all' | 'users' | 'emails');
                       setCurrentPage(1);
                     }}
-                    className="h-10 pl-4 pr-10 border border-[#ccd0d4] rounded-md focus:border-[#2271b1] focus:outline-none appearance-none bg-white text-[#1d2327] cursor-pointer text-sm"
+                    className="h-10 pl-4 pr-10 border border-[#ccd0d4] rounded-md focus:border-[#047857] focus:outline-none appearance-none bg-white text-[#1d2327] cursor-pointer text-sm"
                   >
                     <option value="all">Todas as Partilhas</option>
                     <option value="users">Apenas Utilizadores</option>
@@ -216,7 +216,7 @@ export default function PartilhadoPage() {
                 {/* Botão Ver por Utilizador */}
                 <button
                   onClick={() => setView('contributors')}
-                  className="flex items-center gap-2 h-10 px-4 bg-[#2271b1] text-white rounded-md hover:bg-[#135e96] transition-colors text-sm"
+                  className="flex items-center gap-2 h-10 px-4 bg-[#047857] text-white rounded-md hover:bg-[#065f46] transition-colors text-sm"
                 >
                   <User className="w-4 h-4" />
                   Ver por Utilizador
@@ -233,7 +233,7 @@ export default function PartilhadoPage() {
                       setSearchTerm(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="w-full h-10 pl-9 pr-3 border border-[#ccd0d4] rounded-md focus:border-[#2271b1] focus:outline-none text-sm"
+                    className="w-full h-10 pl-9 pr-3 border border-[#ccd0d4] rounded-md focus:border-[#047857] focus:outline-none text-sm"
                   />
                 </div>
               </div>
@@ -430,7 +430,7 @@ export default function PartilhadoPage() {
                 placeholder={`Pesquisar ${filterType === 'emails' ? 'emails' : 'utilizadores'}...`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full h-10 pl-10 pr-4 border border-[#ccd0d4] rounded-md focus:border-[#2271b1] focus:outline-none"
+                className="w-full h-10 pl-10 pr-4 border border-[#ccd0d4] rounded-md focus:border-[#047857] focus:outline-none"
               />
             </div>
           </div>
@@ -441,17 +441,17 @@ export default function PartilhadoPage() {
               <div 
                 key={contributor.id}
                 onClick={() => handleContributorClick(contributor)}
-                className="bg-white border border-[#ccd0d4] rounded-lg p-3 hover:shadow-md hover:border-[#2271b1] transition-all cursor-pointer group"
+                className="bg-white border border-[#ccd0d4] rounded-lg p-3 hover:shadow-md hover:border-[#047857] transition-all cursor-pointer group"
               >
                 <div className="flex items-center gap-4">
                   {/* Avatar */}
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    contributor.isGuest ? 'bg-yellow-100' : 'bg-[#2271b1]/10'
+                    contributor.isGuest ? 'bg-yellow-100' : 'bg-[#047857]/10'
                   }`}>
                     {contributor.isGuest ? (
                       <Mail className="w-5 h-5 text-yellow-600" />
                     ) : (
-                      <User className="w-5 h-5 text-[#2271b1]" />
+                      <User className="w-5 h-5 text-[#047857]" />
                     )}
                   </div>
 
@@ -479,7 +479,7 @@ export default function PartilhadoPage() {
                   <div className="flex items-center gap-1 flex-shrink-0">
                     <button 
                       onClick={(e) => { e.stopPropagation(); alert(`Ver: ${contributor.name}`); }}
-                      className="p-2 text-[#2271b1] hover:bg-blue-50 rounded-md transition-colors"
+                      className="p-2 text-[#047857] hover:bg-blue-50 rounded-md transition-colors"
                       title="Ver Conteúdo"
                     >
                       <Eye className="w-4 h-4" />
@@ -551,11 +551,11 @@ export default function PartilhadoPage() {
                   </div>
                   <div className="flex items-center gap-4 text-sm text-[#50575e]">
                     <span className="flex items-center gap-1.5">
-                      <Folder className="w-4 h-4 text-[#2271b1]" />
+                      <Folder className="w-4 h-4 text-[#047857]" />
                       <strong className="text-[#1d2327]">{getContributorItems().length}</strong> ficheiros partilhados
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4 text-[#2271b1]" />
+                      <Calendar className="w-4 h-4 text-[#047857]" />
                       Membro desde <strong className="text-[#1d2327]">2026</strong>
                     </span>
                   </div>
@@ -568,7 +568,7 @@ export default function PartilhadoPage() {
                 <select
                   value={contentFilter}
                   onChange={(e) => setContentFilter(e.target.value as 'all' | 'image' | 'video' | 'document')}
-                  className="h-9 px-3 pr-8 border border-[#ccd0d4] rounded-lg bg-white text-sm text-[#2c3338] focus:border-[#2271b1] focus:outline-none cursor-pointer"
+                  className="h-9 px-3 pr-8 border border-[#ccd0d4] rounded-lg bg-white text-sm text-[#2c3338] focus:border-[#047857] focus:outline-none cursor-pointer"
                 >
                   <option value="all">Todos os ficheiros</option>
                   <option value="image">Imagens</option>

@@ -1,11 +1,11 @@
--- Comentários (moderados), mensagens de contacto e subscrições da newsletter do EntreCAMPOS.
+-- Comentários (moderados), mensagens de contacto e subscrições da newsletter da Revista Terra.
 -- Só o servidor (service_role) escreve; o público só lê os comentários aprovados.
 -- Idempotente. Correr como supabase_admin.
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS public.comments (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  site_id    TEXT NOT NULL DEFAULT 'entrecampos',
+  site_id    TEXT NOT NULL DEFAULT 'revistaterra',
   news_slug  TEXT NOT NULL,
   name       TEXT NOT NULL,
   email      TEXT NOT NULL,
@@ -19,7 +19,7 @@ CREATE INDEX IF NOT EXISTS idx_comments_slug_status ON public.comments (news_slu
 
 CREATE TABLE IF NOT EXISTS public.contact_messages (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  site_id    TEXT NOT NULL DEFAULT 'entrecampos',
+  site_id    TEXT NOT NULL DEFAULT 'revistaterra',
   name       TEXT NOT NULL,
   email      TEXT NOT NULL,
   subject    TEXT,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS public.contact_messages (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- (A newsletter usa a tabela própria public.entrecampos_newsletter: ver sql/reparar-newsletter.sql.
+-- (A newsletter usa a tabela própria public.revistaterra_newsletter: ver sql/reparar-newsletter.sql.
 --  NÃO usar public.newsletter_subscribers: pertence a outro site.)
 
 ALTER TABLE public.comments               ENABLE ROW LEVEL SECURITY;

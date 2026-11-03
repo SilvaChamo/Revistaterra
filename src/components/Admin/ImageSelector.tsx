@@ -6,6 +6,7 @@ import { supabase, STORAGE_BUCKET as BUCKET_NAME } from '@/lib/supabase';
 import MediaLibrary from './MediaLibrary';
 import ImageEditor from './ImageEditor';
 import { compressImage, extFor } from '@/lib/compress-image';
+import { uploadToBucket } from '@/lib/upload-client';
 
 interface ImageSelectorProps {
   onSelect: (url: string) => void;
@@ -92,19 +93,10 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
         fileToUpload = packed;
       }
 
-      const { error } = await supabase.storage
-        .from(BUCKET_NAME)
-        .upload(fileName, fileToUpload, {
-          contentType: fileToUpload.type || 'image/png',
-        });
-      
-      if (error) throw error;
-      
-      const { data } = supabase.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(fileName);
-      
-      onSelect(data.publicUrl);
+      const up = await uploadToBucket(fileToUpload, fileName);
+      if (up.error) throw up.error;
+
+      onSelect(up.url || supabase.storage.from(BUCKET_NAME).getPublicUrl(up.path || fileName).data.publicUrl);
       onClose();
     } catch (err: any) {
       alert('Erro ao carregar: ' + err.message);
@@ -135,8 +127,8 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
           onClick={() => setTab('upload')}
           className={`px-6 py-3 text-[13px] font-medium transition-all ${
             tab === 'upload' 
-              ? 'border-b-2 border-[#2271b1] text-[#2271b1]' 
-              : 'text-[#50575e] hover:text-[#2271b1]'
+              ? 'border-b-2 border-[#047857] text-[#047857]' 
+              : 'text-[#50575e] hover:text-[#047857]'
           }`}
         >
           Carregar ficheiros
@@ -145,8 +137,8 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
           onClick={() => setTab('library')}
           className={`px-6 py-3 text-[13px] font-medium transition-all ${
             tab === 'library' 
-              ? 'border-b-2 border-[#2271b1] text-[#2271b1]' 
-              : 'text-[#50575e] hover:text-[#2271b1]'
+              ? 'border-b-2 border-[#047857] text-[#047857]' 
+              : 'text-[#50575e] hover:text-[#047857]'
           }`}
         >
           Biblioteca multimédia
@@ -163,7 +155,7 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
                   <Upload className="w-12 h-12 text-[#ccd0d4] mb-4" />
                   <p className="text-[16px] text-[#3c434a] mb-4">Largue o ficheiro aqui para carregar</p>
                   <p className="text-[13px] text-[#50575e] mb-4">ou</p>
-                  <label className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#2271b1] text-white rounded-[4px] text-[13px] font-bold hover:bg-[#135e96] cursor-pointer transition-all shadow-sm">
+                  <label className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#047857] text-white rounded-[4px] text-[13px] font-bold hover:bg-[#065f46] cursor-pointer transition-all shadow-sm">
                     <span>Seleccionar ficheiro</span>
                     <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                   </label>
@@ -190,7 +182,7 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
                       )}
                       <button
                         onClick={() => setShowEditor(true)}
-                        className="absolute bottom-2 right-2 p-2 bg-[#2271b1] text-white rounded-full shadow-lg hover:bg-[#135e96] transition-all"
+                        className="absolute bottom-2 right-2 p-2 bg-[#047857] text-white rounded-full shadow-lg hover:bg-[#065f46] transition-all"
                         title="Editar imagem"
                       >
                         <Edit3 className="w-4 h-4" />
@@ -223,14 +215,14 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
                           <>
                             <button
                               onClick={() => uploadAndSelect(true)}
-                              className="px-4 py-2 bg-white border border-[#2271b1] text-[#2271b1] text-[13px] font-bold rounded hover:bg-[#f6f7f7] transition-all flex items-center gap-2"
+                              className="px-4 py-2 bg-white border border-[#047857] text-[#047857] text-[13px] font-bold rounded hover:bg-[#f6f7f7] transition-all flex items-center gap-2"
                             >
                               <Check className="w-4 h-4" /> Usar existente
                             </button>
                             <button
                               onClick={() => uploadAndSelect(false)}
                               disabled={uploading}
-                              className="px-4 py-2 bg-[#2271b1] text-white text-[13px] font-bold rounded hover:bg-[#135e96] transition-all disabled:opacity-50"
+                              className="px-4 py-2 bg-[#047857] text-white text-[13px] font-bold rounded hover:bg-[#065f46] transition-all disabled:opacity-50"
                             >
                               {uploading ? 'A carregar...' : (editedBlob ? 'Gravar PNG novo' : 'Carregar como novo')}
                             </button>
@@ -239,7 +231,7 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
                           <button
                             onClick={() => uploadAndSelect(false)}
                             disabled={uploading}
-                            className="px-6 py-2.5 bg-[#2271b1] text-white text-[13px] font-bold rounded hover:bg-[#135e96] transition-all disabled:opacity-50 flex items-center gap-2"
+                            className="px-6 py-2.5 bg-[#047857] text-white text-[13px] font-bold rounded hover:bg-[#065f46] transition-all disabled:opacity-50 flex items-center gap-2"
                           >
                             {uploading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                             {uploading ? 'A carregar...' : (editedBlob ? 'Gravar PNG e definir' : 'Carregar e definir')}
@@ -279,7 +271,7 @@ export default function ImageSelector({ onSelect, onClose, currentImageUrl }: Im
         </div>
         <button 
           onClick={onClose}
-          className="px-6 py-2 bg-[#2271b1] text-white text-[13px] font-bold rounded-[4px] hover:bg-[#135e96] transition-all"
+          className="px-6 py-2 bg-[#047857] text-white text-[13px] font-bold rounded-[4px] hover:bg-[#065f46] transition-all"
         >
           Fechar
         </button>

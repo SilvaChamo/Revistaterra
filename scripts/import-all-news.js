@@ -2,7 +2,7 @@ const axios = require('axios');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config({ path: './.env.local' });
 
-const WP_URL = 'https://entrecampos.co.mz/wp-json/wp/v2';
+const WP_URL = 'https://revistaterra.co.mz/wp-json/wp/v2';
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -56,7 +56,7 @@ async function importNews() {
           category: 'geral', // Por agora, depois podemos mapear categorias
           image_url: imageUrl,
           date: post.date,
-          site_id: 'entrecampos',
+          site_id: 'revistaterra',
           views: 0
         };
 

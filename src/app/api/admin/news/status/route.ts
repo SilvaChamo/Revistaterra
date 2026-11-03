@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
 import { hasPermission } from '@/lib/permissions';
@@ -41,11 +42,12 @@ export async function POST(req: NextRequest) {
       console.error('Supabase error:', error);
       const missing = /Could not find the 'status' column/i.test(error.message);
       return NextResponse.json(
-        { error: missing ? 'A tabela news ainda não tem a coluna status: corra sql/entrecampos-colunas.sql no Supabase.' : error.message },
+        { error: missing ? 'A tabela news ainda não tem a coluna status: corra sql/colunas-noticias.sql no Supabase.' : error.message },
         { status: 500 }
       );
     }
 
+    revalidatePath('/', 'layout'); // publicar, despublicar ou arquivar reflecte-se logo no site público
     return NextResponse.json({ success: true, updated: targetIds.length });
   } catch (err: any) {
     console.error('Erro ao atualizar status:', err);

@@ -96,7 +96,7 @@ async function migratePosts() {
             category: category,
             image_url: image,
             date: date,
-            site_id: 'entrecampos',
+            site_id: 'revistaterra',
             slug: slug
           })
           .select();

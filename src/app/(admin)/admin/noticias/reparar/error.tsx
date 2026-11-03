@@ -46,7 +46,7 @@ export default function ErrorBoundary({
               // Tentativa de recuperar a renderização da página
               () => reset()
             }
-            className="flex-[2] flex items-center justify-center gap-2 bg-[#2271b1] text-white py-2.5 rounded text-sm font-bold hover:bg-[#135e96] shadow-sm transition-colors"
+            className="flex-[2] flex items-center justify-center gap-2 bg-[#047857] text-white py-2.5 rounded text-sm font-bold hover:bg-[#065f46] shadow-sm transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             Recuperar Página

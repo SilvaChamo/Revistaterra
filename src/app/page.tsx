@@ -4,7 +4,8 @@ import HeroSlider from '@/components/Terra/HeroSlider';
 import VideoSpotlight from '@/components/Terra/VideoSpotlight';
 import { Heading, Overlay } from '@/components/Terra/Bits';
 import RecentNews, { type RecentSet } from '@/components/Terra/RecentNews';
-import { GREEN, allCards, makePicker, parseDate, terra, type Card } from '@/lib/terra';
+import { GREEN, makePicker, parseDate, terra, type Card } from '@/lib/terra';
+import { loadCards, loadHero } from '@/lib/terra-news';
 
 /** Até 9 notícias para o carrossel, na ordem do separador. */
 function buildSet(id: string, label: string, ordered: Card[]): RecentSet {
@@ -23,8 +24,12 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function Home() {
-  const take = makePicker();
+export const revalidate = 60; // o que se edita no painel aparece em ~1 minuto
+
+export default async function Home() {
+  const allCards = (await loadCards()).map((c) => ({ ...c, category: c.category || 'Fora de Campo' }));
+  const hero = await loadHero();
+  const take = makePicker(allCards);
   const todas = allCards.filter((c) => c.image);
   const recentSets: RecentSet[] = [
     buildSet('todas', 'Todas', [...todas].sort((x, y) => Number(y.category === 'Sociedade' || y.category === 'Mercado') - Number(x.category === 'Sociedade' || x.category === 'Mercado'))),
@@ -42,7 +47,7 @@ export default function Home() {
     <SiteShell>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0">
-          <HeroSlider items={terra.hero} />
+          <HeroSlider items={hero.length ? hero : terra.hero} />
 
           <RecentNews sets={recentSets} />
 

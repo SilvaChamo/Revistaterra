@@ -71,7 +71,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         {/* logotipo por fora do formulário, sobre o fundo */}
         <div className="mb-5 flex flex-col items-center gap-1">
-          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={440} height={220} className="h-[84px] w-auto" />
+          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={446} height={220} className="h-[84px] w-auto" />
           <p className="text-sm text-gray-500">Crie a sua conta para aceder ao painel</p>
         </div>
       <div className="w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
@@ -97,7 +97,7 @@ export default function RegisterPage() {
                   required
                   type="text"
                   placeholder="Seu nome"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#2271b1] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-transparent outline-none transition-all"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
@@ -113,7 +113,7 @@ export default function RegisterPage() {
                   autoComplete="email"
                   type="email"
                   placeholder="exemplo@email.com"
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#2271b1] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-transparent outline-none transition-all"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Mínimo 6 caracteres"
                   minLength={6}
-                  className="w-full pl-10 pr-11 py-2 border border-gray-300 focus:ring-2 focus:ring-[#2271b1] focus:border-transparent outline-none transition-all"
+                  className="w-full pl-10 pr-11 py-2 border border-gray-300 focus:ring-2 focus:ring-[#047857] focus:border-transparent outline-none transition-all"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
@@ -152,7 +152,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#2271b1] text-white font-bold hover:bg-[#135e96] transition-all shadow-md flex items-center justify-center gap-2 group disabled:opacity-70"
+            className="w-full py-3 bg-[#047857] text-white font-bold hover:bg-[#065f46] transition-all shadow-md flex items-center justify-center gap-2 group disabled:opacity-70"
           >
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -166,7 +166,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-gray-500">
             Já tem uma conta?{' '}
-            <Link href="/login" className="text-[#2271b1] hover:underline font-medium">
+            <Link href="/login" className="text-[#047857] hover:underline font-medium">
               Faça login
             </Link>
           </p>

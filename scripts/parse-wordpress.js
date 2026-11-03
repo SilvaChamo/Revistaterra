@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Read XML file
-const xmlPath = '/Users/macbook/BackUp/——— BackUp/—— WEB/___ SITES/EntreCAMPOS/— BACKUP/entrecampos.WordPress.2026-04-21 (1).xml';
+const xmlPath = '/Users/macbook/BackUp/——— BackUp/—— WEB/___ SITES/Revista Terra/— BACKUP/revistaterra.WordPress.2026-04-21 (1).xml';
 const xmlContent = fs.readFileSync(xmlPath, 'utf-8');
 
 // Parse basic info
@@ -78,7 +78,7 @@ imagesData.forEach((image) => {
 // Add default images for posts without images
 postsData.forEach((post) => {
   if (!post.images || post.images.length === 0) {
-    post.images = ['https://entrecampos.co.mz/wp-content/uploads/2021/06/CAMPANHAAGRICOLA.jpg'];
+    post.images = ['https://revistaterra.co.mz/wp-content/uploads/2021/06/CAMPANHAAGRICOLA.jpg'];
   }
 });
 
@@ -103,21 +103,21 @@ const analysis = {
 
 // Save analysis
 fs.writeFileSync(
-  '/Users/macbook/Desktop/APP/entrecampos/analise-xml.json',
+  '/Users/macbook/Desktop/APP/revistaterra/analise-xml.json',
   JSON.stringify(analysis, null, 2)
 );
 
 // Save full data
 fs.writeFileSync(
-  '/Users/macbook/Desktop/APP/entrecampos/data/posts.json',
+  '/Users/macbook/Desktop/APP/revistaterra/data/posts.json',
   JSON.stringify(postsData, null, 2)
 );
 fs.writeFileSync(
-  '/Users/macbook/Desktop/APP/entrecampos/data/pages.json',
+  '/Users/macbook/Desktop/APP/revistaterra/data/pages.json',
   JSON.stringify(pagesData, null, 2)
 );
 fs.writeFileSync(
-  '/Users/macbook/Desktop/APP/entrecampos/data/images.json',
+  '/Users/macbook/Desktop/APP/revistaterra/data/images.json',
   JSON.stringify(imagesData, null, 2)
 );
 

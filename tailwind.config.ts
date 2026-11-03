@@ -10,10 +10,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'entrecampos-green': '#2E7D32',
-        'entrecampos-brown': '#795548',
-        'entrecampos-bg': '#FAFAFA',
-        'entrecampos-text': '#212121',
+        'terra-green': '#2E7D32',
+        'terra-brown': '#795548',
+        'terra-bg': '#FAFAFA',
+        'terra-text': '#212121',
       },
     },
   },

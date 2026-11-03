@@ -54,11 +54,11 @@ export default function HeaderUmaLinha() {
             </button>
             <span className={`h-9 w-px ${scrolled ? 'bg-white/20' : 'bg-gray-200'}`} />
             <Link href="/" className="flex shrink-0 items-center bg-white px-1" aria-label="Revista Terra — A Voz do Agro e Ambiente">
-              <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className="h-9 w-auto sm:h-10" />
+              <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={446} height={220} className="h-9 w-auto sm:h-10" />
             </Link>
           </div>
           <Link href="/" className={`hidden shrink-0 items-center justify-self-start bg-white transition-[padding] duration-300 lg:flex ${scrolled ? 'px-4' : 'pr-4'}`} aria-label="Revista Terra — A Voz do Agro e Ambiente">
-            <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className={`w-auto transition-[height] duration-300 ${scrolled ? 'h-[40px]' : 'h-[46px] lg:h-[54px]'}`} />
+            <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={446} height={220} className={`w-auto transition-[height] duration-300 ${scrolled ? 'h-[40px]' : 'h-[46px] lg:h-[54px]'}`} />
           </Link>
 
           <nav className="hidden items-stretch lg:flex" aria-label="Menu principal">
@@ -94,7 +94,7 @@ export default function HeaderUmaLinha() {
     {menu && <button type="button" aria-label="Fechar menu" onClick={() => setMenu(false)} className="fixed inset-0 z-[70] bg-black/50 lg:hidden" />}
     <aside aria-label="Menu principal (telemóvel)" aria-hidden={!menu} className={`fixed inset-y-0 left-0 z-[80] flex w-[220px] flex-col border-r-2 text-white transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${menu ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: DARKER, borderColor: LIME }}>
       <Link href="/" onClick={() => setMenu(false)} aria-label="Revista Terra — início" tabIndex={menu ? 0 : -1} className="relative block h-[66px] shrink-0">
-        <img src="/terra/logo-revista-terra.webp" alt="Revista Terra" width={381} height={190} className="absolute left-3 top-8 h-[52px] w-auto -translate-y-1/2 bg-white px-1" />
+        <img src="/terra/logo-revista-terra.webp" alt="Revista Terra" width={446} height={220} className="absolute left-3 top-8 h-[52px] w-auto -translate-y-1/2 bg-white px-1" />
       </Link>
       <nav className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain">
         {nav.map((m) => {

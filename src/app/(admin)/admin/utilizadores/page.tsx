@@ -104,7 +104,7 @@ export default function UsersAdminPage() {
         <h1 className="text-[23px] font-normal text-[#1d2327]">Utilizadores</h1>
         <Link
           href="/admin/utilizadores/novo"
-          className="px-3 py-1 bg-white border border-[#2271b1] text-[#2271b1] rounded-[3px] text-sm font-semibold hover:bg-[#f6f7f7] transition-all"
+          className="px-3 py-1 bg-white border border-[#047857] text-[#047857] rounded-[3px] text-sm font-semibold hover:bg-[#f6f7f7] transition-all"
         >
           Adicionar utilizador
         </Link>
@@ -119,7 +119,7 @@ export default function UsersAdminPage() {
             <button
               key={role}
               onClick={() => setFilter(role)}
-              className={`hover:text-[#2271b1] transition-colors ${filter === role ? 'font-bold text-black' : 'text-[#2271b1]'}`}
+              className={`hover:text-[#047857] transition-colors ${filter === role ? 'font-bold text-black' : 'text-[#047857]'}`}
             >
               {role} <span className="text-gray-400 font-normal">({count})</span>
             </button>
@@ -130,13 +130,13 @@ export default function UsersAdminPage() {
       {/* Barra de ferramentas */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex flex-wrap items-center gap-2 max-md:w-full">
-          <select className="h-8 border-[#ccd0d4] rounded-[3px] text-sm bg-white px-2 outline-none focus:border-[#2271b1]">
+          <select className="h-8 border-[#ccd0d4] rounded-[3px] text-sm bg-white px-2 outline-none focus:border-[#047857]">
             <option>Ações por lotes</option>
             <option>Eliminar</option>
             <option>Enviar reposição de palavra-passe</option>
           </select>
           <button className="h-8 px-3 border border-[#ccd0d4] rounded-[3px] bg-white text-sm font-semibold hover:bg-[#f6f7f7]">Aplicar</button>
-          <select className="h-8 border-[#ccd0d4] rounded-[3px] text-sm bg-white px-2 outline-none focus:border-[#2271b1] ml-2">
+          <select className="h-8 border-[#ccd0d4] rounded-[3px] text-sm bg-white px-2 outline-none focus:border-[#047857] ml-2">
             <option>Mudar papel para...</option>
             {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
           </select>
@@ -148,9 +148,9 @@ export default function UsersAdminPage() {
             placeholder="Pesquisar utilizadores"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-8 pl-3 pr-2 border border-[#ccd0d4] rounded-l-[3px] text-sm outline-none focus:border-[#2271b1] w-48 max-md:w-full max-md:min-w-0 max-md:flex-1"
+            className="h-8 pl-3 pr-2 border border-[#ccd0d4] rounded-l-[3px] text-sm outline-none focus:border-[#047857] w-48 max-md:w-full max-md:min-w-0 max-md:flex-1"
           />
-          <button className="h-8 px-3 border border-[#ccd0d4] border-l-0 bg-white text-[#2271b1] hover:bg-[#f6f7f7] rounded-r-[3px] text-sm font-semibold max-md:shrink-0 max-md:px-2">
+          <button className="h-8 px-3 border border-[#ccd0d4] border-l-0 bg-white text-[#047857] hover:bg-[#f6f7f7] rounded-r-[3px] text-sm font-semibold max-md:shrink-0 max-md:px-2">
             Pesquisar
           </button>
         </div>
@@ -186,7 +186,7 @@ export default function UsersAdminPage() {
                       ) : user.isAdmin ? (
                         <div className="w-10 h-10 rounded-full shadow-sm border border-gray-200 flex items-center justify-center bg-[#1d2327] flex-shrink-0">
                           <span className="text-[12px] font-black leading-none">
-                            <span className="text-[#00a651]">EC</span>
+                            <span className="text-[#047857]">R</span>
                           </span>
                         </div>
                       ) : (
@@ -197,14 +197,14 @@ export default function UsersAdminPage() {
                         />
                       )}
                       <div className="flex flex-col">
-                        <Link href={`/admin/utilizadores/editar/${user.id}`} className="text-[#2271b1] font-bold text-[14px] hover:text-[#135e96]">
+                        <Link href={`/admin/utilizadores/editar/${user.id}`} className="text-[#047857] font-bold text-[14px] hover:text-[#065f46]">
                           {user.username}
                         </Link>
                         {/* Hover actions (visible on row hover) */}
                         <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity text-[11px] font-medium mt-1">
-                          <Link href={`/admin/utilizadores/editar/${user.id}`} className="text-[#2271b1] hover:text-[#135e96]">Editar</Link>
+                          <Link href={`/admin/utilizadores/editar/${user.id}`} className="text-[#047857] hover:text-[#065f46]">Editar</Link>
                           <span className="text-gray-300">|</span>
-                          <Link href={`/admin/utilizadores/ver/${user.id}`} className="text-[#2271b1] hover:text-[#135e96]">Ver</Link>
+                          <Link href={`/admin/utilizadores/ver/${user.id}`} className="text-[#047857] hover:text-[#065f46]">Ver</Link>
                           {!user.isAdmin && (
                             <>
                               <span className="text-gray-300">|</span>
@@ -220,7 +220,7 @@ export default function UsersAdminPage() {
                           <span className="text-gray-300">|</span>
                           <button
                             onClick={() => handleResetPassword(user)}
-                            className="text-[#2271b1] hover:text-[#135e96]"
+                            className="text-[#047857] hover:text-[#065f46]"
                           >
                             Enviar reposição de senha
                           </button>
@@ -231,11 +231,11 @@ export default function UsersAdminPage() {
                   <td className="p-3 text-[#50575e]">{user.name}</td>
                   <td className="p-3 text-[#50575e]">{user.alcunha || '—'}</td>
                   <td className="p-3">
-                    <a href={`mailto:${user.email}`} className="text-[#2271b1] hover:underline">{user.email}</a>
+                    <a href={`mailto:${user.email}`} className="text-[#047857] hover:underline">{user.email}</a>
                   </td>
                   <td className="p-3 text-[#50575e]">{user.role}</td>
                   <td className="p-3 text-center">
-                    <Link href={`/admin/noticias?autor=${user.username}`} className="text-[#2271b1] font-bold hover:underline">
+                    <Link href={`/admin/noticias?autor=${user.username}`} className="text-[#047857] font-bold hover:underline">
                       {user.articles}
                     </Link>
                   </td>

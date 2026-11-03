@@ -1,5 +1,5 @@
 /**
- * Copia para a galeria (bucket entrecampos-media, pasta news/) as fotos de notícias que estão noutro bucket
+ * Copia para a galeria (bucket revistaterra-media, pasta news/) as fotos de notícias que estão noutro bucket
  * (public-assets) e actualiza o image_url dessas notícias. Os originais NÃO são apagados.
  *
  *   node scripts/migrar-imagens-noticias.js           # só mostra o que faria (simulação)
@@ -14,7 +14,7 @@ const { createClient } = require('@supabase/supabase-js');
 
 const SITE = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 const FROM = 'public-assets';
-const TO = process.env.NEXT_PUBLIC_STORAGE_BUCKET || process.env.STORAGE_BUCKET || 'entrecampos-media';
+const TO = process.env.NEXT_PUBLIC_STORAGE_BUCKET || process.env.STORAGE_BUCKET || 'revistaterra-media';
 const APPLY = process.argv.includes('--apply');
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY);
 

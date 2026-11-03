@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: './.env.local' });
 
-const WP_URL = 'https://entrecampos.co.mz/wp-json/wp/v2';
+const WP_URL = 'https://revistaterra.co.mz/wp-json/wp/v2';
 const BUCKET_NAME = 'news-images';
 
 const supabase = createClient(

@@ -121,7 +121,7 @@ export default function TrafegoPage() {
           <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md text-sm hover:bg-gray-50">
             <Download className="w-4 h-4" /> Exportar
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#2271b1] text-white rounded-md text-sm hover:bg-[#135e96]">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[#047857] text-white rounded-md text-sm hover:bg-[#065f46]">
             <RefreshCw className="w-4 h-4" /> Atualizar
           </button>
         </div>

@@ -39,7 +39,7 @@ const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 const WRITABLE_FIELDS = ['title', 'slug', 'content', 'summary', 'category', 'categories', 'image_url', 'date'] as const;
 
 const COLUMN_HELP =
-  'Algumas colunas ainda não existem na tabela news (ver sql/entrecampos-colunas.sql); a notícia foi guardada sem: ';
+  'Algumas colunas ainda não existem na tabela news (ver sql/colunas-noticias.sql); a notícia foi guardada sem: ';
 
 /**
  * Grava; se a tabela não tiver alguma coluna (ex.: featured, author_name, status), repete sem ela
@@ -61,7 +61,7 @@ async function saveWithColumnFallback(
     if (required.includes(column)) {
       return {
         data: null,
-        error: { message: `A tabela não tem a coluna ${column}: sem ela este utilizador não pode gravar (corra sql/entrecampos-colunas.sql).` },
+        error: { message: `A tabela não tem a coluna ${column}: sem ela este utilizador não pode gravar (corra sql/colunas-noticias.sql).` },
         warning: undefined as string | undefined,
       };
     }

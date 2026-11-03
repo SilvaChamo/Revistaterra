@@ -1,11 +1,11 @@
 /**
- * Setup EntreCAMPOS no Supabase self-hosted (supabase.visualdesignmoz.com)
+ * Setup Revista Terra no Supabase self-hosted (supabase.visualdesignmoz.com)
  *
  * Requisitos no .env.local:
  *   NEXT_PUBLIC_SUPABASE_URL=https://supabase.visualdesignmoz.com
  *   NEXT_PUBLIC_SUPABASE_ANON_KEY=...   (ou PUBLISHABLE)
  *   SUPABASE_SERVICE_ROLE_KEY=...
- *   ADMIN_EMAIL=admin@entrecampos.co.mz
+ *   ADMIN_EMAIL=admin@revistaterra.co.mz
  *   ADMIN_PASSWORD=...
  *
  * Uso:
@@ -24,12 +24,12 @@ const anon =
 const service =
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 
-const adminEmail = (process.env.ADMIN_EMAIL || 'admin@entrecampos.co.mz').trim();
-const adminPassword = process.env.ADMIN_PASSWORD || 'EntreCampos2026Admin';
-const bucket = process.env.STORAGE_BUCKET || 'entrecampos-media';
+const adminEmail = (process.env.ADMIN_EMAIL || 'admin@revistaterra.co.mz').trim();
+const adminPassword = process.env.ADMIN_PASSWORD || 'Revista Terra2026Admin';
+const bucket = process.env.STORAGE_BUCKET || 'revistaterra-media';
 
 if (process.argv.includes('--sql')) {
-  const sqlPath = path.join(__dirname, '..', 'sql', 'entrecampos-selfhosted.sql');
+  const sqlPath = path.join(__dirname, '..', 'sql', 'selfhosted.sql');
   console.log(fs.readFileSync(sqlPath, 'utf8'));
   process.exit(0);
 }
@@ -68,9 +68,9 @@ async function ensureBucket() {
 
 async function ensureSiteRow() {
   const { error } = await admin.from('sites').upsert({
-    id: 'entrecampos',
-    name: 'EntreCAMPOS',
-    domain: 'entrecampos.co.mz',
+    id: 'revistaterra',
+    name: 'Revista Terra',
+    domain: 'revistaterra.co.mz',
     storage_bucket: bucket,
     storage_driver: process.env.STORAGE_DRIVER || 'supabase',
     s3_public_base_url: process.env.S3_PUBLIC_BASE_URL || null,
@@ -83,7 +83,7 @@ async function ensureSiteRow() {
     console.warn('    e cola no SQL Editor do Studio.');
     return false;
   }
-  console.log('✓ Linha sites.entrecampos OK');
+  console.log('✓ Linha sites.revistaterra OK');
   return true;
 }
 
@@ -102,11 +102,11 @@ async function findUser(email) {
 async function ensureAdmin() {
   const existing = await findUser(adminEmail);
   const meta = {
-    app: 'entrecampos',
+    app: 'revistaterra',
     role: 'Administrador',
     full_name: process.env.ADMIN_NAME || 'Administrador',
     username: 'admin',
-    site_id: 'entrecampos',
+    site_id: 'revistaterra',
   };
 
   if (existing) {
@@ -136,10 +136,10 @@ async function ensureEcUser(userId) {
     id: userId,
     username: 'admin',
     first_name: 'Admin',
-    last_name: 'EntreCAMPOS',
+    last_name: 'Revista Terra',
     email: adminEmail,
     role: 'Administrador',
-    site_id: 'entrecampos',
+    site_id: 'revistaterra',
   });
   if (error) {
     console.warn('! ec_users:', error.message);
@@ -164,7 +164,7 @@ async function testClientLogin() {
 }
 
 async function main() {
-  console.log('=== EntreCAMPOS → self-hosted setup ===\n');
+  console.log('=== Revista Terra → self-hosted setup ===\n');
   await ping();
   await ensureBucket();
   const sitesOk = await ensureSiteRow();
