@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Pré-visualização: telemóvel e computador</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;height:100vh;display:flex;flex-direction:column;background:#1d2327;color:#fff;font:12px Verdana,sans-serif}
+  header{display:flex;gap:8px;padding:8px 12px;align-items:center}
+  input,button{height:32px;border:1px solid #50575e;background:#2c3338;color:#fff;padding:0 10px;font:inherit}
+  #path{flex:1;min-width:0} button{cursor:pointer}
+  main{flex:1;min-height:0;display:flex;gap:12px;padding:0 12px 12px}
+  .box{display:flex;flex-direction:column;gap:6px;min-height:0}
+  .mob{flex:none;width:320px} .desk{flex:1;min-width:0}
+  iframe{flex:1;width:100%;border:0;background:#fff}
+</style>
+<header>
+  <b>Revista Terra</b>
+  <input id="path" value="/" aria-label="Página (ex.: /admin/media)">
+  <button id="go">Abrir</button>
+</header>
+<main>
+  <div class="box mob">Telemóvel 320px<iframe id="m" title="Telemóvel"></iframe></div>
+  <div class="box desk">Computador<iframe id="d" title="Computador"></iframe></div>
+</main>
+<script>
+  // Mostra a mesma página nas duas vistas. Está no mesmo servidor, por isso, ao navegar numa vista, a outra acompanha.
+  const $ = (id) => document.getElementById(id), m = $('m'), d = $('d');
+  const here = (f) => { try { const l = f.contentWindow.location; return l.pathname + l.search; } catch { return null; } };
+  const open = (p) => { $('path').value = p; for (const f of [m, d]) if (here(f) !== p) f.src = p; };
+  $('go').onclick = () => open($('path').value || '/');
+  $('path').onkeydown = (e) => e.key === 'Enter' && $('go').click();
+  for (const [f, other] of [[m, d], [d, m]]) f.addEventListener('load', () => { const p = here(f); if (p && p !== here(other)) open(p); });
+  open(new URLSearchParams(location.search).get('p') || '/');
+</script>
+</html>
