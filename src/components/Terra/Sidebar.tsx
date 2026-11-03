@@ -4,9 +4,11 @@ import Weather from './Weather';
 import RadioPlayer from './RadioPlayer';
 import Cambio from './Cambio';
 import StickyAside from './StickyAside';
-import { GREEN, allCards, terra } from '@/lib/terra';
+import { GREEN, terra } from '@/lib/terra';
+import { loadCards } from '@/lib/terra-news';
 
-export default function Sidebar({ only }: { only?: string[] }) {
+export default async function Sidebar({ only }: { only?: string[] }) {
+  const allCards = await loadCards();
   const show = (k: string) => !only || only.includes(k);
   const trending = allCards.slice(0, 5);
   const recent = allCards.slice(5, 10);
