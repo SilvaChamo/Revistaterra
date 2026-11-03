@@ -168,7 +168,7 @@ export default function CapacidadesPage() {
         <select 
           value={selectedRole}
           onChange={(e) => setSelectedRole(e.target.value)}
-          className="w-full md:w-64 h-10 px-3 border border-[#ccd0d4] rounded-md text-sm focus:border-[#2271b1] focus:outline-none"
+          className="w-full md:w-64 h-10 px-3 border border-[#ccd0d4] rounded-md text-sm focus:border-[#047857] focus:outline-none"
         >
           {ROLES.map(role => (
             <option key={role.id} value={role.id}>{role.name}</option>
@@ -186,7 +186,7 @@ export default function CapacidadesPage() {
             placeholder="Pesquisar capacidades..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 pl-10 pr-4 border border-[#ccd0d4] rounded-md text-sm focus:border-[#2271b1] focus:outline-none"
+            className="w-full h-10 pl-10 pr-4 border border-[#ccd0d4] rounded-md text-sm focus:border-[#047857] focus:outline-none"
           />
         </div>
         <button className="flex items-center gap-2 h-10 px-4 border border-[#ccd0d4] rounded-md text-sm hover:bg-[#f6f7f7]">
@@ -229,7 +229,7 @@ export default function CapacidadesPage() {
                 className="w-full flex items-center justify-between p-4 bg-[#f6f7f7] hover:bg-[#e8e9ea] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <Icon className="w-5 h-5 text-[#2271b1]" />
+                  <Icon className="w-5 h-5 text-[#047857]" />
                   <span className="font-semibold text-[#1d2327]">{group.name}</span>
                   <span className="text-sm text-[#50575e]">({groupGranted} de {group.capabilities.length})</span>
                 </div>
@@ -296,7 +296,7 @@ export default function CapacidadesPage() {
             alert(`Capacidades para ${selectedRole} guardadas com sucesso!`);
             console.log('Capacidades a guardar:', capabilities[selectedRole]);
           }}
-          className="flex items-center gap-2 h-10 px-6 bg-[#2271b1] text-white rounded-md text-sm font-semibold hover:bg-[#135e96]"
+          className="flex items-center gap-2 h-10 px-6 bg-[#047857] text-white rounded-md text-sm font-semibold hover:bg-[#065f46]"
         >
           <Check className="w-4 h-4" /> Guardar Alterações
         </button>

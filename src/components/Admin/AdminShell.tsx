@@ -70,8 +70,8 @@ const SidebarItem = ({ href, icon: Icon, label, active, submenu, isOpen = false,
           <div 
             className={`flex items-center justify-between px-4 py-2 text-[14px] transition-colors border-l-[3px] border-transparent ml-[10px] ${
               active 
-                ? 'bg-[#00a651] text-white border-[#00a651]' 
-                : 'text-[#f0f0f1] hover:text-white hover:bg-[#2c3338] hover:border-[#00a651]'
+                ? 'bg-[#047857] text-white border-[#047857]' 
+                : 'text-[#f0f0f1] hover:text-white hover:bg-[#2c3338] hover:border-[#047857]'
             }`}
           >
             <Link href={href} className="flex items-center gap-3 flex-1">
@@ -92,8 +92,8 @@ const SidebarItem = ({ href, icon: Icon, label, active, submenu, isOpen = false,
         ) : (
           <div className={`flex items-center justify-between px-4 py-2 text-[14px] transition-colors border-l-[3px] border-transparent ml-[10px] ${
             active 
-              ? 'bg-[#00a651] text-white border-[#00a651]' 
-              : 'text-[#f0f0f1] hover:text-white hover:bg-[#2c3338] hover:border-[#00a651]'
+              ? 'bg-[#047857] text-white border-[#047857]' 
+              : 'text-[#f0f0f1] hover:text-white hover:bg-[#2c3338] hover:border-[#047857]'
           }`}>
             <Link href={href} className="flex items-center gap-3 flex-1">
               <Icon className={`w-5 h-5 transition-colors ${active ? 'text-white' : 'text-[#8c8f94] group-hover/item:text-white'}`} />
@@ -122,8 +122,8 @@ const SidebarItem = ({ href, icon: Icon, label, active, submenu, isOpen = false,
               <Link
                 key={item.href}
                 href={item.href}
-                className={`block px-4 py-1.5 text-[13px] hover:text-[#00a651] transition-colors border-l-[3px] border-transparent ml-[10px] ${
-                  pathname === item.href ? 'text-[#00a651] border-[#00a651]' : 'text-[#f0f0f1] hover:border-[#00a651]'
+                className={`block px-4 py-1.5 text-[13px] hover:text-[#047857] transition-colors border-l-[3px] border-transparent ml-[10px] ${
+                  pathname === item.href ? 'text-[#047857] border-[#047857]' : 'text-[#f0f0f1] hover:border-[#047857]'
                 }`}
               >
                 {item.label}
@@ -140,8 +140,8 @@ const SidebarItem = ({ href, icon: Icon, label, active, submenu, isOpen = false,
             <Link
               key={item.href}
               href={item.href}
-              className={`block px-4 py-1.5 text-[13px] hover:text-[#00a651] transition-colors border-l-[3px] border-transparent ml-[10px] ${
-                pathname === item.href ? 'text-[#00a651] border-[#00a651]' : 'text-[#f0f0f1] hover:border-[#00a651]'
+              className={`block px-4 py-1.5 text-[13px] hover:text-[#047857] transition-colors border-l-[3px] border-transparent ml-[10px] ${
+                pathname === item.href ? 'text-[#047857] border-[#047857]' : 'text-[#f0f0f1] hover:border-[#047857]'
               }`}
             >
               {item.label}
@@ -431,18 +431,18 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
-          <Link href="/" className="flex items-center gap-2 hover:text-[#72aee6]">
+          <Link href="/" className="flex items-center gap-2 hover:text-[#9BCB3C]">
             <Settings className="w-4 h-4 max-sm:hidden" />
-            <span className="flex items-center bg-white px-2 py-px"><img src="/terra/logo-revista-terra.webp" alt="Revista Terra" width={490} height={240} className="h-6 w-auto" /></span>
+            <span className="flex items-center bg-white px-2 py-px"><img src="/terra/logo-revista-terra.webp" alt="Revista Terra" width={446} height={220} className="h-6 w-auto" /></span>
           </Link>
           
           <div className="flex items-center gap-3 lg:gap-4">
             {/* "Novo" sempre à vista (também no telemóvel): escrever e publicar uma notícia */}
-            <Link href="/admin/noticias/nova" className="flex items-center gap-1.5 hover:text-[#72aee6] max-lg:bg-[#2271b1] max-lg:px-3 max-lg:py-2 max-lg:rounded max-lg:text-white">
+            <Link href="/admin/noticias/nova" className="flex items-center gap-1.5 hover:text-[#9BCB3C] max-lg:bg-[#047857] max-lg:px-3 max-lg:py-2 max-lg:rounded max-lg:text-white">
               <Plus className="w-4 h-4" />
               <span>Novo</span>
             </Link>
-            <Link href="/" target="_blank" className="hidden md:flex items-center gap-1.5 hover:text-[#72aee6]">
+            <Link href="/" target="_blank" className="hidden md:flex items-center gap-1.5 hover:text-[#9BCB3C]">
               <ExternalLink className="w-4 h-4" />
               <span>Ver Site</span>
             </Link>
@@ -472,7 +472,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               <button 
                 key={r}
                 onClick={() => setRole(r)}
-                className={`w-full text-left px-3 py-1 text-[11px] hover:text-[#72aee6] ${user?.role === r ? 'text-[#2271b1] font-bold' : 'text-gray-300'}`}
+                className={`w-full text-left px-3 py-1 text-[11px] hover:text-[#9BCB3C] ${user?.role === r ? 'text-[#047857] font-bold' : 'text-gray-300'}`}
               >
                 {r}
               </button>

@@ -49,7 +49,7 @@ export default function PreviewNewsPage({ role }: PreviewNewsPageProps) {
           <p className="text-[13px] text-[#50575e]">Gerenciar artigos do site</p>
         </div>
         {canCreate && (
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#2271b1] text-white rounded-md hover:bg-[#135e96]">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[#047857] text-white rounded-md hover:bg-[#065f46]">
             <Plus className="w-4 h-4" /> Adicionar Nova
           </button>
         )}
@@ -63,7 +63,7 @@ export default function PreviewNewsPage({ role }: PreviewNewsPageProps) {
             <input
               type="text"
               placeholder="Pesquisar notícias..."
-              className="h-9 pl-10 pr-4 border border-[#ccd0d4] rounded-md text-sm focus:border-[#2271b1] focus:outline-none w-64"
+              className="h-9 pl-10 pr-4 border border-[#ccd0d4] rounded-md text-sm focus:border-[#047857] focus:outline-none w-64"
             />
           </div>
           <button className="flex items-center gap-2 h-9 px-3 border border-[#ccd0d4] rounded-md text-sm hover:bg-[#f6f7f7]">
@@ -119,7 +119,7 @@ export default function PreviewNewsPage({ role }: PreviewNewsPageProps) {
                   </td>
                 )}
                 <td className="p-3">
-                  <span className="text-[13px] text-[#2271b1] hover:underline cursor-pointer">{item.title}</span>
+                  <span className="text-[13px] text-[#047857] hover:underline cursor-pointer">{item.title}</span>
                 </td>
                 <td className="p-3 text-[13px] text-[#50575e]">{item.author}</td>
                 <td className="p-3 text-[13px] text-[#50575e]">{item.category}</td>
@@ -138,7 +138,7 @@ export default function PreviewNewsPage({ role }: PreviewNewsPageProps) {
                     </button>
                     {canEdit && (
                       <button className="p-1.5 hover:bg-[#f0f0f1] rounded" title="Editar">
-                        <Edit2 className="w-4 h-4 text-[#2271b1]" />
+                        <Edit2 className="w-4 h-4 text-[#047857]" />
                       </button>
                     )}
                     {canPublish && item.status === 'Pendente' && (

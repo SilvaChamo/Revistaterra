@@ -48,7 +48,7 @@ export default function ViewUserPage() {
     return (
       <div className="p-6 text-[#2c3338]">
         <p className="text-red-500">Utilizador não encontrado.</p>
-        <Link href="/admin/utilizadores" className="text-[#2271b1] hover:underline mt-2 inline-block">← Voltar aos Utilizadores</Link>
+        <Link href="/admin/utilizadores" className="text-[#047857] hover:underline mt-2 inline-block">← Voltar aos Utilizadores</Link>
       </div>
     );
   }
@@ -62,13 +62,13 @@ export default function ViewUserPage() {
         <div>
           <h1 className="text-[23px] font-normal text-[#1d2327]">Perfil: <strong>{user.username}</strong></h1>
           <p className="text-[13px] text-[#50575e] mt-1">
-            <Link href="/admin/utilizadores" className="text-[#2271b1] hover:underline">Utilizadores</Link>
+            <Link href="/admin/utilizadores" className="text-[#047857] hover:underline">Utilizadores</Link>
             {' '}&rsaquo; Ver perfil
           </p>
         </div>
         <Link
           href={`/admin/utilizadores/editar/${user.id}`}
-          className="flex items-center gap-1.5 h-8 px-4 bg-[#2271b1] text-white text-[13px] font-semibold rounded-md hover:bg-[#135e96] transition-all"
+          className="flex items-center gap-1.5 h-8 px-4 bg-[#047857] text-white text-[13px] font-semibold rounded-md hover:bg-[#065f46] transition-all"
         >
           <Edit2 className="w-3.5 h-3.5" /> Editar utilizador
         </Link>
@@ -82,7 +82,7 @@ export default function ViewUserPage() {
           ) : user.isAdmin ? (
             <div className="w-24 h-24 rounded-full border border-gray-200 flex items-center justify-center bg-[#1d2327] flex-shrink-0">
               <span className="text-3xl font-black">
-                <span className="text-[#00a651]">EC</span>
+                <span className="text-[#047857]">R</span>
               </span>
             </div>
           ) : (
@@ -115,7 +115,7 @@ export default function ViewUserPage() {
             <tr className="border-b border-[#f0f0f1]">
               <th className="p-3 text-left text-[13px] font-semibold text-[#1d2327] bg-[#f9f9f9]">E-mail</th>
               <td className="p-3 text-[13px]">
-                <a href={`mailto:${user.email}`} className="text-[#2271b1] hover:underline flex items-center gap-1">
+                <a href={`mailto:${user.email}`} className="text-[#047857] hover:underline flex items-center gap-1">
                   <Mail className="w-3.5 h-3.5" /> {user.email}
                 </a>
               </td>
@@ -150,7 +150,7 @@ export default function ViewUserPage() {
                       /* não é um URL válido */
                     }
                     return safe ? (
-                      <a href={safe} target="_blank" rel="noopener noreferrer" className="text-[#2271b1] hover:underline flex items-center gap-1">
+                      <a href={safe} target="_blank" rel="noopener noreferrer" className="text-[#047857] hover:underline flex items-center gap-1">
                         <Globe className="w-3.5 h-3.5" /> {user.website}
                       </a>
                     ) : (
@@ -175,7 +175,7 @@ export default function ViewUserPage() {
             <tr>
               <th className="p-3 text-left text-[13px] font-semibold text-[#1d2327] bg-[#f9f9f9]">Artigos publicados</th>
               <td className="p-3 text-[13px]">
-                <Link href={`/admin/noticias?autor=${user.username}`} className="text-[#2271b1] hover:underline flex items-center gap-1">
+                <Link href={`/admin/noticias?autor=${user.username}`} className="text-[#047857] hover:underline flex items-center gap-1">
                   <FileText className="w-3.5 h-3.5" /> {user.articles} artigos
                 </Link>
               </td>
@@ -186,7 +186,7 @@ export default function ViewUserPage() {
 
       {/* Ações */}
       <div className="mt-4 flex items-center gap-3">
-        <Link href={`/admin/utilizadores/editar/${user.id}`} className="h-8 px-4 flex items-center bg-[#2271b1] text-white text-[13px] font-semibold rounded-md hover:bg-[#135e96] transition-all">
+        <Link href={`/admin/utilizadores/editar/${user.id}`} className="h-8 px-4 flex items-center bg-[#047857] text-white text-[13px] font-semibold rounded-md hover:bg-[#065f46] transition-all">
           Editar utilizador
         </Link>
         {!user.isAdmin && (

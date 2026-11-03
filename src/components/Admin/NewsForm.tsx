@@ -17,15 +17,8 @@ import {
 // O editor só corre no navegador
 const RichEditor = dynamic(() => import('@/components/Admin/RichEditor'), { ssr: false });
 
-const CATEGORIES = [
-  'Fruticultura', 'Gestão agrícola', 'Histórias inspiradoras',
-  'Inclusao feminina', 'Infra-estruturas', 'Inovação', 'Agricultura', 'Comunidade',
-  // Categorias do site online (entrecamposblog.com)
-  'Sector agrário', 'Ambiente', 'Turismo rural', 'Desenvolvimento local', 'Apoio comunitário', 'Mulher agrário', 'Curiosidade',
-  'Agro-negócio', 'Oportunidades', 'Receitas',
-  // Categorias que chegam da Base de Dados Agro
-  'Notícia', 'Evento', 'Guia', 'Internacional', 'Política Agrária', 'Recursos'
-];
+// Categorias da Revista Terra
+const CATEGORIES = ['Agricultura', 'Mercado', 'Economia', 'Meio Ambiente', 'Clima', 'Tempo', 'Pesca', 'Energia', 'Sociedade', 'Política', 'Internacional', 'Fora de Campo', 'Opinião'];
 
 // Compara categorias sem depender de maiúsculas, acentos ou hífenes ("agro-negocio" = "Agro-negócio").
 const catKey = (v: string) => v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -182,7 +175,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value.replace(/\s*\n+\s*/g, ' ') })}
             onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
-            className="block w-full min-h-[50px] resize-y overflow-auto px-3 py-2.5 text-[1.4rem] leading-snug bg-white border border-[#8c8f94] rounded-[6px] outline-none focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] shadow-[inset_0_1px_2px_rgba(0,0,0,0.07)]"
+            className="block w-full min-h-[50px] resize-y overflow-auto px-3 py-2.5 text-[1.4rem] leading-snug bg-white border border-[#8c8f94] rounded-[6px] outline-none focus:border-[#047857] focus:ring-1 focus:ring-[#047857] shadow-[inset_0_1px_2px_rgba(0,0,0,0.07)]"
           />
 
           <div className="bg-white border border-[#ccd0d4] rounded-[8px] overflow-hidden">
@@ -202,7 +195,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                 rows={3}
                 value={formData.summary}
                 onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
-                className="w-full p-2 border border-[#8c8f94] outline-none focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] text-[14px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.07)]"
+                className="w-full p-2 border border-[#8c8f94] outline-none focus:border-[#047857] focus:ring-1 focus:ring-[#047857] text-[14px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.07)]"
               />
             </div>
           </div>
@@ -219,13 +212,13 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
               <div className="flex gap-2 mb-4">
                 <button
                   type="button"
-                  className="flex-1 px-1 py-2 text-[12px] whitespace-nowrap border border-[#2271b1] text-[#2271b1] rounded-[4px] bg-[#f6f7f7] hover:bg-white font-medium transition-colors"
+                  className="flex-1 px-1 py-2 text-[12px] whitespace-nowrap border border-[#047857] text-[#047857] rounded-[4px] bg-[#f6f7f7] hover:bg-white font-medium transition-colors"
                 >
                   Guardar Rascunho
                 </button>
                 <button
                   type="button"
-                  className="flex-1 px-1 py-2 text-[12px] border border-[#2271b1] text-[#2271b1] rounded-[4px] bg-[#f6f7f7] hover:bg-white font-medium transition-colors"
+                  className="flex-1 px-1 py-2 text-[12px] border border-[#047857] text-[#047857] rounded-[4px] bg-[#f6f7f7] hover:bg-white font-medium transition-colors"
                 >
                   Pré-visualizar
                 </button>
@@ -252,7 +245,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                 className="flex items-center gap-2 text-[13px] mb-4 border-t border-[#f0f0f1] pt-3 cursor-pointer"
                 onClick={() => setLockModifiedDate(!lockModifiedDate)}
               >
-                <div className={`w-8 h-4 rounded-full relative flex items-center p-0.5 transition-colors ${lockModifiedDate ? 'bg-[#2271b1]' : 'bg-gray-300'}`}>
+                <div className={`w-8 h-4 rounded-full relative flex items-center p-0.5 transition-colors ${lockModifiedDate ? 'bg-[#047857]' : 'bg-gray-300'}`}>
                   <div className={`w-3 h-3 bg-white rounded-full transition-transform ${lockModifiedDate ? 'translate-x-4' : 'translate-x-0'}`}></div>
                 </div>
                 <span className="text-gray-600">Lock Modified Date</span>
@@ -263,7 +256,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-[#2271b1] text-white text-[14px] font-medium rounded-[4px] hover:bg-[#135e96] disabled:opacity-50"
+                className="px-6 py-2 bg-[#047857] text-white text-[14px] font-medium rounded-[4px] hover:bg-[#065f46] disabled:opacity-50"
               >
                 {loading ? 'A guardar...' : (isEdit ? 'Atualizar' : 'Publicar')}
               </button>
@@ -300,7 +293,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                     <label key={cat} className="flex items-start gap-2 cursor-pointer">
                       <input
                         type="checkbox"
-                        className="mt-0.5 rounded border-[#8c8f94] text-[#2271b1] focus:ring-[#2271b1]"
+                        className="mt-0.5 rounded border-[#8c8f94] text-[#047857] focus:ring-[#047857]"
                         checked={formData.categories.some((c) => catKey(c) === catKey(cat))}
                         onChange={() => toggleCategory(cat)}
                       />
@@ -322,7 +315,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                   <button
                     type="button"
                     onClick={() => setIsImageSelectorOpen(true)}
-                    className="text-[#2271b1] text-[13px] hover:underline underline-offset-2"
+                    className="text-[#047857] text-[13px] hover:underline underline-offset-2"
                   >
                     Substituir imagem
                   </button>
@@ -339,7 +332,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                 <button
                   type="button"
                   onClick={() => setIsImageSelectorOpen(true)}
-                  className="text-[#2271b1] text-[13px] hover:text-[#135e96] underline underline-offset-2 text-left"
+                  className="text-[#047857] text-[13px] hover:text-[#065f46] underline underline-offset-2 text-left"
                 >
                   Definir imagem de destaque
                 </button>
@@ -355,7 +348,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
           <button
             type="submit"
             disabled={loading}
-            className="shrink-0 px-6 py-3 bg-[#2271b1] text-white text-[15px] font-medium rounded-[4px] hover:bg-[#135e96] disabled:opacity-50"
+            className="shrink-0 px-6 py-3 bg-[#047857] text-white text-[15px] font-medium rounded-[4px] hover:bg-[#065f46] disabled:opacity-50"
           >
             {loading ? 'A guardar...' : (isEdit ? 'Atualizar' : 'Publicar')}
           </button>

@@ -19,7 +19,7 @@ export default function PreviewProfilePage({ role }: PreviewProfilePageProps) {
   // Dados baseados na role
   const userData = {
     name: role === 'editor' ? 'João Silva (Editor)' : role === 'contribuidor' ? 'Maria Santos (Contribuidora)' : 'Visitante',
-    email: role === 'guest' ? 'visitante@exemplo.com' : `${role}@entrecamposblog.com`,
+    email: role === 'guest' ? 'visitante@exemplo.com' : `${role}@revistaterra.co.mz`,
     role: role.charAt(0).toUpperCase() + role.slice(1),
     joined: '2024-01-15',
     bio: role === 'editor' 
@@ -38,7 +38,7 @@ export default function PreviewProfilePage({ role }: PreviewProfilePageProps) {
         {canEdit && (
           <button 
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#2271b1] text-white rounded-md hover:bg-[#135e96]"
+            className="flex items-center gap-2 px-4 py-2 bg-[#047857] text-white rounded-md hover:bg-[#065f46]"
           >
             {isEditing ? 'Cancelar' : 'Editar Perfil'}
           </button>
@@ -50,7 +50,7 @@ export default function PreviewProfilePage({ role }: PreviewProfilePageProps) {
         <div className="bg-[#f6f7f7] p-6 border-b border-[#ccd0d4]">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="w-20 h-20 bg-[#2271b1] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+              <div className="w-20 h-20 bg-[#047857] rounded-full flex items-center justify-center text-white text-2xl font-bold">
                 {userData.name.charAt(0)}
               </div>
               {canEdit && isEditing && (
@@ -62,7 +62,7 @@ export default function PreviewProfilePage({ role }: PreviewProfilePageProps) {
             <div>
               <h2 className="text-xl font-semibold text-[#1d2327]">{userData.name}</h2>
               <p className="text-[13px] text-[#50575e]">{userData.email}</p>
-              <span className="inline-block mt-2 px-3 py-1 bg-[#00a651] text-white text-[12px] rounded-full">
+              <span className="inline-block mt-2 px-3 py-1 bg-[#047857] text-white text-[12px] rounded-full">
                 {userData.role}
               </span>
             </div>
@@ -143,7 +143,7 @@ export default function PreviewProfilePage({ role }: PreviewProfilePageProps) {
             <div className="pt-4 border-t border-[#f0f0f1]">
               <button 
                 onClick={() => setIsEditing(false)}
-                className="flex items-center gap-2 px-4 py-2 bg-[#00a651] text-white rounded-md hover:bg-[#008f45]"
+                className="flex items-center gap-2 px-4 py-2 bg-[#047857] text-white rounded-md hover:bg-[#065f46]"
               >
                 <Save className="w-4 h-4" /> Guardar Alterações
               </button>

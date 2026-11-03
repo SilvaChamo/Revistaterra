@@ -398,7 +398,7 @@ export default function MediaGallery() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-normal">Biblioteca multimédia</h1>
-            <label className="px-3 py-1 bg-white border border-[#2271b1] text-[#2271b1] rounded-[3px] text-sm font-semibold hover:bg-[#f6f7f7] cursor-pointer transition-all">
+            <label className="px-3 py-1 bg-white border border-[#047857] text-[#047857] rounded-[3px] text-sm font-semibold hover:bg-[#f6f7f7] cursor-pointer transition-all">
               {uploading ? 'A carregar...' : 'Adicionar ficheiros multimédia'}
               <input 
                 type="file" 
@@ -439,7 +439,7 @@ export default function MediaGallery() {
               placeholder="Procurar itens multimédia..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-8 pl-8 pr-2 border-[#ccd0d4] rounded-[3px] text-sm outline-none focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] w-64 max-md:w-full"
+              className="h-8 pl-8 pr-2 border-[#ccd0d4] rounded-[3px] text-sm outline-none focus:border-[#047857] focus:ring-1 focus:ring-[#047857] w-64 max-md:w-full"
             />
             <Search className="absolute left-2.5 top-2 w-3.5 h-3.5 text-[#50575e]" />
           </div>
@@ -449,7 +449,7 @@ export default function MediaGallery() {
                 onClick={() => setView((v) => (v === 'arquivo' ? 'galeria' : 'arquivo'))}
                 title={view === 'arquivo' ? 'Voltar à galeria' : 'Arquivadas'}
                 aria-pressed={view === 'arquivo'}
-                className={`inline-flex h-8 w-8 items-center justify-center rounded-md border ${view === 'arquivo' ? 'border-[#2271b1] bg-[#2271b1] text-white' : 'border-[#ccd0d4] bg-white text-[#50575e] hover:bg-[#f6f7f7]'}`}
+                className={`inline-flex h-8 w-8 items-center justify-center rounded-md border ${view === 'arquivo' ? 'border-[#047857] bg-[#047857] text-white' : 'border-[#ccd0d4] bg-white text-[#50575e] hover:bg-[#f6f7f7]'}`}
               >
                 <Archive className="w-4 h-4" />
               </button>
@@ -488,13 +488,13 @@ export default function MediaGallery() {
               
               <button 
                 onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-[#f0f0f1] text-[#2271b1]' : 'text-[#50575e] hover:text-[#2271b1]'}`}
+                className={`p-1.5 rounded-md ${viewMode === 'list' ? 'bg-[#f0f0f1] text-[#047857]' : 'text-[#50575e] hover:text-[#047857]'}`}
               >
                 <ListIcon className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md ${viewMode === 'grid' ? 'bg-[#f0f0f1] text-[#2271b1]' : 'text-[#50575e] hover:text-[#2271b1]'}`}
+                className={`p-1.5 rounded-md ${viewMode === 'grid' ? 'bg-[#f0f0f1] text-[#047857]' : 'text-[#50575e] hover:text-[#047857]'}`}
               >
                 <LayoutGrid className="w-5 h-5" />
               </button>
@@ -535,7 +535,7 @@ export default function MediaGallery() {
                   {canSeeTrash && view === 'galeria' && (
                     <span
                       onClick={selectedIds.size > 0 ? () => archive(Array.from(selectedIds)) : undefined}
-                      className={`text-sm whitespace-nowrap ${selectedIds.size > 0 ? 'text-[#2271b1] cursor-pointer hover:underline' : 'text-gray-400 cursor-not-allowed'}`}
+                      className={`text-sm whitespace-nowrap ${selectedIds.size > 0 ? 'text-[#047857] cursor-pointer hover:underline' : 'text-gray-400 cursor-not-allowed'}`}
                     >
                       Arquivar ({selectedIds.size})
                     </span>
@@ -549,7 +549,7 @@ export default function MediaGallery() {
                   {special && (
                     <span
                       onClick={selectedIds.size > 0 ? () => restore(Array.from(selectedIds)) : undefined}
-                      className={`text-sm whitespace-nowrap ${selectedIds.size > 0 ? 'text-[#2271b1] cursor-pointer hover:underline' : 'text-gray-400 cursor-not-allowed'}`}
+                      className={`text-sm whitespace-nowrap ${selectedIds.size > 0 ? 'text-[#047857] cursor-pointer hover:underline' : 'text-gray-400 cursor-not-allowed'}`}
                     >
                       Restaurar ({selectedIds.size})
                     </span>
@@ -603,14 +603,14 @@ export default function MediaGallery() {
                 key={file.name}
                 onClick={() => isBulkMode ? toggleSelect(file.name) : openDetails(file)}
                 className={`aspect-square relative bg-white border cursor-pointer overflow-hidden group ${
-                  selectedIds.has(file.name) ? 'ring-[3px] ring-[#2271b1] ring-inset' : 'border-[#ccd0d4]'
+                  selectedIds.has(file.name) ? 'ring-[3px] ring-[#047857] ring-inset' : 'border-[#ccd0d4]'
                 }`}
               >
                 <FileThumb name={file.name} url={getPublicUrl(file.name)} />
                 
                 {isBulkMode && (
                   <div className={`absolute top-1 right-1 w-5 h-5 rounded-sm border flex items-center justify-center ${
-                    selectedIds.has(file.name) ? 'bg-[#2271b1] border-[#2271b1]' : 'bg-white border-[#ccd0d4]'
+                    selectedIds.has(file.name) ? 'bg-[#047857] border-[#047857]' : 'bg-white border-[#ccd0d4]'
                   }`}>
                     {selectedIds.has(file.name) && <Check className="w-3.5 h-3.5 text-white" />}
                   </div>
@@ -656,7 +656,7 @@ export default function MediaGallery() {
                         <div className="flex flex-col min-w-0">
                           <button 
                             onClick={() => openDetails(file)}
-                            className="text-[#2271b1] font-bold hover:text-[#135e96] text-left truncate whitespace-nowrap block w-full"
+                            className="text-[#047857] font-bold hover:text-[#065f46] text-left truncate whitespace-nowrap block w-full"
                           >
                             {file.name}
                           </button>
@@ -671,11 +671,11 @@ export default function MediaGallery() {
                     </td>
                     <td className="p-3 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button onClick={() => openDetails(file)} className="text-[#2271b1] hover:underline">Editar</button>
+                        <button onClick={() => openDetails(file)} className="text-[#047857] hover:underline">Editar</button>
                         <span className="text-[#ccd0d4]">|</span>
                         <button onClick={() => deleteSingle(file.name)} className="text-[#d63638] hover:underline">Eliminar</button>
                         <span className="text-[#ccd0d4]">|</span>
-                        <button onClick={() => copyUrl(file.name)} className="text-[#2271b1] hover:underline">Ver</button>
+                        <button onClick={() => copyUrl(file.name)} className="text-[#047857] hover:underline">Ver</button>
                       </div>
                     </td>
                   </tr>
@@ -714,11 +714,11 @@ export default function MediaGallery() {
                             setIsEditingImage(true);
                           };
                         }}
-                        className="px-4 py-1.5 bg-[#2271b1] text-white text-sm font-semibold rounded-[3px] hover:bg-[#135e96]"
+                        className="px-4 py-1.5 bg-[#047857] text-white text-sm font-semibold rounded-[3px] hover:bg-[#065f46]"
                       >
                         Editar imagem
                       </button>
-                      <button onClick={() => window.open(getPublicUrl(selectedFile.name), '_blank')} className="px-4 py-1.5 border border-[#2271b1] text-[#2271b1] bg-white text-sm font-semibold rounded-[3px] hover:bg-[#f6f7f7]">
+                      <button onClick={() => window.open(getPublicUrl(selectedFile.name), '_blank')} className="px-4 py-1.5 border border-[#047857] text-[#047857] bg-white text-sm font-semibold rounded-[3px] hover:bg-[#f6f7f7]">
                         Ver ficheiro completo
                       </button>
                     </div>
@@ -728,7 +728,7 @@ export default function MediaGallery() {
                   <div className="w-full max-w-4xl bg-white border border-[#ccd0d4] shadow-lg p-6">
                     <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
                       <h3 className="text-xl font-bold">Ferramentas de Edição</h3>
-                      <button onClick={() => setIsEditingImage(false)} className="text-sm text-[#2271b1] hover:underline">Voltar aos detalhes</button>
+                      <button onClick={() => setIsEditingImage(false)} className="text-sm text-[#047857] hover:underline">Voltar aos detalhes</button>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -751,7 +751,7 @@ export default function MediaGallery() {
                                 type="number" 
                                 value={editWidth}
                                 onChange={(e) => setEditWidth(parseInt(e.target.value))}
-                                className="w-24 h-8 border border-[#ccd0d4] text-sm px-2 outline-none focus:border-[#2271b1]"
+                                className="w-24 h-8 border border-[#ccd0d4] text-sm px-2 outline-none focus:border-[#047857]"
                               />
                             </div>
                             <span className="mt-4 text-gray-400">×</span>
@@ -761,18 +761,18 @@ export default function MediaGallery() {
                                 type="number" 
                                 value={editHeight}
                                 onChange={(e) => setEditHeight(parseInt(e.target.value))}
-                                className="w-24 h-8 border border-[#ccd0d4] text-sm px-2 outline-none focus:border-[#2271b1]"
+                                className="w-24 h-8 border border-[#ccd0d4] text-sm px-2 outline-none focus:border-[#047857]"
                               />
                             </div>
                           </div>
                           <div className="flex gap-2">
-                            <button onClick={() => { setEditWidth(Math.round(editWidth*0.5)); setEditHeight(Math.round(editHeight*0.5)); }} className="text-[11px] text-[#2271b1] hover:underline">50%</button>
-                            <button onClick={() => { setEditWidth(Math.round(editWidth*0.75)); setEditHeight(Math.round(editHeight*0.75)); }} className="text-[11px] text-[#2271b1] hover:underline">75%</button>
+                            <button onClick={() => { setEditWidth(Math.round(editWidth*0.5)); setEditHeight(Math.round(editHeight*0.5)); }} className="text-[11px] text-[#047857] hover:underline">50%</button>
+                            <button onClick={() => { setEditWidth(Math.round(editWidth*0.75)); setEditHeight(Math.round(editHeight*0.75)); }} className="text-[11px] text-[#047857] hover:underline">75%</button>
                           </div>
                           
                           <div className="bg-[#f6f7f7] p-2 border border-[#ccd0d4] rounded-[2px] mt-2">
                             <p className="text-[11px] text-gray-600">Tamanho atual: <strong>{formatSize(selectedFile.metadata?.size || 0)}</strong></p>
-                            <p className="text-[11px] text-[#2271b1]">Tamanho final estimado: <strong>{estimatedSize ? formatSize(estimatedSize) : 'A calcular...'}</strong></p>
+                            <p className="text-[11px] text-[#047857]">Tamanho final estimado: <strong>{estimatedSize ? formatSize(estimatedSize) : 'A calcular...'}</strong></p>
                           </div>
                         </div>
 
@@ -799,7 +799,7 @@ export default function MediaGallery() {
                           <button 
                             onClick={applyImageEdits}
                             disabled={processingImage}
-                            className="px-6 py-2 bg-[#2271b1] text-white text-sm font-semibold rounded-[3px] hover:bg-[#135e96] disabled:opacity-50"
+                            className="px-6 py-2 bg-[#047857] text-white text-sm font-semibold rounded-[3px] hover:bg-[#065f46] disabled:opacity-50"
                           >
                             {processingImage ? 'A processar...' : 'Guardar Alterações'}
                           </button>
@@ -833,7 +833,7 @@ export default function MediaGallery() {
                     <textarea 
                       value={metadata.alt_text}
                       onChange={(e) => setMetadata({...metadata, alt_text: e.target.value})}
-                      className="w-full text-xs border border-[#ccd0d4] p-1.5 focus:border-[#2271b1] outline-none h-14 rounded-[3px]"
+                      className="w-full text-xs border border-[#ccd0d4] p-1.5 focus:border-[#047857] outline-none h-14 rounded-[3px]"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -842,7 +842,7 @@ export default function MediaGallery() {
                       type="text"
                       value={metadata.title}
                       onChange={(e) => setMetadata({...metadata, title: e.target.value})}
-                      className="w-full text-xs border border-[#ccd0d4] p-1.5 focus:border-[#2271b1] outline-none rounded-[3px]"
+                      className="w-full text-xs border border-[#ccd0d4] p-1.5 focus:border-[#047857] outline-none rounded-[3px]"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -850,7 +850,7 @@ export default function MediaGallery() {
                     <textarea 
                       value={metadata.caption}
                       onChange={(e) => setMetadata({...metadata, caption: e.target.value})}
-                      className="w-full text-xs border border-[#ccd0d4] p-1.5 focus:border-[#2271b1] outline-none h-14 rounded-[3px]"
+                      className="w-full text-xs border border-[#ccd0d4] p-1.5 focus:border-[#047857] outline-none h-14 rounded-[3px]"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -858,7 +858,7 @@ export default function MediaGallery() {
                     <textarea 
                       value={metadata.description}
                       onChange={(e) => setMetadata({...metadata, description: e.target.value})}
-                      className="w-full text-xs border border-[#ccd0d4] p-1.5 focus:border-[#2271b1] outline-none h-20 rounded-[3px]"
+                      className="w-full text-xs border border-[#ccd0d4] p-1.5 focus:border-[#047857] outline-none h-20 rounded-[3px]"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -869,20 +869,20 @@ export default function MediaGallery() {
                       value={getPublicUrl(selectedFile.name)}
                       className="w-full text-[11px] border border-[#ccd0d4] p-1.5 bg-[#f0f0f1] rounded-[3px]"
                     />
-                    <button onClick={() => copyUrl(selectedFile.name)} className="text-[11px] text-[#2271b1] hover:underline text-left mt-1">Copiar URL</button>
+                    <button onClick={() => copyUrl(selectedFile.name)} className="text-[11px] text-[#047857] hover:underline text-left mt-1">Copiar URL</button>
                   </div>
                 </div>
 
                 <div className="pt-4 border-t border-[#ccd0d4] flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     {view !== 'arquivo' && <button onClick={() => deleteSingle(selectedFile.name)} className="text-[12px] text-[#d63638] hover:underline">{showTrash ? 'Eliminar para sempre' : 'Mover para o lixo'}</button>}
-                    {canSeeTrash && view === 'galeria' && <button onClick={() => archive([selectedFile.name])} className="text-[12px] text-[#2271b1] hover:underline">Arquivar</button>}
-                    {special && <button onClick={() => restore([selectedFile.name])} className="text-[12px] text-[#2271b1] hover:underline">Restaurar</button>}
+                    {canSeeTrash && view === 'galeria' && <button onClick={() => archive([selectedFile.name])} className="text-[12px] text-[#047857] hover:underline">Arquivar</button>}
+                    {special && <button onClick={() => restore([selectedFile.name])} className="text-[12px] text-[#047857] hover:underline">Restaurar</button>}
                   </div>
                   <button 
                     onClick={saveMetadata}
                     disabled={savingMetadata}
-                    className="px-4 py-1.5 bg-[#2271b1] text-white text-sm font-semibold rounded-[3px] hover:bg-[#135e96] disabled:opacity-50"
+                    className="px-4 py-1.5 bg-[#047857] text-white text-sm font-semibold rounded-[3px] hover:bg-[#065f46] disabled:opacity-50"
                   >
                     {savingMetadata ? 'A guardar...' : 'Salvar'}
                   </button>

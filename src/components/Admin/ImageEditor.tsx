@@ -122,7 +122,7 @@ export default function ImageEditor({ imageUrl, onSave, onClose, originalFileNam
           onClick={() => setMode(mode === 'crop' ? 'none' : 'crop')}
           className={`flex items-center gap-2 px-4 py-2 rounded text-[13px] font-medium transition-all ${
             mode === 'crop' 
-              ? 'bg-[#2271b1] text-white' 
+              ? 'bg-[#047857] text-white' 
               : 'bg-[#1d2327] text-gray-300 hover:bg-[#3c434a]'
           }`}
         >
@@ -143,7 +143,7 @@ export default function ImageEditor({ imageUrl, onSave, onClose, originalFileNam
 
         <button
           onClick={saveAsPng}
-          className="flex items-center gap-2 px-6 py-2 bg-[#00a651] text-white rounded text-[13px] font-bold hover:bg-[#008f45] transition-all"
+          className="flex items-center gap-2 px-6 py-2 bg-[#047857] text-white rounded text-[13px] font-bold hover:bg-[#065f46] transition-all"
         >
           <Download className="w-4 h-4" />
           Gravar como PNG
@@ -152,7 +152,7 @@ export default function ImageEditor({ imageUrl, onSave, onClose, originalFileNam
 
       {/* Progress */}
       {processing && (
-        <div className="px-4 py-2 bg-[#2271b1]/20 text-[#72aee6] text-[13px] text-center">
+        <div className="px-4 py-2 bg-[#047857]/20 text-[#9BCB3C] text-[13px] text-center">
           <Loader2 className="w-4 h-4 inline animate-spin mr-2" />
           {progress}
         </div>
@@ -176,7 +176,7 @@ export default function ImageEditor({ imageUrl, onSave, onClose, originalFileNam
             <div className="flex justify-center gap-3 mt-4">
               <button
                 onClick={applyCrop}
-                className="flex items-center gap-2 px-6 py-2 bg-[#00a651] text-white rounded text-[13px] font-bold hover:bg-[#008f45]"
+                className="flex items-center gap-2 px-6 py-2 bg-[#047857] text-white rounded text-[13px] font-bold hover:bg-[#065f46]"
               >
                 <Check className="w-4 h-4" />
                 Aplicar Crop
@@ -198,7 +198,7 @@ export default function ImageEditor({ imageUrl, onSave, onClose, originalFileNam
               style={{ background: processedImage ? 'transparent' : '#2c3338' }}
             />
             {processedImage && (
-              <div className="absolute top-2 right-2 px-3 py-1 bg-[#00a651] text-white text-[12px] rounded-full">
+              <div className="absolute top-2 right-2 px-3 py-1 bg-[#047857] text-white text-[12px] rounded-full">
                 Background removido
               </div>
             )}
