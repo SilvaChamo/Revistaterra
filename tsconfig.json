@@ -41,7 +41,9 @@
     ".next-terra/types/**/*.ts",
     ".next-terra/dev/types/**/*.ts",
     ".next-build/types/**/*.ts",
-    ".next-build/dev/types/**/*.ts"
+    ".next-build/dev/types/**/*.ts",
+    ".next-perf/types/**/*.ts",
+    ".next-perf/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

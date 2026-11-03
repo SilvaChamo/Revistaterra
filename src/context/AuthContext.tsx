@@ -1,13 +1,16 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import {
   roleToMetadata,
   translateAuthError,
   type AppUser,
   type UserRole,
 } from '@/lib/auth';
-import { getSupabase } from '@/lib/supabase';
+
+/** Carregado só quando faz falta (entrar, sair, registar): as páginas públicas não descarregam o cliente do Supabase. */
+const getSupabase = async () => (await import('@/lib/supabase')).getSupabase();
 
 export type { UserRole };
 export type User = AppUser;
@@ -39,14 +42,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(next);
   }, []);
 
+  // Só as páginas de conta e o painel precisam de saber quem entrou: nas públicas não se faz nenhum pedido.
+  const pathname = usePathname();
+  const needsAuth = /^\/(admin|login|register)(\/|$)/.test(pathname || '');
+  const checked = useRef(false);
+
   useEffect(() => {
-    let mounted = true;
+    if (!needsAuth || checked.current) return;
+    checked.current = true;
 
     // O utilizador e o papel vêm da sessão do servidor (cookie assinado), que é a que decide os acessos.
     fetch('/api/auth/me', { credentials: 'include' })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
-        if (!mounted) return;
         applyUser(data?.user ?? null);
         // Mantém o "ver como" ao recarregar a página (só vale para administradores).
         try {
@@ -57,25 +65,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       })
       .catch(() => {
-        if (mounted) applyUser(null);
+        applyUser(null);
       })
       .finally(() => {
-        if (mounted) setLoading(false);
+        setLoading(false);
       });
 
-    return () => {
-      mounted = false;
-    };
-  }, [applyUser]);
+  }, [applyUser, needsAuth]);
 
   const login = async (email: string, password: string) => {
     // A rota do servidor valida as credenciais (administrador de emergência ou Supabase),
     // exige conta aceite e cria a sessão (cookie).
+    // Com tempo-limite: se o servidor ficar sem resposta, o formulário mostra o erro em vez de ficar a processar sem fim.
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.trim(), password }),
+      signal: AbortSignal.timeout(25000),
+    }).catch(() => {
+      throw new Error('O servidor demorou demasiado a responder. Tente de novo.');
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok || !data.user) {
@@ -84,8 +93,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Sessão do Supabase no browser (para leituras com a chave pública); opcional.
     if (email.includes('@')) {
+      // Espera no máximo 4 s: a sessão do servidor já está aberta e esta é só um extra.
       try {
-        await getSupabase().auth.signInWithPassword({ email: email.trim(), password });
+        await Promise.race([
+          (await getSupabase()).auth.signInWithPassword({ email: email.trim(), password }),
+          new Promise((resolve) => setTimeout(resolve, 4000)),
+        ]);
       } catch {
         /* sem Supabase no browser: a sessão do servidor chega */
       }
@@ -96,7 +109,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    const supabase = getSupabase();
+    const supabase = await getSupabase();
     await supabase.auth.signOut();
     try {
       await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
@@ -119,7 +132,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     password: string,
     role: UserRole
   ) => {
-    const supabase = getSupabase();
+    const supabase = await getSupabase();
     // Quem se regista entra sempre como visitante: editor e contribuidor são atribuídos pelo administrador.
     const safeRole: UserRole = 'guest';
 

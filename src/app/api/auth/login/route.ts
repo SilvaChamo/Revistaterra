@@ -40,7 +40,10 @@ export async function POST(req: NextRequest) {
     let email = login;
     if (!login.includes('@')) {
       const resolved = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY
-        ? await findSiteEmailByUsername(serverDb(), login).catch(() => null)
+        ? await Promise.race([
+            findSiteEmailByUsername(serverDb(), login).catch(() => null),
+            new Promise<null>((resolve) => setTimeout(() => resolve(null), 12000)),
+          ])
         : null;
       if (!resolved) {
         return NextResponse.json({ error: 'Utilizador ou palavra-passe incorrectos.' }, { status: 401 });
@@ -60,7 +63,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Supabase não configurado.' }, { status: 500 });
     }
 
-    const supabase = createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } });
+    const supabase = createClient(url, key, {
+      auth: { autoRefreshToken: false, persistSession: false },
+      // Tempo-limite: sem resposta do Supabase, o pedido termina com erro em vez de ficar pendurado.
+      global: { fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(15000) }) },
+    });
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error || !data.user) {
       return NextResponse.json({ error: translateAuthError(error?.message || 'Credenciais inválidas') }, { status: 401 });
@@ -96,7 +103,7 @@ export async function POST(req: NextRequest) {
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Erro ao autenticar';
     return NextResponse.json(
-      { error: message.includes('fetch') ? 'Servidor de autenticação inacessível.' : 'Erro ao autenticar.' },
+      { error: /fetch|timeout|abort/i.test(message) ? 'Servidor de autenticação inacessível.' : 'Erro ao autenticar.' },
       { status: 503 }
     );
   }

@@ -54,10 +54,10 @@ export default function RecentNews({ sets }: { sets: RecentSet[] }) {
 
   return (
     <section className="mt-8" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <div className="mb-4 flex items-end justify-between gap-3">
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-x-3 gap-y-3">
         <h2 className="whitespace-nowrap border-b-2 pb-1.5 text-[15px] font-bold uppercase" style={{ color: GREEN, borderColor: GREEN }}>Notícias recentes</h2>
-        <div className="flex items-center gap-4 text-sm">
-          <div className="flex gap-4">
+        <div className="flex items-center gap-4 text-sm max-sm:w-full max-sm:justify-between">
+          <div className="flex gap-4 max-sm:gap-3">
             {sets.map((x) => (
               <button key={x.id} onClick={() => setTab(x.id)} className={`relative whitespace-nowrap pb-1 ${x.id === tab ? 'font-semibold text-neutral-900' : 'text-neutral-500 hover:text-neutral-800'}`}>
                 {x.label}
