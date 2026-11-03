@@ -20,10 +20,11 @@ export default function Cambio() {
 
   return (
     <div>
-      <p className="mb-2 text-[11px] text-neutral-500">Quanto vale 1 unidade em meticais</p>
-      <ul>
+      <p className="px-5 py-3 text-[11px] text-neutral-500">Quanto vale 1 unidade em meticais</p>
+      {/* linhas bem visíveis, de lado a lado, com o fundo a alternar entre verde suave e branco */}
+      <ul className="border-t border-neutral-300">
         {linhas.map((l) => (
-          <li key={l.code} className="flex items-center gap-3 border-b border-neutral-100 py-2.5 last:border-0">
+          <li key={l.code} className="flex items-center gap-3 border-b border-neutral-300 px-5 py-2.5 odd:bg-[#f4f9f6]">
             <span className="text-2xl leading-none" aria-hidden>{l.bandeira}</span>
             <div className="min-w-0 flex-1">
               <div className="text-[13px] font-semibold leading-tight sm:whitespace-nowrap">{l.nome}</div>
@@ -36,7 +37,7 @@ export default function Cambio() {
           </li>
         ))}
       </ul>
-      <p className="mt-3 text-[10px] leading-snug text-neutral-400">Dados informativos; confirme a cotação junto da fonte antes de tomar decisões financeiras.</p>
+      <p className="px-5 py-3 text-[10px] leading-snug text-neutral-400">Dados informativos; confirme a cotação junto da fonte antes de tomar decisões financeiras.</p>
     </div>
   );
 }

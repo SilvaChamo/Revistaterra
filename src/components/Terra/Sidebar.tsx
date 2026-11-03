@@ -16,19 +16,19 @@ export default async function Sidebar({ only }: { only?: string[] }) {
     <StickyAside>
       {show('tempo') && <Widget title="Tempo · Moçambique" flush fill><Weather /></Widget>}
       {show('radio') && (
-        <Widget title="Rádio +Agro">
-          <div className="bg-[#eaf3ed] p-3"><RadioPlayer compact /></div>
-          <ul className="mt-4 border-t border-neutral-300 pt-1 text-[13px]">
+        <Widget title="Rádio +Agro" flush>
+          <div className="bg-[#eaf3ed] p-4"><RadioPlayer compact /></div>
+          <ul className="border-t border-neutral-300 text-[13px]">
             {terra.radioFull.map((r) => (
-              <li key={r.time + r.show} className="flex gap-3 border-b border-neutral-300 py-2 last:border-0">
+              <li key={r.time + r.show} className="flex gap-3 border-b border-neutral-300 px-5 py-2 last:border-b-0">
                 <b className="w-[100px] shrink-0 whitespace-nowrap text-xs" style={{ color: GREEN }}>{r.time}–{r.end}</b><span className="sm:whitespace-nowrap">{r.show}</span>
               </li>
             ))}
           </ul>
-          <Link href="/radio" className="mt-3 block px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-wide text-white transition-colors hover:text-[#9BCB3C]" style={{ background: '#084030' }}>Ver programação ›</Link>
+          <Link href="/radio" className="block border-t border-neutral-300 px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-wide text-white transition-colors hover:text-[#9BCB3C]" style={{ background: '#084030' }}>Ver programação ›</Link>
         </Widget>
       )}
-      {show('cambio') && <Widget title="Câmbio"><Cambio /></Widget>}
+      {show('cambio') && <Widget title="Câmbio" flush><Cambio /></Widget>}
       {show('capa') && terra.cover && (
         <Widget title={`Edição actual · nº ${terra.cover.issue}`}>
           <Link href="/revista-digital" className="block">

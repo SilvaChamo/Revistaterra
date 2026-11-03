@@ -16,9 +16,9 @@ export default function RevistaDigital() {
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Revista Digital" title="Todas as edições da Revista Terra" lead="Leia ou descarregue as edições mensais em PDF, nos formatos digital e impresso." />
           {cur && (
-            <div className="grid gap-6 bg-white p-6 shadow-sm sm:grid-cols-[220px_1fr]">
-              {cur.image && <img src={cur.image} alt={cur.title} className="w-full shadow-lg" />}
-              <div className="self-center">
+            <div className="grid overflow-hidden bg-white shadow-sm sm:grid-cols-[220px_1fr]">
+              {cur.image && <img src={cur.image} alt={cur.title} className="h-full w-full object-cover" />}
+              <div className="self-center p-6">
                 <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: GREEN }}>Edição actual · nº {cur.issue}</span>
                 <h2 className="mt-2 text-2xl font-extrabold">{cur.title}</h2>
                 <a href={cur.url} className="mt-4 inline-block px-5 py-3 text-xs font-bold uppercase text-white" style={{ background: GREEN }}>Ler edição ↗</a>
@@ -28,9 +28,9 @@ export default function RevistaDigital() {
           <h2 className="border-b-2 pb-1 text-[15px] font-bold uppercase" style={{ color: GREEN, borderColor: GREEN }}>Edições anteriores</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             {eds.map((e) => (
-              <a key={e.pdf} href={e.pdf} className="group block bg-white p-2 shadow-sm hover:shadow-md">
+              <a key={e.pdf} href={e.pdf} className="group block bg-white shadow-sm hover:shadow-md">
                 <img src={e.image!} alt={e.title} loading="lazy" className="aspect-[3/4] w-full object-cover" />
-                <span className="mt-2 block text-[11px] font-semibold leading-snug group-hover:underline">{nice(e.title)}</span>
+                <span className="block p-2 text-[11px] font-semibold leading-snug group-hover:underline">{nice(e.title)}</span>
               </a>
             ))}
           </div>

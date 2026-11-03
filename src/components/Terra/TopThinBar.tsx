@@ -3,26 +3,20 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
-import { DARK, DARKER, LIME, TOPBAR, social } from '@/lib/terra';
+import { DARK, DARKER, LIME, TOPBAR, social, terra } from '@/lib/terra';
+import { useWeather } from './WeatherProvider';
 import { useRadio } from './RadioProvider';
 
 export const THIN_BAR = 36; // altura da barra fina, em px
 
 const WMO: Record<number, string> = { 0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️', 45: '🌫️', 48: '🌫️', 51: '🌦️', 53: '🌦️', 55: '🌧️', 61: '🌧️', 63: '🌧️', 65: '🌧️', 80: '🌦️', 81: '🌧️', 82: '⛈️', 95: '⛈️', 96: '⛈️', 99: '⛈️' };
 
-/** Temperatura actual em Maputo (Open-Meteo), com uma nova tentativa se o serviço estiver ocupado. */
+/** Temperatura actual em Maputo: vem do WeatherProvider (já com a página), sem pedido próprio. */
+const MAPUTO = terra.provinces.findIndex((p) => p.key === 'maputo-cidade');
 function MiniTemp() {
-  const [t, setT] = useState<{ temp: number; icon: string } | null>(null);
-  useEffect(() => {
-    let alive = true;
-    const url = 'https://api.open-meteo.com/v1/forecast?latitude=-25.966&longitude=32.583&current=temperature_2m,weather_code&timezone=auto';
-    const load = (left: number) => fetch(url).then((r) => r.json()).then((j) => {
-      if (j?.error) throw new Error(j.reason);
-      if (alive) setT({ temp: Math.round(j.current.temperature_2m), icon: WMO[j.current.weather_code] ?? '⛅' });
-    }).catch(() => { if (alive && left > 0) setTimeout(() => load(left - 1), 3000); });
-    load(2);
-    return () => { alive = false; };
-  }, []);
+  const { data } = useWeather();
+  const w = data?.[MAPUTO];
+  const t = w ? { temp: w.temp, icon: WMO[w.code] ?? '⛅' } : null;
   return (
     <span className="flex items-center gap-1.5 whitespace-nowrap font-semibold" title="Temperatura em Maputo">
       <span aria-hidden>{t ? t.icon : '🌡️'}</span>
@@ -34,17 +28,17 @@ function MiniTemp() {
 
 const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:text-[#9BCB3C]';
 
-/** Barra fina por cima do cabeçalho (não fica fixa): rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
+/** Barra fina por cima do cabeçalho (fica fixa no topo, com o menu por baixo): rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
 export default function TopThinBar() {
   const radio = useRadio();
   const [search, setSearch] = useState(false);
   const input = useRef<HTMLInputElement>(null);
-  // o separador central começa e termina onde começa e termina o menu (largura do menu + folga de cada lado)
+  // o separador central: a sua base recta (sem os cantos inclinados de 12px) tem exactamente a largura do menu, para o fundo verde do item activo nunca sair dela
   const [tabW, setTabW] = useState<number | null>(null);
   useEffect(() => {
     const nav = document.querySelector('header nav[aria-label="Menu principal"]') as HTMLElement | null;
     if (!nav) return;
-    const sync = () => setTabW(nav.getBoundingClientRect().width + 16);
+    const sync = () => setTabW(nav.getBoundingClientRect().width + 24);
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(nav);
@@ -61,7 +55,8 @@ export default function TopThinBar() {
   }, [search]);
 
   return (
-    <div className="relative z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR }}>
+    <div style={{ height: THIN_BAR }}>
+    <div className="fixed inset-x-0 top-0 z-[60] text-xs text-white" style={{ height: THIN_BAR, background: TOPBAR }}>
       <div className="relative mx-auto flex h-full max-w-[1300px] items-center justify-between gap-3 px-3">
         <div className="flex items-center gap-4 sm:gap-6">
           <Link href="/radio" className="flex items-center gap-3 whitespace-nowrap font-medium transition-colors hover:text-[#9BCB3C]">
@@ -71,8 +66,8 @@ export default function TopThinBar() {
             </span>
             Rádio ao vivo
           </Link>
-          {/* A rádio continua ao mudar de página: enquanto toca, há sempre um botão para a desligar */}
-          {radio.playing && <button type="button" onClick={radio.toggle} aria-label="Desligar a rádio" className="-ml-2 flex h-5 items-center border border-white/60 px-1.5 text-[9px] font-bold uppercase tracking-wide transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] sm:-ml-4">❚❚ Parar</button>}
+          {/* A rádio continua ao mudar de página: o botão fica sempre à vista (Parar enquanto toca; depois de parar, volta a Ouvir) */}
+          <button type="button" onClick={radio.toggle} aria-label={radio.playing ? 'Desligar a rádio' : 'Ouvir a rádio'} className="-ml-2 flex h-5 items-center gap-1 border border-white/60 px-1.5 text-[9px] font-bold uppercase tracking-wide transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] sm:-ml-4">{radio.playing ? '❚❚' : '▶'}<span className="hidden sm:inline">{radio.playing ? ' Parar' : ' Ouvir'}</span></button>
         </div>
         {/* separador central, em trapézio, por baixo da barra: morada, e-mail e telemóvel */}
         <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center justify-center whitespace-nowrap px-4 text-[11px] font-normal xl:flex" style={{ width: tabW ?? undefined, background: TOPBAR, color: '#C9FDD8', clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
@@ -100,6 +95,7 @@ export default function TopThinBar() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

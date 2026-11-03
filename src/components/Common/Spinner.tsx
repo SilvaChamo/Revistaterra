@@ -3,8 +3,8 @@
  * com um ponto central que pulsa. Usa a cor do texto (`currentColor`), por isso serve em fundos claros e em botões.
  * Tamanho em px (`size`); o resto vai em `className` (margens, cor...).
  */
-/** O raio é 30% menor que o `size` pedido (anel mais discreto em todas as páginas). */
-const SCALE = 0.7;
+/** O raio é 20% menor que o `size` pedido (anel discreto, mas com o ponto bem visível). */
+const SCALE = 0.8;
 
 export default function Spinner({ size = 32, className = '', label = 'A processar…' }: { size?: number; className?: string; label?: string }) {
   const px = Math.round(size * SCALE);
