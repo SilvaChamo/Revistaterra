@@ -18,7 +18,7 @@ export default function NewsGrid({ cards, page, pages, base }: { cards: Card[]; 
       {pages && pages > 1 && base && (
         <nav className="mt-6 flex flex-wrap gap-1" aria-label="Páginas">
           {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-            <Link key={n} href={n === 1 ? base : `${base}?pagina=${n}`} className={`flex h-9 min-w-9 items-center justify-center px-3 text-sm font-bold ${n === page ? 'text-white' : 'bg-white text-neutral-700 hover:bg-[#9BCB3C] hover:text-[#064E3B]'}`} style={n === page ? { background: GREEN } : undefined}>{n}</Link>
+            <Link key={n} href={n === 1 ? base : `${base}${base.includes('?') ? '&' : '?'}pagina=${n}`} className={`flex h-9 min-w-9 items-center justify-center px-3 text-sm font-bold ${n === page ? 'text-white' : 'bg-white text-neutral-700 hover:bg-[#9BCB3C] hover:text-[#064E3B]'}`} style={n === page ? { background: GREEN } : undefined}>{n}</Link>
           ))}
         </nav>
       )}

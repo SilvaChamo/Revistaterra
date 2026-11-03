@@ -29,7 +29,7 @@ export function recoveryEmail(link: string) {
   return {
     subject: 'Revista Terra — criar nova palavra-passe',
     text: `Recebemos um pedido para criar uma nova palavra-passe na sua conta Revista Terra.\n\nAbra esta ligação (válida durante 1 hora):\n${link}\n\nSe não fez este pedido, ignore este e-mail: a sua palavra-passe não muda.\n\n— Revista Terra · A Voz do Agro e Ambiente`,
-    html: `<!doctype html><html lang="pt"><body style="margin:0;background:#f0f0f1;font-family:Arial,Helvetica,sans-serif;color:#2c3338">
+    html: `<!doctype html><html lang="pt"><body style="margin:0;background:#f0f0f1;font-family:Verdana,sans-serif;color:#2c3338">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-top:4px solid #d6101c">
 <tr><td style="background:#0c1f08;padding:20px 28px;color:#ffffff;font-size:20px;font-weight:bold">Entre<span style="color:#39ff14">CAMPOS</span></td></tr>

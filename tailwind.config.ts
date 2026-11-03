@@ -8,6 +8,12 @@ const config: Config = {
     './src/lib/share.ts',
   ],
   theme: {
+    // A fonte do projecto é a Verdana (a pilha por omissão do Tailwind trazia outras fontes).
+    fontFamily: {
+      sans: ['Verdana', 'sans-serif'],
+      serif: ['Georgia', 'serif'],
+      mono: ['Menlo', 'monospace'],
+    },
     extend: {
       colors: {
         'terra-green': '#2E7D32',
