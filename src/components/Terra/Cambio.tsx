@@ -26,7 +26,7 @@ export default function Cambio() {
           <li key={l.code} className="flex items-center gap-3 border-b border-neutral-100 py-2.5 last:border-0">
             <span className="text-2xl leading-none" aria-hidden>{l.bandeira}</span>
             <div className="min-w-0 flex-1">
-              <div className="whitespace-nowrap text-[13px] font-semibold leading-tight">{l.nome}</div>
+              <div className="text-[13px] font-semibold leading-tight sm:whitespace-nowrap">{l.nome}</div>
               <div className="text-[11px] text-neutral-400">1 {l.code}</div>
             </div>
             <div className="text-right">

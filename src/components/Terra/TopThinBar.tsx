@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
 import { DARK, DARKER, LIME, TOPBAR, social } from '@/lib/terra';
+import { useRadio } from './RadioProvider';
 
 export const THIN_BAR = 36; // altura da barra fina, em px
 
@@ -35,6 +36,7 @@ const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:tex
 
 /** Barra fina por cima do cabeçalho (não fica fixa): rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
 export default function TopThinBar() {
+  const radio = useRadio();
   const [search, setSearch] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   // o separador central começa e termina onde começa e termina o menu (largura do menu + folga de cada lado)
@@ -69,6 +71,8 @@ export default function TopThinBar() {
             </span>
             Rádio ao vivo
           </Link>
+          {/* A rádio continua ao mudar de página: enquanto toca, há sempre um botão para a desligar */}
+          {radio.playing && <button type="button" onClick={radio.toggle} aria-label="Desligar a rádio" className="-ml-2 flex h-5 items-center border border-white/60 px-1.5 text-[9px] font-bold uppercase tracking-wide transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] sm:-ml-4">❚❚ Parar</button>}
         </div>
         {/* separador central, em trapézio, por baixo da barra: morada, e-mail e telemóvel */}
         <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center justify-center whitespace-nowrap px-4 text-[11px] font-normal xl:flex" style={{ width: tabW ?? undefined, background: TOPBAR, color: '#C9FDD8', clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
