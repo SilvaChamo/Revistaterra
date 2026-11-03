@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import HeaderSwitch from './HeaderSwitch';
+import WeatherProvider from './WeatherProvider';
+import { loadWeather } from '@/lib/weather';
 import { DARK, GREEN, terra } from '@/lib/terra';
 
 const ticker = terra.icm.slice(1).map((r) => ({ prov: r[0], milho: r[1] })).filter((r) => r.milho && r.milho !== '—');
 
-export default function SiteShell({ children }: { children: React.ReactNode }) {
+export default async function SiteShell({ children }: { children: React.ReactNode }) {
+  const weather = await loadWeather();
   const items = [
     ...ticker.map((r) => ({ k: 'm' + r.prov, label: `Milho · ${r.prov}`, value: `${r.milho} MT/kg`, change: '' })),
     ...terra.market.map((m) => ({ k: 'c' + m.pair, label: m.pair, value: m.price, change: m.change })),
@@ -17,6 +20,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
     </div>
   );
   return (
+    <WeatherProvider initial={weather}>
     <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Verdana, sans-serif' }}>
       <HeaderSwitch />
 
@@ -60,5 +64,6 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         <div className="border-t border-white/10 px-6 py-4 text-center text-[11px] text-white/60">© 2026 Revista Terra. Todos os direitos reservados. · Proposta de redesign</div>
       </footer>
     </div>
+    </WeatherProvider>
   );
 }

@@ -33,7 +33,7 @@ interface NewsItem {
 
 const CATEGORIES = ['Agricultura', 'Mercado', 'Economia', 'Meio Ambiente', 'Clima', 'Tempo', 'Pesca', 'Energia', 'Sociedade', 'Política', 'Internacional', 'Fora de Campo', 'Opinião'];
 
-const LBL = "max-md:before:font-bold max-md:before:text-gray-500 max-md:before:content-[attr(data-label)_':_']";
+const LBL = '';
 
 export default function NewsAdminPage() {
   const [news, setNews] = useState<NewsItem[]>([]);
@@ -270,7 +270,7 @@ export default function NewsAdminPage() {
 
   return (
     <div className="p-3 sm:p-6 text-[#2c3338]">
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-6">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-6 max-md:mb-2 max-md:gap-2">
         <div className="flex flex-wrap items-center gap-3 md:gap-4 max-sm:grid max-sm:grid-cols-2">
           <h1 className="text-2xl font-normal w-full sm:w-auto max-sm:col-span-2">Notícias</h1>
           <Link
@@ -314,7 +314,7 @@ export default function NewsAdminPage() {
       </div>
 
       {/* Toolbar superior com Filtros */}
-      <div className="flex flex-wrap items-center gap-2 mb-4 max-sm:grid max-sm:grid-cols-2">
+      <div className="flex flex-wrap items-center gap-2 mb-4 max-md:mb-2 max-sm:grid max-sm:grid-cols-2">
         <select
           className="h-8 max-sm:h-11 max-sm:w-full border-[#ccd0d4] rounded-md text-sm bg-white px-2 outline-none focus:border-[#047857]"
           value={bulkAction}
@@ -398,9 +398,9 @@ export default function NewsAdminPage() {
       )}
 
       {/* Tabela de Artigos */}
-      <div className="bg-white border border-[#ccd0d4] rounded-md overflow-hidden">
-        <table className="ec-cards w-full border-collapse text-[13px] max-md:block">
-          <thead className="max-md:hidden">
+      <div className="bg-white border border-[#ccd0d4] rounded-md overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]">
+        <table className="ec-cards w-full max-md:min-w-[1600px] border-collapse text-[13px]">
+          <thead className="">
             <tr className="bg-white text-left font-bold border-b border-[#ccd0d4] text-[#2c3338]">
               <th className="p-2 w-10 text-center">
                 <input
@@ -416,7 +416,7 @@ export default function NewsAdminPage() {
               <th className="p-3">Detalhes de SEO</th>
             </tr>
           </thead>
-          <tbody className="max-md:block">
+          <tbody className="">
             {loading && news.length === 0 ? (
               <SkeletonTableRow columns={6} />
             ) : errorMsg ? (
@@ -426,33 +426,33 @@ export default function NewsAdminPage() {
             ) : (
               visibleNews.map((item, idx) => (
                 <React.Fragment key={item.id}>
-                  <tr className={`group max-md:block max-md:p-3 border-b border-[#f0f0f1] hover:bg-[#f6f7f7] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#f9f9f9]'} ${selectedIds.has(item.id) ? 'bg-blue-50' : ''}`}>
-                    <td className="p-2 text-center align-top pt-4 max-md:block max-md:p-0 max-md:pb-2 max-md:text-left max-md:[&_input]:h-5 max-md:[&_input]:w-5">
+                  <tr className={`group border-b border-[#f0f0f1] hover:bg-[#f6f7f7] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#f9f9f9]'} ${selectedIds.has(item.id) ? 'bg-blue-50' : ''}`}>
+                    <td className="p-2 text-center align-top pt-4">
                       <input
                         type="checkbox"
                         checked={selectedIds.has(item.id)}
                         onChange={() => toggleSelect(item.id)}
                       />
                     </td>
-                    <td className="p-3 align-top max-md:block max-md:p-0">
-                      <div className="flex items-start gap-3 max-md:flex-col max-md:gap-2">
+                    <td className="p-3 align-top">
+                      <div className="flex items-start gap-3">
                         {item.image_url ? (
-                          <div className="w-14 h-14 flex-shrink-0 border border-[#ccd0d4] bg-gray-50 overflow-hidden mt-1 shadow-sm max-md:mt-0 max-md:h-44 max-md:w-full">
+                          <div className="w-14 h-14 flex-shrink-0 border border-[#ccd0d4] bg-gray-50 overflow-hidden mt-1 shadow-sm">
                             <img src={item.image_url} className="w-full h-full object-cover" alt="" />
                           </div>
                         ) : (
-                          <div className="w-14 h-14 flex-shrink-0 border border-dashed border-amber-300 bg-amber-50 rounded flex items-center justify-center mt-1 max-md:mt-0 max-md:h-24 max-md:w-full">
+                          <div className="w-14 h-14 flex-shrink-0 border border-dashed border-amber-300 bg-amber-50 rounded flex items-center justify-center mt-1">
                             <AlertTriangle className="w-6 h-6 text-amber-500" />
                           </div>
                         )}
-                        <div className="flex flex-col gap-1 min-w-0 max-md:w-full">
+                        <div className="flex flex-col gap-1 min-w-0">
                           <div className="flex items-center gap-2">
                             {item.status === 'Archived' && <Recycle className="w-4 h-4 text-gray-400" />}
                             <Link href={`/admin/noticias/editar/${item.id}`} className="text-[#047857] font-bold text-[14px] hover:text-[#065f46] block">
                               {item.title}
                             </Link>
                           </div>
-                          <div className="flex flex-wrap items-center gap-x-2 gap-y-2 opacity-0 group-hover:opacity-100 max-lg:opacity-100 transition-opacity text-[11px] max-lg:text-[13px] font-medium text-[#047857] [&_button]:max-lg:py-1 [&_a]:max-lg:py-1">
+                          <div className="flex flex-nowrap whitespace-nowrap items-center gap-x-2 opacity-0 group-hover:opacity-100 max-lg:opacity-100 transition-opacity text-[11px] font-medium text-[#047857]">
                             <Link href={`/admin/noticias/editar/${item.id}`} className="hover:text-[#065f46]">Editar</Link>
                             <span className="text-gray-300">|</span>
                             <button onClick={() => handleQuickEdit(item)} className="hover:text-[#065f46]">Edição rápida</button>
@@ -466,7 +466,7 @@ export default function NewsAdminPage() {
                         </div>
                       </div>
                     </td>
-                    <td data-label="Categoria" className={`p-3 align-top max-md:block max-md:p-0 max-md:pt-2 ${LBL}`}>
+                    <td data-label="Categoria" className={`p-3 align-top ${LBL}`}>
                       <button
                         onClick={() => setFilterCategory(item.category)}
                         className="text-[#047857] hover:text-[#065f46] capitalize text-left"
@@ -474,13 +474,13 @@ export default function NewsAdminPage() {
                         {item.category}
                       </button>
                     </td>
-                    <td className="p-3 align-top text-[#50575e] max-md:block max-md:p-0 max-md:pt-1">
+                    <td className="p-3 align-top text-[#50575e]">
                       <div className="flex flex-col leading-tight">
                         <span data-label="Estado" className={LBL}>{item.status === 'Draft' ? 'Rascunho' : item.status === 'Archived' ? 'Arquivado' : 'Publicado'}</span>
-                        <span data-label="Data" className={`max-md:pt-1 ${LBL}`}>{new Date(item.date).toLocaleDateString('pt-PT')}<span className="max-md:hidden"> às {new Date(item.date).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span></span>
+                        <span data-label="Data" className={` ${LBL}`}>{new Date(item.date).toLocaleDateString('pt-PT')}<span className=""> às {new Date(item.date).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span></span>
                       </div>
                     </td>
-                    <td className="p-3 align-top text-[#50575e] max-md:hidden">
+                    <td className="p-3 align-top text-[#50575e]">
                       <div className="flex flex-col items-center">
                         <svg className="w-5 h-5 text-green-600 mb-1" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M5 19h14V5H5v14zm2-2v-4h2v4H7zm4 0v-8h2v8h-2zm4 0v-6h2v6h-2z" />
@@ -489,7 +489,7 @@ export default function NewsAdminPage() {
                         <span className="text-[10px] text-gray-400">{Math.floor((item.views || 200) * 0.7)} visitors</span>
                       </div>
                     </td>
-                    <td className="p-3 align-top max-md:hidden">
+                    <td className="p-3 align-top">
                       <div className="flex items-start gap-2">
                         <div className="w-10 h-6 bg-[#f0f0f1] border border-[#ccd0d4] rounded flex items-center justify-center text-[10px] font-bold text-gray-400">N/A</div>
                         <div className="flex flex-col gap-0.5 text-[11px] text-[#50575e]">
@@ -509,8 +509,8 @@ export default function NewsAdminPage() {
                   </tr>
 
                   {quickEditId === item.id && (
-                    <tr className="bg-[#f6f7f7] border-b border-[#ccd0d4] max-md:block">
-                      <td colSpan={6} className="p-6 max-md:block max-md:p-3">
+                    <tr className="bg-[#f6f7f7] border-b border-[#ccd0d4]">
+                      <td colSpan={6} className="p-6">
                         <div className="w-full">
                           <h4 className="text-[14px] font-bold uppercase text-[#1d2327] mb-4">Edição Rápida</h4>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -628,7 +628,7 @@ export default function NewsAdminPage() {
       </div>
 
       {/* Paginação (em baixo) */}
-      <div className="mt-3">{pager}</div>
+      <div className="mt-3 max-md:mt-2">{pager}</div>
     </div>
   );
 }
