@@ -329,24 +329,17 @@ body {
   .ec-admin textarea { min-height: 2.75rem; }
 }
 
-/* Spinner único do site (components/Common/Spinner.tsx): dois arcos em sentidos opostos + ponto que pulsa. */
+/* Spinner único do site (components/Common/Spinner.tsx): anel que gira (arco sólido + resto transparente) e ponto que pulsa. */
 .ec-spinner { position: relative; color: #2E7C04; flex-shrink: 0; }
 .ec-spinner > span { position: absolute; border-radius: 9999px; }
 .ec-spinner-outer {
   inset: 0;
-  border: max(2px, 0.09em) solid transparent;
+  border: max(2px, 0.09em) solid rgba(46, 124, 4, 0.2);
+  border-color: color-mix(in srgb, currentColor 20%, transparent);
   border-top-color: currentColor;
   border-right-color: currentColor;
   box-sizing: border-box;
   animation: ec-spin 0.9s cubic-bezier(0.55, 0.1, 0.45, 0.9) infinite;
-}
-.ec-spinner-inner {
-  inset: 22%;
-  border: max(2px, 0.07em) solid transparent;
-  border-bottom-color: #d6101c;
-  border-left-color: #d6101c;
-  box-sizing: border-box;
-  animation: ec-spin 0.65s linear infinite reverse;
 }
 .ec-spinner-dot {
   inset: 42%;
@@ -356,7 +349,7 @@ body {
 @keyframes ec-spin { to { transform: rotate(360deg); } }
 @keyframes ec-pulse { 0%, 100% { transform: scale(0.5); opacity: 0.4; } 50% { transform: scale(1.15); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .ec-spinner-outer, .ec-spinner-inner { animation-duration: 3s; }
+  .ec-spinner-outer { animation-duration: 3s; }
   .ec-spinner-dot { animation: none; }
 }
 
@@ -367,8 +360,8 @@ body {
 /* Faixa de cotações em movimento (Revista Terra) */
 @keyframes terra-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .terra-marquee { display: flex; width: max-content; animation: terra-marquee 60s linear infinite; }
-.terra-marquee-wrap:hover .terra-marquee { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) { .terra-marquee { animation: none; } }
+/* Pausa ao passar o rato só em dispositivos com rato (no telemóvel o toque deixava a faixa parada). A faixa de cotações corre sempre, também com "reduzir movimento" activo no telemóvel. */
+@media (hover: hover) { .terra-marquee-wrap:hover .terra-marquee { animation-play-state: paused; } }
 
 /* Barra de progresso do slide principal */
 @keyframes terra-progress { from { width: 0; } to { width: 100%; } }
@@ -391,3 +384,20 @@ body {
 .terra-prose img { max-width: 100%; height: auto; }
 .terra-prose figure { margin-left: 0; margin-right: 0; }
 .terra-prose figcaption { font-size: 13px; color: #666; }
+
+/* Biblioteca multimédia (telemóvel): botões e campos com a mesma altura, mais baixa que a regra geral dos formulários. */
+@media (max-width: 767px) {
+  .ec-admin .ec-media-ctl select,
+  .ec-admin .ec-media-ctl input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  .ec-admin .ec-media-ctl button,
+  .ec-admin .ec-media-ctl label { height: 2.25rem; min-height: 2.25rem; }
+}
+
+/* Painel (telemóvel): margens laterais pequenas, sem encostar o conteúdo ao ecrã.
+   Raiz de cada página (p-6 ou p-4): 8px nos 4 lados; cartões brancos com p-6 ou p-5: 12px por dentro. */
+@media (max-width: 767px) {
+  .ec-admin main > div > [class~="p-6"],
+  .ec-admin main > div > [class~="p-4"] { padding: 0.5rem; }
+  .ec-admin main [class~="bg-white"][class~="p-6"],
+  .ec-admin main [class~="bg-white"][class~="p-5"] { padding: 0.75rem; }
+}

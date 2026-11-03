@@ -398,24 +398,14 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       {/* Admin Bar (Barra Superior Preta) */}
       <header className="sticky top-0 z-[100] h-12 lg:h-8 bg-[#1d2327] text-[#f0f0f1] flex items-center justify-between gap-2 px-3 lg:px-4 text-[13px]">
         <div className="flex min-w-0 items-center gap-3 lg:gap-6">
-          {/* Telemóvel: botão do menu lateral (gaveta) */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen((o) => !o)}
-            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={mobileMenuOpen}
-            className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded hover:bg-[#2c3338]"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
           <Link href="/" className="flex items-center gap-2 hover:text-[#9BCB3C]">
-            <Settings className="w-4 h-4 max-sm:hidden" />
+            <Settings className="w-4 h-4 max-lg:hidden" />
             <span className="flex items-center bg-white px-2 py-px"><img src="/terra/logo-revista-terra.webp" alt="Revista Terra" width={446} height={220} className="h-6 w-auto" /></span>
           </Link>
           
           <div className="flex items-center gap-3 lg:gap-4">
-            {/* "Novo" sempre à vista (também no telemóvel): escrever e publicar uma notícia */}
-            <Link href="/admin/noticias/nova" className="flex items-center gap-1.5 hover:text-[#9BCB3C] max-lg:bg-[#047857] max-lg:px-3 max-lg:py-2 max-lg:rounded max-lg:text-white">
+            {/* "Novo": só no ecrã grande (no telemóvel a barra leva só o logótipo, o utilizador e o menu) */}
+            <Link href="/admin/noticias/nova" className="hidden lg:flex items-center gap-1.5 hover:text-[#9BCB3C]">
               <Plus className="w-4 h-4" />
               <span>Novo</span>
             </Link>
@@ -426,6 +416,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           </div>
         </div>
 
+        <div className="flex shrink-0 items-center">
         <div className="flex shrink-0 items-center group relative">
           <button
             type="button"
@@ -435,7 +426,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             className="flex h-10 items-center gap-2 px-1 lg:h-8"
           >
             <span className="capitalize max-sm:hidden">Olá, {user?.name || 'Visitante'} ({user?.role || 'guest'})</span>
-            <UserIcon className="w-7 h-7 lg:w-4 lg:h-4 bg-[#2c3338] p-1 lg:p-0.5 rounded-full" />
+            <UserIcon className="w-6 h-6 lg:w-4 lg:h-4 bg-[#2c3338] p-1 lg:p-0.5 rounded-full" />
           </button>
 
           <div className={`absolute right-0 top-full w-56 bg-[#2c3338] shadow-lg border border-[#3c434a] p-2 rounded-md lg:group-hover:block ${userMenuOpen ? 'block' : 'hidden'}`}>
@@ -461,6 +452,17 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               <LogOut className="w-4 h-4" /> Sair
             </button>
           </div>
+        </div>
+          {/* Telemóvel: botão do menu lateral (gaveta), o último à direita, depois do ícone do utilizador */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((o) => !o)}
+            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={mobileMenuOpen}
+            className="lg:hidden flex h-10 w-10 shrink-0 items-center justify-center rounded hover:bg-[#2c3338]"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </header>
 
@@ -490,8 +492,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         )}
         {/* Sidebar (Menu Lateral): no telemóvel é uma gaveta (fechada ao entrar); no ecrã grande, a barra de sempre */}
         <aside
-          className={`bg-[#1d2327] flex-shrink-0 transition-transform duration-200 max-lg:fixed max-lg:bottom-0 max-lg:left-0 max-lg:top-12 max-lg:z-[95] max-lg:w-72 max-lg:max-w-[85vw] max-lg:overflow-y-auto ${
-            mobileMenuOpen ? 'max-lg:translate-x-0' : 'max-lg:-translate-x-full'
+          className={`bg-[#1d2327] flex-shrink-0 transition-transform duration-200 max-lg:fixed max-lg:bottom-0 max-lg:right-0 max-lg:top-12 max-lg:z-[95] max-lg:w-72 max-lg:max-w-[85vw] max-lg:overflow-y-auto ${
+            mobileMenuOpen ? 'max-lg:translate-x-0' : 'max-lg:translate-x-full'
           } lg:transition-all ${isSidebarOpen ? 'lg:w-56' : 'lg:w-0 lg:overflow-hidden'}`}
         >
           <nav className="mt-0">
