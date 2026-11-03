@@ -30,18 +30,18 @@ export default async function Podcast({ params }: { params: Promise<{ slug: stri
         <main className="min-w-0">
           <article className="overflow-hidden bg-white shadow-sm max-sm:-mx-3">
             {/* um só card: a capa ocupa toda a altura do card, sem margens (a toda a largura no telemóvel); por baixo do episódio, o leitor */}
-            <div className="grid sm:grid-cols-[240px_1fr]">
+            <div className="grid sm:grid-cols-[280px_1fr]">
               {p.image && (
-                <div className="relative aspect-square sm:aspect-auto">
-                  <img src={p.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                <div className="relative aspect-[4/3] sm:aspect-auto">
+                  <img src={p.image} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: '12% center' }} />
                 </div>
               )}
-              <div className="min-w-0 p-5 sm:p-8">
+              <div className="min-w-0 p-5 sm:px-6 sm:py-5">
                 <span className="inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest" style={{ background: LIME, color: DARK }}>Podcast</span>
-                <h1 className="mt-3 text-2xl font-extrabold leading-tight sm:text-3xl" style={{ color: DARK }}>{p.title}</h1>
-                {p.excerpt && <p className="mt-3 text-[14px] leading-relaxed text-neutral-600">{p.excerpt}</p>}
-                <div className="mt-3 text-xs font-bold text-neutral-800">{meta}</div>
-                <div className="mt-5"><PodcastPlayer src={p.audio} duration={p.duration} /></div>
+                <h1 className="mt-2 text-xl font-extrabold leading-tight sm:text-2xl" style={{ color: DARK }}>{p.title}</h1>
+                {p.excerpt && <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">{p.excerpt}</p>}
+                <div className="mt-2 text-xs font-bold text-neutral-800">{meta}</div>
+                <div className="mt-2"><PodcastPlayer src={p.audio} duration={p.duration} /></div>
               </div>
             </div>
           </article>

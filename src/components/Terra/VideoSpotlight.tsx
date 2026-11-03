@@ -25,7 +25,7 @@ export default function VideoSpotlight() {
         ) : (
           <button onClick={() => setPlaying(true)} aria-label={`Ver ${v.title}`} className="group absolute inset-0 h-full w-full">
             <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" className="h-full w-full object-cover" />
-            <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-lg transition-colors group-hover:!bg-[#8DF43A] group-hover:text-[#064E3B]" style={{ background: GREEN }}><Play size={26} /></span>
+            <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center text-white shadow-lg transition-colors group-hover:!bg-[#8DF43A] group-hover:text-[#064E3B]" style={{ background: GREEN }}><Play size={26} /></span>
           </button>
         )}
       </div>
