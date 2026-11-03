@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Home } from 'lucide-react';
 import HeaderSwitch from './HeaderSwitch';
 import WeatherProvider from './WeatherProvider';
 import { loadWeather } from '@/lib/weather';
@@ -27,14 +28,19 @@ export default async function SiteShell({ children, trail }: { children: React.R
     <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Verdana, sans-serif' }}>
       <HeaderSwitch />
 
-      <div className="mx-auto mt-5 max-w-[1300px] px-3">
+      <div className={`mx-auto max-w-[1300px] px-3 ${trail ? '' : 'mt-5'}`}>
         {/* barra de cotações: só na largura do conteúdo */}
         <div className="mb-5 flex items-stretch bg-white text-[11px] text-neutral-600 shadow-sm">
           <div className="z-10 flex shrink-0 items-stretch text-white" style={{ background: DARK }}>
-            {/* quadrado com o símbolo R do ícone do site */}
-            <span className="flex w-10 items-center justify-center" style={{ background: GREEN }}>
-              <svg viewBox="11 2 46 48" className="h-7 w-7" aria-hidden><path fillRule="evenodd" d="M18 16H35C43 16 49 20.5 49 28C49 33.5 45.8 37.2 41 38.8L50 48H40L32 40H26V48H18ZM26 23V33H34.5C38 33 40.5 31.4 40.5 28C40.5 24.7 38 23 34.5 23Z" fill="#fff" /><path d="M44 15C44 8 48 4 55 4C55 11 51 15 44 15Z" fill="#bef264" /></svg>
-            </span>
+            {trail ? (
+              // páginas interiores: ícone da casa (volta ao início)
+              <Link href="/" aria-label="Início" title="Início" className="flex w-10 items-center justify-center text-white transition-colors hover:!bg-[#8DF43A] hover:!text-[#064E3B]" style={{ background: GREEN }}><Home size={18} aria-hidden /></Link>
+            ) : (
+              // página inicial: símbolo R do ícone do site
+              <span className="flex w-10 items-center justify-center" style={{ background: GREEN }}>
+                <svg viewBox="11 2 46 48" className="h-7 w-7" aria-hidden><path fillRule="evenodd" d="M18 16H35C43 16 49 20.5 49 28C49 33.5 45.8 37.2 41 38.8L50 48H40L32 40H26V48H18ZM26 23V33H34.5C38 33 40.5 31.4 40.5 28C40.5 24.7 38 23 34.5 23Z" fill="#fff" /><path d="M44 15C44 8 48 4 55 4C55 11 51 15 44 15Z" fill="#bef264" /></svg>
+              </span>
+            )}
             {!trail && <b className="flex items-center px-4 uppercase tracking-wide">Cotações do dia</b>}
           </div>
           {trail ? (
