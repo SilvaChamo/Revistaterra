@@ -17,7 +17,7 @@ export default function Cotacoes() {
   const milho = rows.filter((r) => r[1] && r[1] !== '—').map((r) => ({ prov: r[0], v: num(r[1]), branco: ['Inhambane', 'Maputo'].includes(r[0]) })).sort((a, b) => a.v - b.v);
   const max = Math.max(...milho.map((m) => m.v));
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Cotações' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="ICM" title="Cotações ICM" lead="Preços médios de referência dos cereais e dos restantes produtos agrícolas nas dez províncias de Moçambique." />

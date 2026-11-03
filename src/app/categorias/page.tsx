@@ -11,7 +11,7 @@ export const revalidate = 60;
 export default async function Categorias() {
   const cats = await loadCategories();
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Categorias' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Notícias" title="Categorias" />

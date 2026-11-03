@@ -24,12 +24,9 @@ export default async function Artigo({ params }: { params: Promise<{ slug: strin
   const showSummary = !!post.summary && !plain(post.content).toLowerCase().startsWith(head);
   const related = (await loadCards()).filter((c) => c.category === cat && c.url !== `/noticias/${post.slug}`).slice(0, 3);
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Notícias', href: '/noticias' }, { label: cat, href: `/categoria/${slugify(cat)}` }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0">
-          <nav className="mb-3 text-xs text-neutral-500" aria-label="Caminho">
-            <Link href="/" className="hover:underline">Início</Link> › <Link href="/noticias" className="hover:underline">Notícias</Link> › <Link href={`/categoria/${slugify(cat)}`} className="hover:underline">{cat}</Link>
-          </nav>
           <article className="bg-white shadow-sm">
             {post.image_url && <img src={post.image_url} alt="" className="h-[240px] w-full object-cover sm:h-[400px]" />}
             <div className="border-t-4 p-5 sm:p-8" style={{ borderColor: GREEN }}>

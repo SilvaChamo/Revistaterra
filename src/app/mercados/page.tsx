@@ -7,7 +7,7 @@ export const metadata = { title: 'Mercados — Revista Terra', robots: { index: 
 
 export default function Mercados() {
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Mercados' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Arquivo" title="Mercados" lead="Preços e boletins de mercado por província e produto." />

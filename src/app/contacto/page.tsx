@@ -12,7 +12,7 @@ const canais = [
 
 export default function Contacto() {
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Contacto' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Contacto" title="Vamos conversar sobre o futuro do agro" lead="A Revista Terra está disponível para leitores, fontes, parceiros e organizações do sector agrário e ambiental. Use este canal para sugestões editoriais, pedidos de correcção, publicidade, parcerias, eventos, formação ou informações sobre a revista." />

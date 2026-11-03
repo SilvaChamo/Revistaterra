@@ -23,7 +23,7 @@ const eco = [
 
 export default function QuemSomos() {
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Quem Somos' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Registo: 122/GABINFO/DEPC/210/2022" title="Jornalismo que cultiva conhecimento e desenvolvimento" lead="A REVISTA TERRA é uma publicação moçambicana, de propriedade privada, vocacionada para o sector agrário e ambiental. Publica nas línguas portuguesa e inglesa, nos formatos online, digital e impresso, com periodicidade mensal, trazendo actualidade em géneros de notícias, análises, reportagens e entrevistas." />

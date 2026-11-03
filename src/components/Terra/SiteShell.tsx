@@ -6,7 +6,10 @@ import { DARK, GREEN, terra } from '@/lib/terra';
 
 const ticker = terra.icm.slice(1).map((r) => ({ prov: r[0], milho: r[1] })).filter((r) => r.milho && r.milho !== '—');
 
-export default async function SiteShell({ children }: { children: React.ReactNode }) {
+export type Crumb = { label: string; href?: string };
+
+/** `trail`: caminho da página (páginas interiores). Sem `trail` (página inicial) a barra mostra as cotações do dia. */
+export default async function SiteShell({ children, trail }: { children: React.ReactNode; trail?: Crumb[] }) {
   const weather = await loadWeather();
   const items = [
     ...ticker.map((r) => ({ k: 'm' + r.prov, label: `Milho · ${r.prov}`, value: `${r.milho} MT/kg`, change: '' })),
@@ -32,11 +35,22 @@ export default async function SiteShell({ children }: { children: React.ReactNod
             <span className="flex w-10 items-center justify-center" style={{ background: GREEN }}>
               <svg viewBox="11 2 46 48" className="h-7 w-7" aria-hidden><path fillRule="evenodd" d="M18 16H35C43 16 49 20.5 49 28C49 33.5 45.8 37.2 41 38.8L50 48H40L32 40H26V48H18ZM26 23V33H34.5C38 33 40.5 31.4 40.5 28C40.5 24.7 38 23 34.5 23Z" fill="#fff" /><path d="M44 15C44 8 48 4 55 4C55 11 51 15 44 15Z" fill="#bef264" /></svg>
             </span>
-            <b className="flex items-center px-4 uppercase tracking-wide">Cotações do dia</b>
+            {!trail && <b className="flex items-center px-4 uppercase tracking-wide">Cotações do dia</b>}
           </div>
-          <div className="terra-marquee-wrap flex min-w-0 flex-1 items-center overflow-hidden py-2.5">
-            <div className="terra-marquee"><Row /><Row dup /></div>
-          </div>
+          {trail ? (
+            <nav aria-label="Caminho" className="flex min-w-0 flex-1 items-center overflow-hidden whitespace-nowrap px-4 py-2.5 text-xs text-neutral-600">
+              {trail.map((c, k) => (
+                <span key={c.label + k} className={`flex min-w-0 items-center ${k === trail.length - 1 ? 'font-bold text-neutral-800' : 'shrink-0'}`}>
+                  {k > 0 && <span className="mx-2 text-neutral-400">›</span>}
+                  {c.href && k < trail.length - 1 ? <Link href={c.href} className="hover:underline">{c.label}</Link> : <span className="truncate">{c.label}</span>}
+                </span>
+              ))}
+            </nav>
+          ) : (
+            <div className="terra-marquee-wrap flex min-w-0 flex-1 items-center overflow-hidden py-2.5">
+              <div className="terra-marquee"><Row /><Row dup /></div>
+            </div>
+          )}
         </div>
         {children}
       </div>

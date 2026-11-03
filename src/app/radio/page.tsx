@@ -8,7 +8,7 @@ export const metadata = { title: 'Rádio — Revista Terra', robots: { index: fa
 
 export default function Radio() {
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Rádio' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Rádio +Agro" title="A voz do agro e ambiente" lead="Ouça em directo a rádio da Revista Terra: clima, tecnologia agrária, jovens agricultores e conversas com quem faz o campo." />

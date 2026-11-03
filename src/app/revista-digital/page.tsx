@@ -11,7 +11,7 @@ export default function RevistaDigital() {
   const cur = terra.cover;
   const eds = terra.editions.filter((e) => e.image && e.image !== cur?.image);
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Revista Digital' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Revista Digital" title="Todas as edições da Revista Terra" lead="Leia ou descarregue as edições mensais em PDF, nos formatos digital e impresso." />

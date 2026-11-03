@@ -9,7 +9,7 @@ export const metadata = { title: 'Podcasts — Revista Terra', robots: { index: 
 
 export default function Podcasts() {
   return (
-    <SiteShell>
+    <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Podcasts' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Mais Agro" title="Podcasts" lead="Conversas e programas da Revista Terra para ouvir e ver quando quiser." />
