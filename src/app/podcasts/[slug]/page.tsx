@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import SiteShell from '@/components/Terra/SiteShell';
 import Sidebar from '@/components/Terra/Sidebar';
 import PodcastPlayer from '@/components/Terra/PodcastPlayer';
-import { DARK, GREEN, LIME, terra } from '@/lib/terra';
+import { DARK, LIME, terra } from '@/lib/terra';
 
 type Pod = (typeof terra.podcasts)[number] & { audio?: string; spotify?: string };
 
@@ -28,39 +28,18 @@ export default async function Podcast({ params }: { params: Promise<{ slug: stri
     <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Podcasts', href: '/podcasts' }, { label: p.title }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0">
-          <article className="bg-white shadow-sm">
-            {/* card: capa, título, resumo e dados do episódio */}
-            <div className="grid gap-5 p-5 sm:grid-cols-[200px_1fr] sm:p-8">
-              {p.image && <img src={p.image} alt="" className="aspect-square w-full max-w-[200px] object-cover shadow-md" />}
-              <div className="min-w-0">
+          <article className="bg-white shadow-sm max-sm:-mx-3">
+            {/* um só card: capa (a toda a largura no telemóvel), dados do episódio e, por baixo, o play com a linha de progresso */}
+            <div className="grid sm:grid-cols-[200px_1fr] sm:gap-5 sm:p-8">
+              {p.image && <img src={p.image} alt="" className="aspect-square w-full object-cover sm:max-w-[200px] sm:shadow-md" />}
+              <div className="min-w-0 p-5 sm:p-0">
                 <span className="inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest" style={{ background: LIME, color: DARK }}>Podcast</span>
                 <h1 className="mt-3 text-2xl font-extrabold leading-tight sm:text-3xl" style={{ color: DARK }}>{p.title}</h1>
                 {p.excerpt && <p className="mt-3 text-[14px] leading-relaxed text-neutral-600">{p.excerpt}</p>}
                 <div className="mt-3 text-xs font-bold text-neutral-800">{meta}</div>
+                <div className="mt-5"><PodcastPlayer src={p.audio} duration={p.duration} /></div>
               </div>
             </div>
-
-            {/* play e linha de progresso */}
-            <div className="border-t border-neutral-200 px-5 py-5 sm:px-8">
-              <PodcastPlayer src={p.audio} duration={p.duration} />
-              {p.spotify && (
-                <a href={p.spotify} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex h-9 items-center px-5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:!bg-[#8DF43A] hover:!text-[#064E3B]" style={{ background: GREEN }}>Ouvir no Spotify ›</a>
-              )}
-            </div>
-
-            {(p.aboutTitle || p.about || p.host || p.guest) && (
-              <div className="border-t border-neutral-200 px-5 py-5 sm:px-8">
-                {p.aboutTitle && <h2 className="text-lg font-bold" style={{ color: DARK }}>{p.aboutTitle}</h2>}
-                {p.about && <p className="mt-2 text-[14px] leading-relaxed text-neutral-600">{p.about}</p>}
-                {(p.host || p.guest) && (
-                  <p className="mt-3 text-[13px] text-neutral-600">
-                    {p.host && <>Apresentação: <b className="text-neutral-800">{p.host}</b></>}
-                    {p.host && p.guest && ' · '}
-                    {p.guest && <>Convidada: <b className="text-neutral-800">{p.guest}</b></>}
-                  </p>
-                )}
-              </div>
-            )}
           </article>
 
           {others.length > 0 && (

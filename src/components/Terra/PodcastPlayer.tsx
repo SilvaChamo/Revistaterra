@@ -50,7 +50,6 @@ export default function PodcastPlayer({ src, duration }: { src?: string; duratio
           <span>{fmt(t)}</span>
           <span>{d ? fmt(d) : duration ?? ''}</span>
         </div>
-        {!src && <p className="mt-1 text-[11px] text-neutral-400">O áudio deste episódio ainda não foi adicionado.</p>}
       </div>
     </div>
   );

@@ -30,7 +30,7 @@ function when(iso: string) {
 export default async function CommentsSection({ slug, title }: { slug: string; title: string }) {
   const comments = await approvedComments(slug);
   const heading = (text: string) => (
-    <h3 className="border-b border-gray-200 pb-3 text-[18px] font-bold text-[#1a3d0c]">{text}</h3>
+    <h3 className="border-b border-gray-200 pb-3 text-[18px] font-bold text-[#064E3B]">{text}</h3>
   );
 
   return (
@@ -41,7 +41,7 @@ export default async function CommentsSection({ slug, title }: { slug: string; t
           <ol className="mt-4 divide-y divide-gray-100">
             {comments.map((c) => (
               <li key={c.id} className="flex gap-3 py-4">
-                <span aria-hidden="true" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0c1f08] text-[16px] font-bold uppercase text-[#39ff14]">
+                <span aria-hidden="true" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#064E3B] text-[16px] font-bold uppercase text-[#8DF43A]">
                   {c.name.trim().charAt(0) || '?'}
                 </span>
                 <div className="min-w-0">

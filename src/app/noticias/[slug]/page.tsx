@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import SiteShell from '@/components/Terra/SiteShell';
 import Sidebar from '@/components/Terra/Sidebar';
 import NewsGrid from '@/components/Terra/NewsGrid';
+import ShareBar from '@/components/Terra/ShareBar';
+import CommentsSection from '@/components/Comments/CommentsSection';
 import { Heading, Tag } from '@/components/Terra/Bits';
 import { GREEN } from '@/lib/terra';
 import { cleanContent, label, loadCards, loadPost, longDate, slugify } from '@/lib/terra-news';
@@ -35,6 +37,8 @@ export default async function Artigo({ params }: { params: Promise<{ slug: strin
               <div className="mt-3 text-xs text-neutral-500">Publicado a {longDate(post.date)} · {post.author_name}</div>
               {showSummary && <p className="mt-5 text-[17px] font-semibold leading-relaxed text-neutral-700">{post.summary}</p>}
               <div className="terra-prose mt-6" dangerouslySetInnerHTML={{ __html: cleanContent(post.content) }} />
+              <ShareBar title={post.title} />
+              <CommentsSection slug={post.slug} title={post.title} />
             </div>
           </article>
           {related.length > 0 && (

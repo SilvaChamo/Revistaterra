@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import AntiSpamFields, { resetAntiSpam } from '@/components/Antispam/AntiSpamFields';
 
 const REMEMBER_KEY = 'ec-comentario';
-const input = 'w-full border border-gray-300 bg-white px-3 py-2 text-[14px] text-gray-800 outline-none focus:border-[#2E7C04]';
+const input = 'w-full border border-gray-300 bg-white px-3 py-2 text-[14px] text-gray-800 outline-none focus:border-[#047857]';
 
 /** Formulário de comentário, no estilo do WordPress. Protegido por honeypot, tempo mínimo e Cloudflare Turnstile. */
 export default function CommentForm({ slug }: { slug: string }) {
@@ -93,7 +93,7 @@ export default function CommentForm({ slug }: { slug: string }) {
 
       <AntiSpamFields />
 
-      {state.kind === 'ok' && <p className="border-l-4 border-[#2E7C04] bg-green-50 px-3 py-2 text-[13px] text-green-800">{state.text}</p>}
+      {state.kind === 'ok' && <p className="border-l-4 border-[#047857] bg-green-50 px-3 py-2 text-[13px] text-green-800">{state.text}</p>}
       {state.kind === 'error' && <p className="border-l-4 border-red-600 bg-red-50 px-3 py-2 text-[13px] text-red-800">{state.text}</p>}
 
       <button
