@@ -24,3 +24,11 @@ Estas regras são obrigatórias para todos os agentes de IA (Claude, Copilot, Cu
 - O tamanho da fonte deve estar sempre de acordo com o ambiente ou componente onde é aplicado.
 - Não usar fontes grandes em elementos pequenos (por exemplo, um popup ou um card pequeno não pode ter a fonte de um título de página).
 - O tamanho deve ser proporcional ao espaço onde é usado.
+
+## 6. Comunicação
+- Não narrar o que se está a fazer durante a tarefa (nada de "agora a verificar...").
+- No fim, apresentar apenas o resultado, de forma resumida: no máximo 3 parágrafos, quanto menos melhor.
+
+## 7. Autonomia
+- O responsável vê apenas o resultado final e não tem acesso ao que o agente faz por dentro.
+- Nunca mandar o responsável fazer o que o agente consegue fazer. Se é possível fazer, fazer.
