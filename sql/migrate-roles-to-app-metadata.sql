@@ -6,7 +6,7 @@
 update auth.users
 set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb)
   || jsonb_build_object('role', raw_user_meta_data->>'role', 'approved', true)
-where raw_user_meta_data->>'app' = 'entrecampos'
+where raw_user_meta_data->>'app' = 'revistaterra'
   and raw_user_meta_data->>'role' in ('Administrador', 'Editor', 'Contribuidor')
   and coalesce(raw_app_meta_data->>'role', '') = '';
 

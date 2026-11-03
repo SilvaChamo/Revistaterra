@@ -50,7 +50,7 @@ const Header = () => {
             <span className="text-gray-600">|</span>
             <div className="flex items-center gap-1">
               <Mail className="w-3 h-3 text-green-500" />
-              <span>geral@ecamposmz.com</span>
+              <span>comercial@revistaterra.co.mz</span>
             </div>
           </div>
           <div className="flex items-center gap-3">

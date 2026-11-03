@@ -8,7 +8,7 @@ export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const slug = slugify(decodeURIComponent((await params).slug));
-  return { title: `Arquivo de ${categoryLabel(slug)} — EntreCAMPOS` };
+  return { title: `Arquivo de ${categoryLabel(slug)} — Revista Terra` };
 }
 
 /** Modelo único de categoria: serve todas as categorias (/categoria/<slug>?pagina=N). */

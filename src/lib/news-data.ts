@@ -48,7 +48,7 @@ const SUPABASE_KEY =
 const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
 /** Domínio antigo (sem DNS) → site online, onde as imagens existem. */
-const ONLINE_HOST = 'https://entrecamposblog.com/';
+const ONLINE_HOST = 'https://revistaterraonline.com/';
 
 const CATEGORY_LABELS: Record<string, string> = {
   agricultura: 'Agricultura',
@@ -124,7 +124,7 @@ function stripTags(value: string) {
 
 function cleanImageUrl(value?: string) {
   const url = (value || '').replace(/<!\[CDATA\[|\]\]>/g, '').trim();
-  return url.replace(/^https?:\/\/(www\.)?entrecampos\.co\.mz\//, ONLINE_HOST);
+  return url.replace(/^https?:\/\/(www\.)?revistaterra\.co\.mz\//, ONLINE_HOST);
 }
 
 /** HTML do artigo: sanitizado (conteúdo vindo do editor/contribuidores) e com imagens apontadas ao site online. */
@@ -155,7 +155,7 @@ function cleanContent(html: string) {
     .replace(/<li>\s*<\/li>/g, '')
     .replace(/<(ul|ol)>\s*<\/\1>/g, '')
     .replace(/<div class="ec-callout">\s*<\/div>/g, '')
-    .replace(/https?:\/\/(www\.)?entrecampos\.co\.mz\//g, ONLINE_HOST)
+    .replace(/https?:\/\/(www\.)?revistaterra\.co\.mz\//g, ONLINE_HOST)
     .trim();
 }
 
@@ -294,7 +294,7 @@ async function fromSupabase(): Promise<{ published: Post[]; known: Set<string>; 
     )
     .filter((p): p is Post => p !== null);
 
-  // Partilha com a BasededadosAgro (sql/partilha-entrecampos-base.sql): a vista public.noticias_base traz os artigos
+  // Partilha com a BasededadosAgro (sql/partilha-base.sql): a vista public.noticias_base traz os artigos
   // activos da Base, excepto documentos. Se a vista não existir ou falhar, o site segue só com as suas notícias.
   const shared = await querySupabase('noticias_base', 'status=eq.published', 'slug,title,summary,content,category,image_url,date,views');
   for (const r of shared ?? []) {

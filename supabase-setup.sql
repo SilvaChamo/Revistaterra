@@ -1,5 +1,5 @@
 -- ============================================
--- SUPABASE SETUP - ENTRECAMPOS + BASEAGRODATA
+-- SUPABASE SETUP - REVISTA TERRA + BASEAGRODATA
 -- Script único e seguro para base de dados existente
 -- ============================================
 
@@ -76,19 +76,19 @@ INSERT INTO category_site_mapping (category, site_id, is_visible) VALUES
   ('curiosidade', 'baseagrodata', true)
 ON CONFLICT (category, site_id) DO NOTHING;
 
--- Categorias do entrecampos (jornal)
+-- Categorias do revistaterra (jornal)
 INSERT INTO category_site_mapping (category, site_id, is_visible) VALUES
-  ('agricultura', 'entrecampos', true),
-  ('agro-negocio', 'entrecampos', true),
-  ('comunidade', 'entrecampos', true),
-  ('ambiente', 'entrecampos', true),
-  ('turismo-rural', 'entrecampos', true),
-  ('mulher-agrario', 'entrecampos', true),
-  ('curiosidade', 'entrecampos', true),
-  ('dicas', 'entrecampos', true),
-  ('eventos', 'entrecampos', true),
-  ('entrevistas', 'entrecampos', true),
-  ('opiniao', 'entrecampos', true)
+  ('agricultura', 'revistaterra', true),
+  ('agro-negocio', 'revistaterra', true),
+  ('comunidade', 'revistaterra', true),
+  ('ambiente', 'revistaterra', true),
+  ('turismo-rural', 'revistaterra', true),
+  ('mulher-agrario', 'revistaterra', true),
+  ('curiosidade', 'revistaterra', true),
+  ('dicas', 'revistaterra', true),
+  ('eventos', 'revistaterra', true),
+  ('entrevistas', 'revistaterra', true),
+  ('opiniao', 'revistaterra', true)
 ON CONFLICT (category, site_id) DO NOTHING;
 
 -- ============================================
@@ -117,19 +117,19 @@ $$ LANGUAGE plpgsql;
 -- 4. VIEWS PARA CADA SITE
 -- ============================================
 
--- View para entrecampos (todas as notícias)
-CREATE OR REPLACE VIEW entrecampos_news AS
+-- View para revistaterra (todas as notícias)
+CREATE OR REPLACE VIEW revistaterra_news AS
 SELECT 
   n.*,
   CASE 
-    WHEN n.site_id = 'entrecampos' THEN true
-    WHEN is_news_visible_in_site(n.category, 'entrecampos') THEN true
+    WHEN n.site_id = 'revistaterra' THEN true
+    WHEN is_news_visible_in_site(n.category, 'revistaterra') THEN true
     ELSE false
-  END as visible_in_entrecampos
+  END as visible_in_revistaterra
 FROM news n
 WHERE 
-  n.site_id = 'entrecampos' 
-  OR is_news_visible_in_site(n.category, 'entrecampos');
+  n.site_id = 'revistaterra' 
+  OR is_news_visible_in_site(n.category, 'revistaterra');
 
 -- View para baseagrodata (apenas categorias existentes)
 CREATE OR REPLACE VIEW baseagrodata_news AS
@@ -149,15 +149,15 @@ WHERE
 -- 5. FUNÇÕES DE CONVENIÊNCIA
 -- ============================================
 
-CREATE OR REPLACE FUNCTION get_entrecampos_news(p_limit INTEGER DEFAULT 10, p_offset INTEGER DEFAULT 0)
+CREATE OR REPLACE FUNCTION get_revistaterra_news(p_limit INTEGER DEFAULT 10, p_offset INTEGER DEFAULT 0)
 RETURNS SETOF news AS $$
 BEGIN
   RETURN QUERY
   SELECT n.*
   FROM news n
   WHERE 
-    n.site_id = 'entrecampos'
-    OR is_news_visible_in_site(n.category, 'entrecampos')
+    n.site_id = 'revistaterra'
+    OR is_news_visible_in_site(n.category, 'revistaterra')
   ORDER BY n.date DESC
   LIMIT p_limit
   OFFSET p_offset;
@@ -208,8 +208,8 @@ BEGIN
   IF NOT EXISTS (SELECT 1 FROM news LIMIT 1) THEN
     INSERT INTO news (title, summary, content, category, image_url, site_id, date, slug)
     VALUES
-      ('Técnicas modernas de irrigação em Moçambique', 'Novas tecnologias de irrigação estão revolucionando a agricultura no país.', 'Conteúdo completo sobre irrigação...', 'agricultura', 'https://example.com/image1.jpg', 'entrecampos', NOW(), 'tecnicas-irrigacao-mocambique'),
-      ('Comunidade rural de Gaza recebe apoio agrícola', 'Projeto de desenvolvimento rural beneficia mais de 500 famílias.', 'Conteúdo completo sobre comunidade...', 'comunidade', 'https://example.com/image2.jpg', 'entrecampos', NOW(), 'comunidade-gaza-apoio-agricola'),
+      ('Técnicas modernas de irrigação em Moçambique', 'Novas tecnologias de irrigação estão revolucionando a agricultura no país.', 'Conteúdo completo sobre irrigação...', 'agricultura', 'https://example.com/image1.jpg', 'revistaterra', NOW(), 'tecnicas-irrigacao-mocambique'),
+      ('Comunidade rural de Gaza recebe apoio agrícola', 'Projeto de desenvolvimento rural beneficia mais de 500 famílias.', 'Conteúdo completo sobre comunidade...', 'comunidade', 'https://example.com/image2.jpg', 'revistaterra', NOW(), 'comunidade-gaza-apoio-agricola'),
       ('Preços do milho aumentam 15% no mercado de Maputo', 'Variação nos preços do milho devido à escassez de chuvas.', 'Conteúdo completo sobre preços...', 'agricultura', 'https://example.com/image3.jpg', 'baseagrodata', NOW(), 'precos-milho-maputo');
   END IF;
 END $$;
@@ -250,9 +250,9 @@ UPDATE news SET author_name = 'Administrador' WHERE author_name IS NULL OR autho
 -- Índice para busca por autor
 CREATE INDEX IF NOT EXISTS idx_news_author ON news(author_name);
 
--- No entrecampos:
--- SELECT * FROM get_entrecampos_news(10, 0);
--- Ou: SELECT * FROM entrecampos_news ORDER BY date DESC LIMIT 10;
+-- No revistaterra:
+-- SELECT * FROM get_revistaterra_news(10, 0);
+-- Ou: SELECT * FROM revistaterra_news ORDER BY date DESC LIMIT 10;
 
 -- Na baseagrodata:
 -- SELECT * FROM get_baseagrodata_news(10, 0);
@@ -260,7 +260,7 @@ CREATE INDEX IF NOT EXISTS idx_news_author ON news(author_name);
 
 -- Para adicionar nova notícia:
 -- INSERT INTO news (title, summary, content, category, image_url, site_id, slug, author_name)
--- VALUES ('Título', 'Resumo', 'Conteúdo', 'agricultura', 'url.jpg', 'entrecampos', 'slug-unico', 'Administrador');
+-- VALUES ('Título', 'Resumo', 'Conteúdo', 'agricultura', 'url.jpg', 'revistaterra', 'slug-unico', 'Administrador');
 
 -- ============================================
 -- FIM

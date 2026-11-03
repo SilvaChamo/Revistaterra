@@ -1,13 +1,13 @@
 import { FACEBOOK_URL, SectionHeading } from '@/components/Site/parts';
 import { Facebook } from 'lucide-react';
 
-/** Página oficial do EntreCAMPOS no Facebook (linha do tempo: posts mais recentes primeiro). */
+/** Página oficial da Revista Terra no Facebook (linha do tempo: posts mais recentes primeiro). */
 export default function FacebookPage() {
   return (
     <section className="ec-reveal bg-white p-5 shadow-sm">
       <SectionHeading>Siga-nos</SectionHeading>
       <iframe
-        title="Página de Facebook do EntreCAMPOS"
+        title="Página de Facebook da Revista Terra"
         src={`https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(FACEBOOK_URL)}&tabs=timeline&width=260&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true`}
         width="260"
         height="500"

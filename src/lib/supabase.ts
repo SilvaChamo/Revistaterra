@@ -46,4 +46,4 @@ export const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 export const STORAGE_BUCKET =
   process.env.NEXT_PUBLIC_STORAGE_BUCKET ||
   process.env.STORAGE_BUCKET ||
-  'entrecampos-media';
+  'revistaterra-media';

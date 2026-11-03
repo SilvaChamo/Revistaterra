@@ -29,7 +29,7 @@ const ICONS: Record<string, LucideIcon> = {
 };
 
 /**
- * Cores das etiquetas: verdes do site EntreCAMPOS (Elementor/tema) e vermelhos da marca,
+ * Cores das etiquetas: verdes do site Revista Terra (Elementor/tema) e vermelhos da marca,
  * em várias tonalidades, alternados para categorias vizinhas se distinguirem.
  */
 const CATEGORY_COLORS: Record<string, string> = {

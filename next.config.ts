@@ -8,12 +8,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'entrecampos.co.mz',
+        hostname: 'revistaterra.co.mz',
         pathname: '/wp-content/uploads/**',
       },
       {
         protocol: 'https',
-        hostname: 'entrecamposblog.com',
+        hostname: 'revistaterraonline.com',
         pathname: '/wp-content/uploads/**',
       },
     ],

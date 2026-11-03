@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { CalendarCheck, Facebook } from 'lucide-react';
 import { getAllPosts, longDatePt } from '@/lib/news-data';
 
-export const FACEBOOK_URL = 'https://www.facebook.com/entrecampos.co.mz/';
-const AD_IMAGE = 'https://entrecamposblog.com/wp-content/uploads/2023/08/FRETINEGOCIOS-scaled-1.jpg';
+export const FACEBOOK_URL = 'https://www.facebook.com/revistaterra.co.mz/';
+const AD_IMAGE = 'https://revistaterraonline.com/wp-content/uploads/2023/08/FRETINEGOCIOS-scaled-1.jpg';
 
 /** Fundo cinzento e coluna central, como no site online. */
 export function SiteMain({ children }: { children: React.ReactNode }) {
@@ -104,7 +104,7 @@ export async function SiteSidebar({ facebook = true }: { facebook?: boolean } = 
             <Facebook className="h-6 w-6" />
           </span>
           <span>
-            <span className="block text-[17px] text-[#385898]">EntreCampos</span>
+            <span className="block text-[17px] text-[#385898]">Revista Terra</span>
             <span className="block text-[12px] text-gray-500">Seguir página</span>
           </span>
         </a>

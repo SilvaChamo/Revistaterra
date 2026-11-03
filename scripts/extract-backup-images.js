@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const backupPath = '/Users/macbook/BackUp/——— BackUp/—— WEB/___ SITES/EntreCAMPOS/— BACKUP/wp.26_28781.2026-04-07_09-05-16.tar.gz';
+const backupPath = '/Users/macbook/BackUp/——— BackUp/—— WEB/___ SITES/Revista Terra/— BACKUP/wp.26_28781.2026-04-07_09-05-16.tar.gz';
 const extractDir = path.join(__dirname, '../public/wp-content');
 
 console.log('📦 A extrair imagens do backup...');

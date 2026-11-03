@@ -14,7 +14,7 @@ import { InnerSidebar } from '@/components/Expnews/InnerPage';
 export const revalidate = 60;
 
 /** Origem usada nos links de partilha. Fixa (sem ler os cabeçalhos do pedido) para a página poder ficar em cache. */
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://entrecamposblog.com').replace(/\/$/, '');
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://revistaterraonline.com').replace(/\/$/, '');
 
 /** As notícias mais recentes ficam geradas no deploy; as restantes geram-se no primeiro acesso e ficam em cache. */
 export async function generateStaticParams() {
@@ -24,9 +24,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const post = await getPost((await params).slug);
-  if (!post) return { title: 'Notícia não encontrada — EntreCAMPOS' };
+  if (!post) return { title: 'Notícia não encontrada — Revista Terra' };
   return {
-    title: `${post.title} — EntreCAMPOS`,
+    title: `${post.title} — Revista Terra`,
     description: post.excerpt,
     openGraph: { title: post.title, description: post.excerpt, images: post.image ? [post.image] : [] },
   };

@@ -187,9 +187,9 @@ export default async function Home() {
       {/* FOOTER SIMPLES */}
       <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-lg font-semibold mb-2">EntreCAMPOS</p>
+          <p className="text-lg font-semibold mb-2">Revista Terra</p>
           <p className="text-gray-400 text-sm">
-            © 2026 EntreCAMPOS - Agricultura Sustentável em Moçambique
+            © 2026 Revista Terra - Agricultura Sustentável em Moçambique
           </p>
         </div>
       </footer>

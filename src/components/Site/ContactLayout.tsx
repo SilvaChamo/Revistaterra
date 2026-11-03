@@ -18,8 +18,8 @@ const ITEMS = [
     icon: Mail,
     title: 'Email',
     links: [
-      { text: 'suporte@entrecamposblog.com', href: 'mailto:suporte@entrecamposblog.com' },
-      { text: 'redação@entrecamposblog.com' },
+      { text: 'suporte@revistaterraonline.com', href: 'mailto:suporte@revistaterraonline.com' },
+      { text: 'redação@revistaterraonline.com' },
     ],
   },
 ];
@@ -32,7 +32,7 @@ export default function ContactLayout() {
         <div>
           <h2 className="text-[26px] font-extrabold leading-tight text-[#0c1f08]">Estamos aqui para o ajudar</h2>
           <p className="mt-3 text-[13px] leading-6 text-gray-600">
-            Tem uma notícia, uma sugestão ou quer anunciar no EntreCAMPOS? Fale connosco pelos contactos abaixo
+            Tem uma notícia, uma sugestão ou quer anunciar na Revista Terra? Fale connosco pelos contactos abaixo
             ou envie-nos uma mensagem pelo formulário e responderemos o mais depressa possível.
           </p>
           <ul className="mt-8 space-y-6">

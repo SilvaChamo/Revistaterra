@@ -145,7 +145,7 @@ export default function CategoriasPage() {
               Categorias
             </h1>
             <p className="text-gray-600">
-              Explore todas as categorias de conteúdo do EntreCampos
+              Explore todas as categorias de conteúdo da Revista Terra
             </p>
           </div>
 

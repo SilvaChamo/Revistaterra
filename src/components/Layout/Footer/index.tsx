@@ -104,7 +104,7 @@ const Footer = () => {
       <div className="bg-black py-5 px-4 border-t border-gray-800">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-gray-400 text-[11px] tracking-wide">
           <p className="text-center md:text-left">
-            Copyright © {ano} <span className="text-white">EntreCAMPOS.com</span> | Powered by{' '}
+            Copyright © {ano} <span className="text-white">revistaterraonline.com</span> | Powered by{' '}
             <span className="text-green-500">VisualDESIGN</span> Services, Lda.
           </p>
           <nav aria-label="Links de apoio">

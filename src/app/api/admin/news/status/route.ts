@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       console.error('Supabase error:', error);
       const missing = /Could not find the 'status' column/i.test(error.message);
       return NextResponse.json(
-        { error: missing ? 'A tabela news ainda não tem a coluna status: corra sql/entrecampos-colunas.sql no Supabase.' : error.message },
+        { error: missing ? 'A tabela news ainda não tem a coluna status: corra sql/colunas-noticias.sql no Supabase.' : error.message },
         { status: 500 }
       );
     }

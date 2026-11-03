@@ -68,10 +68,10 @@ export default function ExpShell({
   const sidebar = (
     <>
       {/* Mesma altura do cabeçalho branco: o logótipo fica centrado na vertical com ele e cresce sem empurrar o menu */}
-      <Link href="/" aria-label="EntreCAMPOS — início" className="relative block h-[66px] shrink-0">
+      <Link href="/" aria-label="Revista Terra — início" className="relative block h-[66px] shrink-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/entrecampos-icon.jpg"
+          src="/icon.svg"
           alt="Revista Terra"
           width={512}
           height={512}
@@ -103,7 +103,7 @@ export default function ExpShell({
               <div className="flex min-w-0 items-center gap-3 py-3">
                 <MenuToggle />
                 <span className="h-9 w-px bg-gray-200" />
-                <Link href="/" aria-label="EntreCAMPOS — início" className="shrink-0">
+                <Link href="/" aria-label="Revista Terra — início" className="shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/terra/logo-revista-terra.webp" alt="Revista Terra" className="h-9 w-auto sm:h-10" />
                 </Link>
@@ -161,7 +161,7 @@ export default function ExpShell({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/terra/logo-revista-terra.webp" alt="Revista Terra" className="mb-5 -ml-[13px] h-14 w-auto" />
               <p className="text-[13px] leading-6">
-                O EntreCAMPOS é um jornal digital dedicado à agricultura sustentável, ao agro-negócio, ao ambiente e à vida das comunidades rurais em Moçambique.
+                A Revista Terra é um jornal digital dedicado à agricultura sustentável, ao agro-negócio, ao ambiente e à vida das comunidades rurais em Moçambique.
               </p>
               <div className="mt-5 flex items-center gap-6">
                 <Link href="/pagina/inicio" className="text-[12px] font-bold uppercase tracking-wider text-white hover:text-[#d6101c]">
@@ -211,14 +211,14 @@ export default function ExpShell({
           <div className="relative border-t border-white/10">
             <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-3 px-3 py-3 text-[10px] text-gray-500">
               <span>
-                © {new Date().getFullYear()} EntreCAMPOS. Agricultura Sustentável em Moçambique.
+                © {new Date().getFullYear()} Revista Terra. Agricultura Sustentável em Moçambique.
               </span>
               <nav aria-label="Links de apoio" className="flex flex-wrap items-center gap-x-5 gap-y-1 font-bold uppercase tracking-wider">
                 <Link href="/pagina/contactos" className="hover:text-white">Contactos</Link>
                 <Link href="/pagina/inicio" className="hover:text-white">Sobre nós</Link>
                 <Link href="/login" className="hover:text-white">Entrar</Link>
                 <Link href="/register" className="hover:text-white">Registar</Link>
-                <ShareLink path="/" title="EntreCAMPOS" className="bg-white/10 px-3 py-1 text-gray-300" />
+                <ShareLink path="/" title="Revista Terra" className="bg-white/10 px-3 py-1 text-gray-300" />
               </nav>
             </div>
           </div>

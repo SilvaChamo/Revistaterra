@@ -4,7 +4,7 @@ import InnerPage, { InnerSidebar } from '@/components/Expnews/InnerPage';
 import { NewsCard } from '@/components/Expnews/blocks';
 
 export const revalidate = 60;
-export const metadata = { title: 'Arquivo de notícias — EntreCAMPOS' };
+export const metadata = { title: 'Arquivo de notícias — Revista Terra' };
 
 /** Arquivo de todas as notícias, com pesquisa (?q=) e paginação (?pagina=). */
 export default async function ArquivoDeNoticias({

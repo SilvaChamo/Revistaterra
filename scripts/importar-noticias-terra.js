@@ -31,7 +31,7 @@ async function garantirSite() {
     id: SITE_ID,
     name: 'Revista Terra',
     domain: 'revistaterraonline.com',
-    storage_bucket: process.env.STORAGE_BUCKET || process.env.NEXT_PUBLIC_STORAGE_BUCKET || 'entrecampos-media',
+    storage_bucket: process.env.STORAGE_BUCKET || process.env.NEXT_PUBLIC_STORAGE_BUCKET || 'revistaterra-media',
     storage_driver: process.env.STORAGE_DRIVER || 'supabase',
     is_active: true,
     updated_at: new Date().toISOString(),

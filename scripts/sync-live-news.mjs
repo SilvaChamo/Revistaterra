@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SITE = process.env.LIVE_SITE_URL || 'https://entrecamposblog.com';
+const SITE = process.env.LIVE_SITE_URL || 'https://revistaterraonline.com';
 const OUT = path.join(process.cwd(), 'data', 'live-posts.json');
 
 async function fetchPage(page) {

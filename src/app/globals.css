@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --entrecampos-green: #2E7D32;
-  --entrecampos-brown: #795548;
-  --entrecampos-bg: #FAFAFA;
-  --entrecampos-text: #212121;
+  --terra-green: #2E7D32;
+  --terra-brown: #795548;
+  --terra-bg: #FAFAFA;
+  --terra-text: #212121;
 }
 
 html {
@@ -14,8 +14,8 @@ html {
 }
 
 body {
-  background-color: var(--entrecampos-bg);
-  color: var(--entrecampos-text);
+  background-color: var(--terra-bg);
+  color: var(--terra-text);
   font-family: Verdana, sans-serif;
 }
 

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { CalendarDays, ChevronDown, Clock, Mail, Thermometer } from 'lucide-react';
 
-const EMAIL = 'geral@ecamposmz.com';
+const EMAIL = 'comercial@revistaterra.co.mz';
 const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast?latitude=-25.97&longitude=32.57&current=temperature_2m&timezone=Africa%2FMaputo';
 const item = 'flex items-center gap-2 text-[11px] font-normal tracking-wide text-gray-300';
 

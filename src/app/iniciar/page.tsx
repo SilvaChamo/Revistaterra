@@ -14,8 +14,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  title: 'EntreCAMPOS — Início',
-  description: 'Jornal EntreCAMPOS',
+  title: 'Revista Terra — Início',
+  description: 'Jornal Revista Terra',
 };
 
 export const revalidate = 300;
@@ -298,7 +298,7 @@ export default async function HomePage() {
           <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-5 text-[10px] text-gray-500">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/terra/logo-revista-terra.webp" alt="Revista Terra" className="h-8 w-auto" />
-            <span>© {new Date().getFullYear()} EntreCAMPOS — Agricultura Sustentável em Moçambique</span>
+            <span>© {new Date().getFullYear()} Revista Terra — Agricultura Sustentável em Moçambique</span>
           </div>
         </footer>
       </div>
