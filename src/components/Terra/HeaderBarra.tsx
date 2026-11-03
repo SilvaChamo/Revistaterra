@@ -27,7 +27,7 @@ export default function HeaderBarra() {
     <header className="shadow-sm" style={{ background: GREEN }}>
       <div className="relative mx-auto flex max-w-[1300px] items-stretch px-3">
         <Link href="/" className="flex shrink-0 items-center bg-white px-4 py-2 sm:px-5" aria-label="Revista Terra — A Voz do Agro e Ambiente">
-          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className="h-[48px] w-auto sm:h-[54px]" />
+          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={490} height={240} className="h-[48px] w-auto sm:h-[54px]" />
         </Link>
 
         <nav className="hidden flex-1 items-stretch px-2 lg:flex" aria-label="Menu principal">

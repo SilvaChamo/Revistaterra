@@ -71,7 +71,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         {/* logotipo por fora do formulário, sobre o fundo */}
         <div className="mb-5 flex flex-col items-center gap-1">
-          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={440} height={220} className="h-[84px] w-auto" />
+          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={490} height={240} className="h-[84px] w-auto" />
           <p className="text-sm text-gray-500">Crie a sua conta para aceder ao painel</p>
         </div>
       <div className="w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">

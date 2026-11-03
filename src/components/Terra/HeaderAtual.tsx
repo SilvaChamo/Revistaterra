@@ -12,7 +12,7 @@ export default function HeaderAtual({ logo = 'imagem' }: { logo?: 'imagem' | 'le
           <Wordmark align="left" />
         ) : (
           <Link href="/" className="block shrink-0" aria-label="Revista Terra — A Voz do Agro e Ambiente">
-            <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={381} height={190} className="h-[62px] w-auto" />
+            <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={490} height={240} className="h-[62px] w-auto" />
           </Link>
         )}
         <HeaderButtons />

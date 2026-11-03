@@ -40,7 +40,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
       <footer className="mt-8 text-sm text-white" style={{ background: DARK }}>
         <div className="mx-auto grid max-w-[1300px] gap-8 px-6 py-8 md:grid-cols-4">
           <div>
-            <span className="inline-block bg-white px-3 py-2"><img src="/terra/logo-revista-terra.webp" alt="Revista Terra" width={440} height={220} className="h-14 w-auto" /></span>
+            <span className="inline-block bg-white px-3 py-2"><img src="/terra/logo-revista-terra.webp" alt="Revista Terra" width={490} height={240} className="h-14 w-auto" /></span>
             <p className="mt-2 text-xs text-white/70">Jornalismo ao serviço do agro e do ambiente</p>
           </div>
           <div>
