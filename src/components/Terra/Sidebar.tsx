@@ -14,7 +14,7 @@ export default async function Sidebar({ only }: { only?: string[] }) {
   const recent = allCards.slice(5, 10);
   return (
     <StickyAside>
-      {show('tempo') && <Widget title="Tempo · Moçambique" flush fill><Weather /></Widget>}
+      {show('tempo') && <Widget title="Tempo · Moçambique" flush fill green><Weather /></Widget>}
       {show('radio') && (
         <Widget title="Rádio +Agro" flush>
           <div className="bg-[#eaf3ed] p-4"><RadioPlayer compact /></div>

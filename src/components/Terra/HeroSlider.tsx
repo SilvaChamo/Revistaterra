@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { DARK, LIME } from '@/lib/terra';
+import { DARK, GREEN, LIME } from '@/lib/terra';
 
 export type HeroItem = { category: string; title: string; excerpt: string; url: string; image: string | null };
 
@@ -44,7 +44,7 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
       <div className="absolute bottom-6 left-9 z-10 flex items-center gap-2 sm:bottom-9 sm:left-14">
         <button aria-label="Anterior" onClick={() => go(i - 1)} className={arrow}>‹</button>
         <button aria-label="Seguinte" onClick={() => go(i + 1)} className={arrow}>›</button>
-        <a href={items[i].url} className="ml-2 flex h-9 items-center px-5 text-xs font-bold uppercase tracking-wide transition-colors hover:bg-white" style={{ background: LIME, color: DARK }}>Ler artigo</a>
+        <a href={items[i].url} className="ml-2 flex h-9 items-center px-5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:!bg-[#8DF43A] hover:!text-[#064E3B]" style={{ background: GREEN }}>Ler artigo</a>
       </div>
 
       {/* pontos verticais: à esquerda, antes do título; terminam onde começam os botões (mesma base) e crescem para cima; o activo é maior */}

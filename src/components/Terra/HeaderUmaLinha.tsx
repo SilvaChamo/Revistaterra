@@ -72,11 +72,11 @@ export default function HeaderUmaLinha() {
 
           {/* Telemóvel, da esquerda para a direita: pesquisa, Entrar e Menu (o último, encostado à direita) */}
           <div className={`ml-auto flex shrink-0 items-center gap-2.5 lg:hidden text-gray-700`}>
-            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-1.5 whitespace-nowrap px-3 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:opacity-90" style={{ background: GREEN }}><User size={16} aria-hidden />Entrar</Link>
+            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-1.5 whitespace-nowrap px-3 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:!bg-[#8DF43A] hover:!text-[#064E3B]" style={{ background: GREEN }}><User size={16} aria-hidden />Entrar</Link>
             <button type="button" onClick={() => setMenu(!menu)} aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} className={`flex h-9 w-9 shrink-0 items-center justify-center border transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] border-gray-400`}><Menu className="h-5 w-5" /></button>
           </div>
           <div className="ml-auto hidden items-center justify-self-end lg:ml-0 lg:flex">
-            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide transition-colors hover:opacity-90" style={{ background: GREEN, color: '#fff' }}><User size={16} aria-hidden />Entrar</Link>
+            <Link href="/admin" aria-label="Entrar no painel de gestão" title="Entrar no painel de gestão" className="flex h-9 items-center gap-2 whitespace-nowrap px-4 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:!bg-[#8DF43A] hover:!text-[#064E3B]" style={{ background: GREEN }}><User size={16} aria-hidden />Entrar</Link>
           </div>
 
         </div>
