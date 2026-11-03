@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { getSupabase } from '@/lib/supabase';
 import Spinner from '@/components/Common/Spinner';
 
-/** Regresso do Google: o Supabase troca o código pela sessão e o servidor abre a sessão do EntreCAMPOS. */
+/** Regresso do Google: o Supabase troca o código pela sessão e o servidor abre a sessão da Revista Terra. */
 export default function AuthCallbackPage() {
   const [error, setError] = useState<string | null>(null);
 

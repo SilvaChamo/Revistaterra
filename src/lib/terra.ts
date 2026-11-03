@@ -8,8 +8,36 @@ export const DARKER = '#053D2F'; // um pouco mais carregado: linha do menu e ite
 
 export type Card = { category: string; title: string; excerpt: string; url: string; image: string | null; date?: string };
 
-export const terra = data;
-export const allCards: Card[] = data.cards.map((c) => ({ ...c, category: c.category || 'Fora de Campo' }));
+/** Endereço de uma notícia no site antigo (revistaterraonline.com): é daí que vêm os títulos de src/data/terra.json. */
+const SITE_ANTIGO = /^https?:\/\/(www\.)?revistaterraonline\.com\//i;
+
+/** Slug de uma notícia = último troço do endereço (é o mesmo que scripts/importar-noticias-terra.js grava na base). */
+export function slugDoEndereco(url: string): string {
+  try {
+    const partes = new URL(url).pathname.split('/').filter(Boolean);
+    return decodeURIComponent(partes[partes.length - 1] || '');
+  } catch {
+    return '';
+  }
+}
+
+/** As notícias abrem neste projecto (/noticias/<slug>), não no site antigo. Outros endereços ficam como estão. */
+function interno<T extends { url: string }>(item: T): T {
+  const slug = SITE_ANTIGO.test(item.url) ? slugDoEndereco(item.url) : '';
+  return slug ? { ...item, url: `/noticias/${encodeURIComponent(slug)}` } : item;
+}
+
+/**
+ * Endereço original (site antigo) de uma notícia que ainda não foi importada para a base de dados.
+ * A página /noticias/<slug> usa-o como reserva até a importação ser feita.
+ */
+export function enderecoAntigo(slug: string): string | null {
+  const todos = [...data.hero, ...data.cards, ...data.authors];
+  return todos.find((i) => SITE_ANTIGO.test(i.url) && slugDoEndereco(i.url) === slug)?.url ?? null;
+}
+
+export const terra = { ...data, hero: data.hero.map(interno), authors: data.authors.map(interno) };
+export const allCards: Card[] = data.cards.map((c) => interno({ ...c, category: c.category || 'Fora de Campo' }));
 
 /** Redes sociais da Revista Terra (as únicas que o site actual indica). */
 export const social = [

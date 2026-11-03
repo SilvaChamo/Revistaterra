@@ -65,7 +65,7 @@ export default function NewsRepairPage() {
         if (!n.image_url) return true;
         if (n.image_url.includes('CDATA')) return true;
         // URLs from the live site or Supabase are valid — do not flag
-        if (n.image_url.includes('entrecampos.co.mz')) return false;
+        if (n.image_url.includes('revistaterraonline.com') || n.image_url.startsWith('/terra/')) return false;
         if (n.image_url.includes('supabase')) return false;
         // Any other wp-content URL from an unknown host still needs repair
         if (n.image_url.includes('wp-content')) return true;

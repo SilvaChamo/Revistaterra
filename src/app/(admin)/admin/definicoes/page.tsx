@@ -13,7 +13,7 @@ import {
 export default function DefinicoesGeraisPage() {
   const [formData, setFormData] = useState({
     siteName: 'Revista Terra',
-    siteDescription: 'Portal de notícias agrícolas de Moçambique',
+    siteDescription: 'Revista Terra — A Voz do Agro e Ambiente',
     logoUrl: '',
     faviconUrl: '',
     contactEmail: 'comercial@revistaterra.co.mz',

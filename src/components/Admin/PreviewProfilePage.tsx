@@ -19,7 +19,7 @@ export default function PreviewProfilePage({ role }: PreviewProfilePageProps) {
   // Dados baseados na role
   const userData = {
     name: role === 'editor' ? 'João Silva (Editor)' : role === 'contribuidor' ? 'Maria Santos (Contribuidora)' : 'Visitante',
-    email: role === 'guest' ? 'visitante@exemplo.com' : `${role}@entrecamposblog.com`,
+    email: role === 'guest' ? 'visitante@exemplo.com' : `${role}@revistaterra.co.mz`,
     role: role.charAt(0).toUpperCase() + role.slice(1),
     joined: '2024-01-15',
     bio: role === 'editor' 

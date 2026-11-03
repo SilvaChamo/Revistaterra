@@ -22,24 +22,7 @@ interface UserItem {
   website?: string;
 }
 
-const MOCK_USERS: UserItem[] = [
-  { id: '1', username: 'admin', name: 'Silva Chamo', email: 'admin@ecamposmz.com', role: 'Administrador', articles: 76, isAdmin: true },
-  { id: '2', username: 'fosterbethune0', name: '—', email: 'costanza@b.fruitingbodymushrooms.online', role: 'Subscritor', articles: 0 },
-  { id: '3', username: 'Redacao', name: 'Redação EntreCAMPOS', email: 'silvanochamo@gmail.com', role: 'Actor', articles: 4, avatar: 'https://i.pravatar.cc/150?u=redacao' },
-  { id: '4', username: 'Silva', name: 'Silva Chamo', email: 'silva.chamo@gmail.com', role: 'Editor', articles: 0, avatar: 'https://i.pravatar.cc/150?u=silva' },
-  { id: '5', username: 'tessakosovich3', name: '—', email: 'tessa.kosovich@williamjons.dynainbox.com', role: 'Subscritor', articles: 0 },
-];
-
 const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor'];
-
-// Símbolo do EntreCAMPOS para o admin
-const EntrecamposSymbol = () => (
-  <div className="w-8 h-8 rounded shadow-sm border border-gray-200 flex items-center justify-center bg-[#1d2327] flex-shrink-0">
-    <span className="text-[10px] font-black leading-none">
-      <span className="text-[#00a651]">EC</span>
-    </span>
-  </div>
-);
 
 export default function UsersAdminPage() {
   const [users, setUsers] = useState<UserItem[]>([]);

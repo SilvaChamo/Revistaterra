@@ -54,12 +54,12 @@ export default function CommentForm({ slug }: { slug: string }) {
   return (
     <form onSubmit={submit} className="mt-4 space-y-4" noValidate={false}>
       <p className="text-[13px] text-gray-500">
-        O seu endereço de email não será publicado. Campos obrigatórios marcados com <span className="text-[#d6101c]">*</span>
+        O seu endereço de email não será publicado. Campos obrigatórios marcados com <span className="text-[#047857]">*</span>
       </p>
 
       <div>
         <label htmlFor="c-content" className="mb-1 block text-[13px] font-semibold text-gray-700">
-          Comentário <span className="text-[#d6101c]">*</span>
+          Comentário <span className="text-[#047857]">*</span>
         </label>
         <textarea id="c-content" required rows={7} maxLength={3000} value={values.content} onChange={set('content')} className={`${input} resize-y`} />
       </div>
@@ -67,13 +67,13 @@ export default function CommentForm({ slug }: { slug: string }) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="c-name" className="mb-1 block text-[13px] font-semibold text-gray-700">
-            Nome <span className="text-[#d6101c]">*</span>
+            Nome <span className="text-[#047857]">*</span>
           </label>
           <input id="c-name" required maxLength={80} autoComplete="name" value={values.name} onChange={set('name')} className={input} />
         </div>
         <div>
           <label htmlFor="c-email" className="mb-1 block text-[13px] font-semibold text-gray-700">
-            Email <span className="text-[#d6101c]">*</span>
+            Email <span className="text-[#047857]">*</span>
           </label>
           <input id="c-email" required type="email" maxLength={254} autoComplete="email" value={values.email} onChange={set('email')} className={input} />
         </div>
@@ -94,12 +94,12 @@ export default function CommentForm({ slug }: { slug: string }) {
       <AntiSpamFields />
 
       {state.kind === 'ok' && <p className="border-l-4 border-[#2E7C04] bg-green-50 px-3 py-2 text-[13px] text-green-800">{state.text}</p>}
-      {state.kind === 'error' && <p className="border-l-4 border-[#d6101c] bg-red-50 px-3 py-2 text-[13px] text-red-800">{state.text}</p>}
+      {state.kind === 'error' && <p className="border-l-4 border-red-600 bg-red-50 px-3 py-2 text-[13px] text-red-800">{state.text}</p>}
 
       <button
         type="submit"
         disabled={state.kind === 'sending'}
-        className="bg-[#d6101c] px-5 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#a30c15] disabled:opacity-60"
+        className="bg-[#047857] px-5 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-[#064E3B] disabled:opacity-60"
       >
         {state.kind === 'sending' ? 'A enviar…' : 'Publicar comentário'}
       </button>

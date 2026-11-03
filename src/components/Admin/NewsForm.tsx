@@ -20,7 +20,7 @@ const RichEditor = dynamic(() => import('@/components/Admin/RichEditor'), { ssr:
 const CATEGORIES = [
   'Fruticultura', 'Gestão agrícola', 'Histórias inspiradoras',
   'Inclusao feminina', 'Infra-estruturas', 'Inovação', 'Agricultura', 'Comunidade',
-  // Categorias do site online (entrecamposblog.com)
+  // Categorias já usadas nas notícias
   'Sector agrário', 'Ambiente', 'Turismo rural', 'Desenvolvimento local', 'Apoio comunitário', 'Mulher agrário', 'Curiosidade',
   'Agro-negócio', 'Oportunidades', 'Receitas',
   // Categorias que chegam da Base de Dados Agro

@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
-      // Só contas deste site. Se a conta também serve outro site (mesmo Supabase), só se retira o acesso ao EntreCAMPOS.
+      // Só contas deste site. Se a conta também serve outro site (mesmo Supabase), só se retira o acesso à Revista Terra.
       const target = await getSiteUser(supabaseAdmin, userId);
       if (!target) {
         errors.push(`${userId}: não é uma conta deste site`);

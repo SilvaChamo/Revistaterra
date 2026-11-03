@@ -8,15 +8,20 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'entrecampos.co.mz',
-        pathname: '/wp-content/uploads/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'entrecamposblog.com',
+        hostname: 'revistaterraonline.com',
         pathname: '/wp-content/uploads/**',
       },
     ],
+  },
+  // Páginas que vinham do EntreCAMPOS: já não existem na Revista Terra, seguem para a home (ou para o equivalente).
+  async redirects() {
+    return [
+      { source: '/iniciar', destination: '/', permanent: false },
+      { source: '/inicio', destination: '/', permanent: false },
+      { source: '/executiva', destination: '/', permanent: false },
+      { source: '/pagina/contactos', destination: '/contacto', permanent: false },
+      { source: '/pagina/:slug', destination: '/', permanent: false },
+    ];
   },
   // Garantir que todas as rotas estáticas sejam geradas
   trailingSlash: false,

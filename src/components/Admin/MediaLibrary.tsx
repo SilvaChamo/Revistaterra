@@ -497,7 +497,7 @@ export default function MediaLibrary({ onSelect, isModal, externalSearchQuery }:
         </div>
       )}
 
-      {/* CUSTOM SAVE CONFIRMATION POPUP (ENTRECAMPOS STYLE) */}
+      {/* CUSTOM SAVE CONFIRMATION POPUP (REVISTA TERRA) */}
       {isSaveConfirmOpen && (
         <div className="fixed inset-0 z-[10000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-md rounded-xl shadow-2xl overflow-hidden border border-[#ccd0d4] animate-in fade-in zoom-in duration-200">

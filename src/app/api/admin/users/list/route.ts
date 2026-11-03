@@ -13,7 +13,7 @@ export async function GET() {
   const guard = await requireAuth('listar_utilizadores');
   if ('error' in guard) return guard.error;
   try {
-    // O Supabase Auth é partilhado por vários sites: só são listadas as contas deste (app_metadata.entrecampos).
+    // O Supabase Auth é partilhado por vários sites: só são listadas as contas deste (app_metadata.revistaterra).
     const all: User[] = [];
     for (let page = 1; page <= 10; page++) {
       const { data, error } = await supabaseAdmin.auth.admin.listUsers({ page, perPage: 1000 });

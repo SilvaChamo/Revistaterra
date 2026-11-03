@@ -47,7 +47,7 @@ export default async function CommentsSection({ slug, title }: { slug: string; t
                 <div className="min-w-0">
                   <p className="text-[14px] font-bold text-gray-800">
                     {c.website ? (
-                      <a href={c.website} rel="nofollow ugc noopener noreferrer" target="_blank" className="hover:text-[#d6101c]">
+                      <a href={c.website} rel="nofollow ugc noopener noreferrer" target="_blank" className="hover:text-[#047857]">
                         {c.name}
                       </a>
                     ) : (
