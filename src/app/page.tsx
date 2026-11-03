@@ -30,6 +30,9 @@ export default async function Home() {
   const allCards = (await loadCards()).map((c) => ({ ...c, category: c.category || 'Fora de Campo' }));
   const hero = await loadHero();
   const take = makePicker(allCards);
+  // 3 notícias da mesma categoria de cada cartão do carrossel (por baixo dele)
+  const related: Record<string, Pick<Card, 'title' | 'url' | 'date'>[]> = {};
+  for (const c of allCards) related[c.url] = allCards.filter((x) => x.category === c.category && x.url !== c.url).slice(0, 3).map(({ title, url, date }) => ({ title, url, date }));
   const todas = allCards.filter((c) => c.image);
   const recentSets: RecentSet[] = [
     buildSet('todas', 'Todas', [...todas].sort((x, y) => Number(y.category === 'Sociedade' || y.category === 'Mercado') - Number(x.category === 'Sociedade' || x.category === 'Mercado'))),
@@ -49,7 +52,7 @@ export default async function Home() {
         <main className="min-w-0">
           <HeroSlider items={hero.length ? hero : terra.hero} />
 
-          <RecentNews sets={recentSets} />
+          <RecentNews sets={recentSets} related={related} />
 
           <Heading>Destaques</Heading>
           <div className="grid gap-3 md:grid-cols-[1.45fr_1fr]">
