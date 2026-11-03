@@ -530,13 +530,23 @@
    "title": "Conversas Com Paulina — Episódio 2",
    "url": "https://revistaterraonline.com/podcasts/conversas-com-paulina-episodio-2/",
    "image": "/terra/Paulina-Chiziane.webp",
-   "excerpt": "Paulina Chiziane continua a conversa sobre religião e os seus desdobramentos na sociedade."
+   "excerpt": "Paulina Chiziane continua a conversa sobre religião e os seus desdobramentos na sociedade.",
+   "episode": "Episódio 2",
+   "series": "Conversas Com Paulina",
+   "guest": "Paulina Chiziane"
   },
   {
    "title": "Conversas Com Paulina Episódio 1",
    "url": "https://revistaterraonline.com/podcasts/conversas-com-paulina-episodio-1/",
    "image": "/terra/Paulina-Chiziane.webp",
-   "excerpt": "A conceituada escritora, Paulina Chiziane, traz as suas reflexões sobre temas diversos, tendo como a religião e os…"
+   "excerpt": "A conceituada escritora, Paulina Chiziane, traz as suas reflexões sobre temas diversos, tendo como a religião e os respectivos desdobramentos na sociedade.",
+   "episode": "Episódio 1",
+   "duration": "53:25",
+   "series": "Conversas Com Paulina",
+   "aboutTitle": "Uma conversa com Paulina",
+   "about": "A escritora Paulina Chiziane partilha reflexões sobre a religião e os seus desdobramentos na sociedade.",
+   "host": "William Mapote",
+   "guest": "Paulina Chiziane"
   }
  ],
  "mercados": [
