@@ -3,26 +3,20 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
-import { DARK, DARKER, LIME, TOPBAR, social } from '@/lib/terra';
+import { DARK, DARKER, LIME, TOPBAR, social, terra } from '@/lib/terra';
+import { useWeather } from './WeatherProvider';
 import { useRadio } from './RadioProvider';
 
 export const THIN_BAR = 36; // altura da barra fina, em px
 
 const WMO: Record<number, string> = { 0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️', 45: '🌫️', 48: '🌫️', 51: '🌦️', 53: '🌦️', 55: '🌧️', 61: '🌧️', 63: '🌧️', 65: '🌧️', 80: '🌦️', 81: '🌧️', 82: '⛈️', 95: '⛈️', 96: '⛈️', 99: '⛈️' };
 
-/** Temperatura actual em Maputo (Open-Meteo), com uma nova tentativa se o serviço estiver ocupado. */
+/** Temperatura actual em Maputo: vem do WeatherProvider (já com a página), sem pedido próprio. */
+const MAPUTO = terra.provinces.findIndex((p) => p.key === 'maputo-cidade');
 function MiniTemp() {
-  const [t, setT] = useState<{ temp: number; icon: string } | null>(null);
-  useEffect(() => {
-    let alive = true;
-    const url = 'https://api.open-meteo.com/v1/forecast?latitude=-25.966&longitude=32.583&current=temperature_2m,weather_code&timezone=auto';
-    const load = (left: number) => fetch(url).then((r) => r.json()).then((j) => {
-      if (j?.error) throw new Error(j.reason);
-      if (alive) setT({ temp: Math.round(j.current.temperature_2m), icon: WMO[j.current.weather_code] ?? '⛅' });
-    }).catch(() => { if (alive && left > 0) setTimeout(() => load(left - 1), 3000); });
-    load(2);
-    return () => { alive = false; };
-  }, []);
+  const { data } = useWeather();
+  const w = data?.[MAPUTO];
+  const t = w ? { temp: w.temp, icon: WMO[w.code] ?? '⛅' } : null;
   return (
     <span className="flex items-center gap-1.5 whitespace-nowrap font-semibold" title="Temperatura em Maputo">
       <span aria-hidden>{t ? t.icon : '🌡️'}</span>

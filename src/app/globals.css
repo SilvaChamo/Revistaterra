@@ -348,9 +348,9 @@ body {
 }
 @keyframes ec-spin { to { transform: rotate(360deg); } }
 @keyframes ec-pulse { 0%, 100% { transform: scale(0.5); opacity: 0.4; } 50% { transform: scale(1.15); opacity: 1; } }
+/* O ponto pulsa sempre enquanto processa (também com "reduzir movimento": é o sinal de que a página não bloqueou). */
 @media (prefers-reduced-motion: reduce) {
   .ec-spinner-outer { animation-duration: 3s; }
-  .ec-spinner-dot { animation: none; }
 }
 
 /* Barras de ferramentas fixas no scroll do painel: o conteúdo (main) é que rola, por isso a barra cola-se ao topo dele,

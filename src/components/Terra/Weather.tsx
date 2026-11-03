@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { GREEN, terra } from '@/lib/terra';
-
-type Day = { max: number; min: number; code: number; label: string };
-type Now = { temp: number; feels: number; hum: number; wind: number; code: number; days: Day[] };
+import { useWeather } from './WeatherProvider';
 
 const WMO: Record<number, [string, string]> = {
   0: ['Céu limpo', '☀️'], 1: ['Pouco nublado', '🌤️'], 2: ['Parcialmente nublado', '⛅'], 3: ['Nublado', '☁️'],
@@ -13,42 +11,16 @@ const WMO: Record<number, [string, string]> = {
   82: ['Aguaceiros fortes', '⛈️'], 95: ['Trovoada', '⛈️'], 96: ['Trovoada', '⛈️'], 99: ['Trovoada forte', '⛈️'],
 };
 const wmo = (c: number) => WMO[c] ?? ['Variável', '⛅'];
-const weekday = (iso: string, i: number) => (i === 0 ? 'Hoje' : new Date(iso + 'T12:00:00').toLocaleDateString('pt-PT', { weekday: 'short' }).replace('.', ''));
 
 /** Norte → sul, de Cabo Delgado a Maputo. */
 const ORDER = ['cabo-delgado', 'niassa', 'nampula', 'zambezia', 'tete', 'manica', 'sofala', 'inhambane', 'gaza', 'maputo-provincia', 'maputo-cidade'];
 const places = terra.provinces.map((p, idx) => ({ ...p, idx })).sort((a, b) => ORDER.indexOf(a.key) - ORDER.indexOf(b.key));
 
 export default function Weather() {
-  const [data, setData] = useState<Now[] | null>(null);
+  // os dados vêm do WeatherProvider (já com a página, em cache no servidor)
+  const { data, failed, retry } = useWeather();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const [attempt, setAttempt] = useState(0);
-
-  useEffect(() => {
-    let alive = true;
-    const src = terra.provinces;
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${src.map((p) => p.lat).join(',')}&longitude=${src.map((p) => p.lon).join(',')}` +
-      '&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=4';
-    const load = (left: number) => fetch(url).then((r) => r.json()).then((j) => {
-      if (j?.error) throw new Error(j.reason);
-      const arr = Array.isArray(j) ? j : [j];
-      if (!alive) return;
-      setFailed(false);
-      setData(arr.map((x) => ({
-        temp: Math.round(x.current.temperature_2m), feels: Math.round(x.current.apparent_temperature), hum: Math.round(x.current.relative_humidity_2m),
-        wind: Math.round(x.current.wind_speed_10m), code: x.current.weather_code,
-        days: x.daily.time.map((t: string, k: number) => ({ max: Math.round(x.daily.temperature_2m_max[k]), min: Math.round(x.daily.temperature_2m_min[k]), code: x.daily.weather_code[k], label: weekday(t, k) })),
-      })));
-    }).catch(() => {
-      if (!alive) return;
-      if (left > 0) setTimeout(() => load(left - 1), 3000);
-      else setFailed(true);
-    });
-    load(3);
-    return () => { alive = false; };
-  }, [attempt]);
 
   useEffect(() => {
     if (!data || paused) return;
@@ -56,7 +28,7 @@ export default function Weather() {
     return () => clearInterval(id);
   }, [data, paused]);
 
-  if (failed) return <div className="p-5 text-sm text-neutral-500">Não foi possível carregar o tempo agora. <button onClick={() => { setFailed(false); setAttempt((n) => n + 1); }} className="font-bold underline" style={{ color: GREEN }}>Tentar de novo</button></div>;
+  if (failed) return <div className="p-5 text-sm text-neutral-500">Não foi possível carregar o tempo agora. <button onClick={retry} className="font-bold underline" style={{ color: GREEN }}>Tentar de novo</button></div>;
   if (!data) return <p className="p-5 text-sm text-neutral-500">A carregar o clima nacional…</p>;
   const p = places[i], w = data[p.idx], [cond, icon] = wmo(w.code);
 
