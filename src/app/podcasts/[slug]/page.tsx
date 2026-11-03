@@ -28,11 +28,15 @@ export default async function Podcast({ params }: { params: Promise<{ slug: stri
     <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Podcasts', href: '/podcasts' }, { label: p.title }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0">
-          <article className="bg-white shadow-sm max-sm:-mx-3">
-            {/* um só card: capa (a toda a largura no telemóvel), dados do episódio e, por baixo, o play com a linha de progresso */}
-            <div className="grid sm:grid-cols-[200px_1fr] sm:gap-5 sm:p-8">
-              {p.image && <img src={p.image} alt="" className="aspect-square w-full object-cover sm:max-w-[200px] sm:shadow-md" />}
-              <div className="min-w-0 p-5 sm:p-0">
+          <article className="overflow-hidden bg-white shadow-sm max-sm:-mx-3">
+            {/* um só card: a capa ocupa toda a altura do card, sem margens (a toda a largura no telemóvel); por baixo do episódio, o leitor */}
+            <div className="grid sm:grid-cols-[240px_1fr]">
+              {p.image && (
+                <div className="relative aspect-square sm:aspect-auto">
+                  <img src={p.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                </div>
+              )}
+              <div className="min-w-0 p-5 sm:p-8">
                 <span className="inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest" style={{ background: LIME, color: DARK }}>Podcast</span>
                 <h1 className="mt-3 text-2xl font-extrabold leading-tight sm:text-3xl" style={{ color: DARK }}>{p.title}</h1>
                 {p.excerpt && <p className="mt-3 text-[14px] leading-relaxed text-neutral-600">{p.excerpt}</p>}

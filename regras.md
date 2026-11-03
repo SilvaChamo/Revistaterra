@@ -49,3 +49,6 @@ Estas regras são obrigatórias para todos os agentes de IA (Claude, Copilot, Cu
 ## 11. Mensagens de commit
 - Todos os commits são escritos em português, citando o nome do responsável e o que foi feito. Somente isso.
 - Formato: `SilvaChamo: <o que foi feito>`. Sem mais texto, sem linhas extra, sem referências a IA.
+
+## 12. Tipo de letra
+- A fonte principal do site é a Verdana. Usar sempre Verdana em todos os componentes, incluindo páginas novas e detalhes do leitor de áudio.
