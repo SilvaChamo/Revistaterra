@@ -23,10 +23,8 @@ import {
   CreditCard,
   Eye,
   Video,
-  Zap,
   Shield,
   BarChart3,
-  FolderOpen,
   FileImage,
   FileVideo,
   File,
@@ -311,16 +309,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           ]
         },
         { 
-          href: '/admin/litespeed', 
-          icon: Zap, 
-          label: 'LiteSpeed Cache',
-          submenu: [
-            { label: 'Otimização da página', href: '/admin/litespeed' },
-            { label: 'Limpeza de cache', href: '/admin/litespeed/limpeza' },
-            { label: 'Configurações', href: '/admin/litespeed/configuracoes' },
-          ]
-        },
-        { 
           href: '/admin/capacidades', 
           icon: Shield, 
           label: 'Capacidades',
@@ -338,17 +326,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Estatísticas em tempo real', href: '/admin/trafego' },
             { label: 'Relatórios detalhados', href: '/admin/trafego/relatorios' },
             { label: 'Visitantes por país', href: '/admin/trafego/paises' },
-          ]
-        },
-        { 
-          href: '/admin/partilhado', 
-          icon: FolderOpen, 
-          label: 'Partilhado',
-          submenu: [
-            { label: 'Geral', href: '/admin/partilhado' },
-            { label: 'Vídeos', href: '/admin/partilhado/videos' },
-            { label: 'Imagens', href: '/admin/partilhado/imagens' },
-            { label: 'Documentos', href: '/admin/partilhado/documentos' },
           ]
         },
         { 

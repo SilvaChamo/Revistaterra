@@ -46,6 +46,11 @@ const SUPABASE_KEY =
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
   '';
 const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
+/**
+ * A vista `noticias_base` traz artigos da Base de Dados Agro (outro projecto, mesma base de dados).
+ * A Revista Terra só mostra o que é seu: só entra se SHARE_BASE_NEWS=true.
+ */
+const SHARE_BASE = process.env.SHARE_BASE_NEWS === 'true';
 
 /** Domínio antigo (sem DNS) → site online, onde as imagens existem. */
 const ONLINE_HOST = 'https://revistaterraonline.com/';
@@ -248,8 +253,8 @@ async function querySupabase(table: string, filter: string, select = '*', limit 
 async function fromSupabase(): Promise<{ published: Post[]; known: Set<string>; base: Post[] } | null> {
   const [rows, baseRows] = await Promise.all([
     querySupabase('news', `site_id=eq.${encodeURIComponent(SITE_ID)}`, LIST_COLUMNS),
-    // Artigos da Base de Dados Agro (menos documentos) partilhados com este site; sem a vista, simplesmente não há.
-    querySupabase('noticias_base', 'status=eq.published', LIST_COLUMNS),
+    // Artigos da Base de Dados Agro (menos documentos), só se a partilha estiver ligada; sem a vista, simplesmente não há.
+    SHARE_BASE ? querySupabase('noticias_base', 'status=eq.published', LIST_COLUMNS) : Promise.resolve(null),
   ]);
   if (!rows) return null;
   const base = (baseRows ?? [])
@@ -294,9 +299,9 @@ async function fromSupabase(): Promise<{ published: Post[]; known: Set<string>; 
     )
     .filter((p): p is Post => p !== null);
 
-  // Partilha com a BasededadosAgro (sql/partilha-base.sql): a vista public.noticias_base traz os artigos
+  // Partilha com a BasededadosAgro (sql/partilha-base.sql, só com SHARE_BASE_NEWS=true): a vista public.noticias_base traz os artigos
   // activos da Base, excepto documentos. Se a vista não existir ou falhar, o site segue só com as suas notícias.
-  const shared = await querySupabase('noticias_base', 'status=eq.published', 'slug,title,summary,content,category,image_url,date,views');
+  const shared = SHARE_BASE ? await querySupabase('noticias_base', 'status=eq.published', 'slug,title,summary,content,category,image_url,date,views') : null;
   for (const r of shared ?? []) {
     const post = toPost({
       slug: r.slug as string,

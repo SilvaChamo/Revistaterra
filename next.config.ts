@@ -18,6 +18,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Páginas que vinham do EntreCAMPOS: já não existem na Revista Terra, seguem para a home (ou para o equivalente).
+  async redirects() {
+    return [
+      { source: '/iniciar', destination: '/', permanent: false },
+      { source: '/inicio', destination: '/', permanent: false },
+      { source: '/executiva', destination: '/', permanent: false },
+      { source: '/pagina/contactos', destination: '/contacto', permanent: false },
+      { source: '/pagina/:slug', destination: '/', permanent: false },
+    ];
+  },
   // Garantir que todas as rotas estáticas sejam geradas
   trailingSlash: false,
 };

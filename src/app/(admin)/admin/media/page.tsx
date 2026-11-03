@@ -469,7 +469,7 @@ export default function MediaGallery() {
         {/* Toolbar de Filtros - AGORA FIXA */}
         <div className="ec-sticky-bar sticky z-40 bg-[#f0f0f1] pt-4 pb-4">
           <div className="flex flex-col md:flex-row items-center justify-between bg-white border border-[#ccd0d4] p-2 gap-2 shadow-sm">
-            <div className="flex items-center gap-2">
+            <div className="flex max-w-full flex-wrap items-center gap-2">
               {isBulkMode && (
                 <input 
                   type="checkbox" 

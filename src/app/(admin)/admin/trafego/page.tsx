@@ -200,7 +200,7 @@ export default function TrafegoPage() {
         </div>
 
         {/* Chart */}
-        <div className="h-64 flex items-end justify-between gap-2 px-4">
+        <div className="h-64 flex items-end justify-between gap-2 px-4 max-sm:overflow-x-auto max-sm:pb-8">
           {MOCK_DATA.trafficByDay.map((day, idx) => (
             <div key={idx} className="flex-1 flex flex-col items-center gap-1">
               <div className="w-full flex gap-0.5">

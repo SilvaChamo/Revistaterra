@@ -21,7 +21,7 @@ export default async function Sidebar({ only }: { only?: string[] }) {
           <ul className="mt-4 border-t border-neutral-300 pt-1 text-[13px]">
             {terra.radioFull.map((r) => (
               <li key={r.time + r.show} className="flex gap-3 border-b border-neutral-300 py-2 last:border-0">
-                <b className="w-[100px] shrink-0 whitespace-nowrap text-xs" style={{ color: GREEN }}>{r.time}–{r.end}</b><span className="whitespace-nowrap">{r.show}</span>
+                <b className="w-[100px] shrink-0 whitespace-nowrap text-xs" style={{ color: GREEN }}>{r.time}–{r.end}</b><span className="sm:whitespace-nowrap">{r.show}</span>
               </li>
             ))}
           </ul>
