@@ -1,54 +1,32 @@
-# Regras do projecto Revista Terra
+# Regras do responsável (SilvaChamo)
 
-Estas regras são obrigatórias para todos os agentes de IA (Claude, Copilot, Cursor, Codex, Gemini, etc.) que trabalhem neste projecto. Lê-as antes de qualquer alteração.
+Estas regras são obrigatórias para todos os agentes de IA (Claude, Copilot, Cursor, Codex, Gemini, etc.) e valem para todos os projectos do responsável. Lê-as antes de qualquer alteração. Antes de mexer num projecto, vê que tipo de projecto é (site/revista, loja, aplicação web, aplicação móvel, API/backend, painel de administração, biblioteca, scripts, etc.) e aplica as regras específicas conforme o género. Se o projecto tiver regras próprias, estas complementam-nas; em caso de conflito, prevalecem as do projecto.
 
-## 1. Branches
-- Nunca criar branches com nomes que identifiquem uma IA (por exemplo `claude/...`, `copilot/...`, `cursor/...`, `ai/...`, `gpt/...`).
-- Usar nomes descritivos do trabalho (por exemplo `feature/card-noticias`, `fix/menu-mobile`).
+## Universais (todos os projectos)
 
-## 2. Deploy e commits
-- Nunca fazer deploy sem autorização expressa do responsável pelo projecto.
-- Pode fazer commits no fim de uma acção aprovada.
-- Um commit não autoriza deploy.
+1. **Branches:** nunca usar nomes que identifiquem uma IA (`claude/...`, `copilot/...`, `cursor/...`, `ai/...`, `gpt/...`). Usar nomes descritivos (`feature/card-noticias`, `fix/menu-mobile`). Se a sessão impuser um nome com IA, renomear antes de fazer push.
+2. **Deploy:** nunca fazer deploy sem autorização expressa do responsável. Um commit não autoriza deploy. Pode fazer commits no fim de uma acção aprovada.
+3. **Autoria:** commits e deploys em nome de SilvaChamo. Nunca usar identidade de IA como autor ou committer.
+4. **Mensagens de commit:** em português, formato `SilvaChamo: <o que foi feito>`. Sem mais texto, sem linhas extra, sem `Co-Authored-By` de IA, sem links de sessão, sem "Generated with ...", sem nomes ou logótipos de IA, nem em commits nem em PR.
+5. **Comunicação:** não narrar o que se está a fazer durante a tarefa. No fim, apenas o resultado, no máximo 3 parágrafos, quanto menos melhor.
+6. **Autonomia:** o responsável vê apenas o resultado final. Nunca mandar o responsável fazer o que o agente consegue fazer.
+7. **Actualizações:** em local, nunca desligar a página/servidor nem obrigar a fechá-la e reabri-la (hot reload apenas). Online, uma actualização nunca impede o utilizador de fazer algo: sem bloquear ecrãs, formulários ou acções. Deve ser só um breve "piscar".
+8. **Consistência:** antes de criar algo novo, ver como o que já existe está feito e seguir o mesmo padrão (cores, fontes, espaçamentos, bordas, raios, sombras, nomes, estrutura de código). Nada desenquadrado do que está em produção.
 
-## 3. Consistência com o layout em produção
-- Nunca criar componentes desenquadrados do layout em produção.
-- Reutilizar as mesmas cores, fontes, margens (verticais, horizontais e laterais), espaçamentos, bordas, raios e sombras já usados no site.
-- Antes de criar um componente, ver como os componentes existentes estão feitos e seguir o mesmo padrão.
+## Específicas por género de projecto
 
-## 4. Títulos nos cards
-- Evitar títulos com duas linhas sem necessidade. Nos cards, manter sempre o título numa única linha.
-- Excepção: cards de notícias e outros componentes em que duas linhas sejam recomendadas.
+- **Sites, revistas, blogs, lojas, portais (interface web):**
+  - Pré-visualização local com duas vistas, mobile e desktop; verificar nas duas antes de dar por concluído.
+  - Fonte principal Verdana em todos os componentes, incluindo páginas novas e detalhes (ex.: leitor de áudio).
+  - Tamanho da fonte proporcional ao componente: nada de fontes de título em popups ou cards pequenos.
+  - Cards: título numa só linha. Excepção: notícias e outros componentes em que duas linhas sejam recomendadas. Margens, paddings e espaçamentos iguais entre cards do mesmo tipo.
+  - Reutilizar cores, margens (verticais, horizontais e laterais), espaçamentos, bordas, raios e sombras do site.
+- **Painéis de administração / dashboards:** as mesmas regras de interface, adaptadas à densidade de um painel (tabelas, formulários, filtros). Nunca bloquear o utilizador durante gravações ou actualizações. Respeitar permissões e papéis existentes.
+- **Aplicações móveis:** seguir os padrões visuais e de navegação já existentes na app e da plataforma (iOS/Android). Verificar em ecrãs pequenos e grandes. Fonte e tamanhos proporcionais ao componente.
+- **APIs / backend / bases de dados:** sem regras visuais. Manter contratos e nomes existentes, não quebrar clientes actuais, nunca apagar ou alterar dados em produção sem autorização expressa, migrações reversíveis, mensagens de erro claras.
+- **Scripts, ferramentas, bibliotecas:** seguir o estilo e a estrutura do código existente, sem dependências novas sem necessidade, documentação curta do que muda.
+- **Outro género:** aplicar as universais e adaptar as específicas por analogia ao género mais próximo.
 
-## 5. Tamanho das fontes
-- O tamanho da fonte deve estar sempre de acordo com o ambiente ou componente onde é aplicado.
-- Não usar fontes grandes em elementos pequenos (por exemplo, um popup ou um card pequeno não pode ter a fonte de um título de página).
-- O tamanho deve ser proporcional ao espaço onde é usado.
+## Este projecto: Revista Terra
 
-## 6. Comunicação
-- Não narrar o que se está a fazer durante a tarefa (nada de "agora a verificar...").
-- No fim, apresentar apenas o resultado, de forma resumida: no máximo 3 parágrafos, quanto menos melhor.
-
-## 7. Autonomia
-- O responsável vê apenas o resultado final e não tem acesso ao que o agente faz por dentro.
-- Nunca mandar o responsável fazer o que o agente consegue fazer. Se é possível fazer, fazer.
-
-## 8. Actualizações da página
-- No ambiente local, o código de actualização nunca pode desligar a página nem obrigar a fechá-la e reabri-la. Apenas actualizar (hot reload), sem parar o servidor.
-- No site online, uma actualização nunca pode impedir o utilizador de fazer algo. Não bloquear ecrãs, formulários ou acções enquanto se actualiza.
-- A actualização deve ser apenas um breve "piscar" para mostrar a informação nova.
-
-## 9. Pré-visualização local
-- A pré-visualização local deve mostrar sempre duas vistas: mobile e PC (desktop).
-- Qualquer alteração deve ser verificada nas duas vistas antes de ser dada como concluída.
-
-## 10. Autoria dos commits e deploys
-- Todos os commits e deploys são feitos em nome do responsável pelo projecto (SilvaChamo). Nunca usar identidade de IA como autor ou committer.
-- Nunca incluir referências a IA nas mensagens de commit ou PR: sem `Co-Authored-By` de IA, sem links de sessão, sem "Generated with ...", sem logótipos ou nomes de IA.
-
-## 11. Mensagens de commit
-- Todos os commits são escritos em português, citando o nome do responsável e o que foi feito. Somente isso.
-- Formato: `SilvaChamo: <o que foi feito>`. Sem mais texto, sem linhas extra, sem referências a IA.
-
-## 12. Tipo de letra
-- A fonte principal do site é a Verdana. Usar sempre Verdana em todos os componentes, incluindo páginas novas e detalhes do leitor de áudio.
+Site/revista (Next.js). Aplicam-se as universais e as de "Sites, revistas, blogs, lojas, portais".
