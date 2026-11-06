@@ -54,7 +54,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* logotipo por fora do formulário, sobre o fundo */}
         <div className="mb-5 flex justify-center">
-          <img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={446} height={220} className="h-[84px] w-auto mix-blend-multiply" />
+          <Link href="/" aria-label="Ir para a página inicial"><img src="/terra/logo-revista-terra.webp" alt="Revista Terra — A Voz do Agro e Ambiente" width={446} height={220} className="h-[84px] w-auto mix-blend-multiply" /></Link>
         </div>
       <div className="w-full bg-white shadow-xl border border-[#ccd0d4] overflow-hidden">
         <form onSubmit={handleSubmit} className="p-8 space-y-4">
