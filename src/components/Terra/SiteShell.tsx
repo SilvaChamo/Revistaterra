@@ -72,8 +72,8 @@ export default async function SiteShell({ children, trail }: { children: React.R
             <ul className="space-y-2 text-xs"><li><Link href="/quem-somos">Quem Somos</Link></li><li><Link href="/contacto">Publicidade & Mídia Kit</Link></li><li><Link href="/contacto">Nossos Colunistas</Link></li><li>Política de Privacidade</li></ul>
           </div>
           <div>
-            <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-white/60">Contactos</h4>
-            <ul className="space-y-2 text-xs"><li>Rua da Resistência, Nº 1642, 3º Andar</li><li>+258 82 123 3910</li><li>comercial@revistaterra.co.mz</li></ul>
+            <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-white/60">Links rápidos</h4>
+            <ul className="space-y-2 text-xs"><li><Link href="/planos">Planos de subscrição</Link></li><li><Link href="/newsletter">Assinar Newsletter</Link></li><li><Link href="/login">Área de assinantes</Link></li><li><Link href="/contacto">Contactos</Link></li></ul>
           </div>
           <div>
             <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-white/60">App Revista Terra</h4>
