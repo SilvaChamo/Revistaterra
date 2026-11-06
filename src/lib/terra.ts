@@ -6,7 +6,7 @@ export const LIME = '#9BCB3C'; // verde-lima de campo: botões, hovers e etiquet
 export const TOPBAR = '#084030'; // barra fina de cima (cor medida na referência)
 export const DARKER = '#053D2F'; // um pouco mais carregado: linha do menu e item activo
 
-export type Card = { category: string; title: string; excerpt: string; url: string; image: string | null; date?: string };
+export type Card = { category: string; title: string; excerpt: string; url: string; image: string | null; date?: string; exclusive?: boolean };
 
 /** Endereço de uma notícia no site antigo (revistaterraonline.com): é daí que vêm os títulos de src/data/terra.json. */
 const SITE_ANTIGO = /^https?:\/\/(www\.)?revistaterraonline\.com\//i;

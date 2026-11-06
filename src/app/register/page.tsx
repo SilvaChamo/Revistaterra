@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { destinoDepoisDeEntrar, proximoDoEndereco } from '@/lib/auth';
 import { User, Mail, Lock, ChevronRight, Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import AntiSpamFields, { resetAntiSpam } from '@/components/Antispam/AntiSpamFields';
 import Spinner from '@/components/Common/Spinner';
@@ -23,7 +24,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (!authLoading && user) {
-      router.replace('/admin');
+      router.replace(destinoDepoisDeEntrar(user.role, proximoDoEndereco()));
     }
   }, [authLoading, user, router]);
 
@@ -45,8 +46,7 @@ export default function RegisterPage() {
       // Registo livre: a conta nova entra logo no painel de visitante.
       try {
         await login(formData.email, formData.password);
-        router.push('/admin');
-        return;
+        return; // o redireccionamento é feito acima, assim que a sessão fica aberta
       } catch {
         setInfo('Conta criada. Entre com o seu e-mail e palavra-passe.');
       }

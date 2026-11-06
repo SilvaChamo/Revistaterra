@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import sanitizeHtml from 'sanitize-html';
 import data from '@/data/terra.json';
 import type { Card } from '@/lib/terra';
+import { loadExclusivas } from '@/lib/assinaturas';
 
 const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -63,7 +64,10 @@ function fallbackPosts(): TerraPost[] {
   return out;
 }
 
-export const loadCards = cache(async (): Promise<Card[]> => (await loadPosts()).map(toCard));
+export const loadCards = cache(async (): Promise<Card[]> => {
+  const [posts, exclusivas] = await Promise.all([loadPosts(), loadExclusivas()]);
+  return posts.map((p) => ({ ...toCard(p), exclusive: exclusivas.includes(p.slug) }));
+});
 
 export const loadHero = cache(async () => {
   const posts = await loadPosts();

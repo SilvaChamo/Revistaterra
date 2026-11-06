@@ -28,7 +28,7 @@ export default function AdminPageRedirect() {
           router.push('/admin/contribuidor');
           break;
         case 'guest':
-          router.push('/admin/guest');
+          router.push('/assinante'); // leitores/subscritores têm a sua área; o painel de visitante abre a partir dela
           break;
         default:
           router.push('/admin/dashboard');

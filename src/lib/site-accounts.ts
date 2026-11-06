@@ -22,7 +22,8 @@ export const isSiteAccount = (user: Pick<User, 'app_metadata'> | null | undefine
 /** app_metadata com a parte do Revista Terra actualizada (o resto, que é de outros sites, fica intacto). */
 export function withSiteAccess(user: Pick<User, 'app_metadata'>, patch: Partial<SiteAccess>) {
   const current = siteAccess(user) ?? { role: 'Subscritor', approved: false };
-  return { ...(user.app_metadata || {}), [SITE_KEY]: { ...current, ...patch } };
+  const raw = (user.app_metadata?.[SITE_KEY] as Record<string, unknown> | undefined) ?? {}; // mantém campos extra (ex.: subscription)
+  return { ...(user.app_metadata || {}), [SITE_KEY]: { ...raw, ...current, ...patch } };
 }
 
 /** A conta serve só o Revista Terra? (sem dados de outros sites, pode ser apagada de vez; senão só se retira o acesso) */

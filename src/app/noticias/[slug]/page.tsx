@@ -6,7 +6,10 @@ import NewsGrid from '@/components/Terra/NewsGrid';
 import ShareBar from '@/components/Terra/ShareBar';
 import CommentsSection from '@/components/Comments/CommentsSection';
 import { Heading, Tag } from '@/components/Terra/Bits';
+import ExclusivaGate from '@/components/Terra/ExclusivaGate';
 import { GREEN } from '@/lib/terra';
+import { loadExclusivas } from '@/lib/assinaturas';
+import { inicioDoTexto } from '@/lib/assinaturas-types';
 import { cleanContent, label, loadCards, loadPost, longDate, slugify } from '@/lib/terra-news';
 
 export const revalidate = 60;
@@ -20,6 +23,7 @@ export default async function Artigo({ params }: { params: Promise<{ slug: strin
   const post = await loadPost((await params).slug);
   if (!post) notFound();
   const cat = label(post.category);
+  const exclusive = (await loadExclusivas()).includes(post.slug);
   // O resumo só se mostra se o texto não começar já por ele (as notícias do WordPress repetem-no)
   const plain = (h: string) => h.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
   const head = plain(post.summary).slice(0, 40).toLowerCase();
@@ -32,11 +36,18 @@ export default async function Artigo({ params }: { params: Promise<{ slug: strin
           <article className="bg-white shadow-sm">
             {post.image_url && <img src={post.image_url} alt="" className="h-[240px] w-full object-cover sm:h-[400px]" />}
             <div className="border-t-4 p-5 sm:p-8" style={{ borderColor: GREEN }}>
-              <Link href={`/categoria/${slugify(cat)}`}><Tag>{cat}</Tag></Link>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link href={`/categoria/${slugify(cat)}`}><Tag>{cat}</Tag></Link>
+                {exclusive && <span className="inline-block whitespace-nowrap px-2 py-[3px] text-[9px] font-bold uppercase tracking-wide text-white" style={{ background: GREEN }}>★ Exclusiva</span>}
+              </div>
               <h1 className="mt-3 text-2xl font-extrabold leading-tight text-[#064E3B] sm:text-[34px]">{post.title}</h1>
               <div className="mt-3 text-xs text-neutral-500">Publicado a {longDate(post.date)} · {post.author_name}</div>
               {showSummary && <p className="mt-5 text-[17px] font-semibold leading-relaxed text-neutral-700">{post.summary}</p>}
-              <div className="terra-prose mt-6" dangerouslySetInnerHTML={{ __html: cleanContent(post.content) }} />
+              {exclusive ? (
+                <ExclusivaGate slug={post.slug} inicio={inicioDoTexto(cleanContent(post.content))} />
+              ) : (
+                <div className="terra-prose mt-6" dangerouslySetInnerHTML={{ __html: cleanContent(post.content) }} />
+              )}
               <ShareBar title={post.title} />
               <CommentsSection slug={post.slug} title={post.title} />
             </div>

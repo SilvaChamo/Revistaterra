@@ -291,6 +291,16 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         },
         { href: '/admin/comentarios', icon: MessageSquare, label: 'Comentários' },
         { href: '/admin/radio', icon: Radio, label: 'Rádio' },
+        {
+          href: '/admin/subscricoes',
+          icon: CreditCard,
+          label: 'Subscrições',
+          submenu: [
+            { label: 'Pedidos e assinantes', href: '/admin/subscricoes' },
+            { label: 'Planos e pagamento', href: '/admin/subscricoes/planos' },
+            { label: 'Notícias exclusivas', href: '/admin/subscricoes/exclusivas' },
+          ]
+        },
         { 
           href: '/admin/media', 
           icon: ImageIcon, 
@@ -353,6 +363,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         { href: '/admin/noticias/pendentes', icon: Clock, label: 'Notícias Pendentes' },
         { href: '/admin/comentarios', icon: MessageSquare, label: 'Comentários' },
         { href: '/admin/radio', icon: Radio, label: 'Rádio' },
+        { href: '/admin/subscricoes/exclusivas', icon: CreditCard, label: 'Notícias exclusivas' },
         { href: '/admin/noticias/revistas', icon: CheckSquare, label: 'Últimos Revistos' },
         { href: '/admin/noticias', icon: Newspaper, label: 'Todas as Notícias' },
         { href: '/admin/media', icon: ImageIcon, label: 'Multimédia' },

@@ -73,7 +73,7 @@ export default async function SiteShell({ children, trail }: { children: React.R
           </div>
           <div>
             <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-white/60">Links rápidos</h4>
-            <ul className="space-y-2 text-xs"><li><Link href="/planos">Planos de subscrição</Link></li><li><Link href="/newsletter">Assinar Newsletter</Link></li><li><Link href="/login">Área de assinantes</Link></li><li><Link href="/contacto">Contactos</Link></li></ul>
+            <ul className="space-y-2 text-xs"><li><Link href="/planos">Planos de subscrição</Link></li><li><Link href="/newsletter">Assinar Newsletter</Link></li><li><Link href="/assinante">Área de assinantes</Link></li><li><Link href="/contacto">Contactos</Link></li></ul>
           </div>
           <div>
             <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-white/60">App Revista Terra</h4>

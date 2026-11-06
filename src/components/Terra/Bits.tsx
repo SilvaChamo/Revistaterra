@@ -2,6 +2,11 @@ import { DARK, GREEN, LIME } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
 import ShareLink from './ShareLink';
 
+/** Etiqueta das notícias exclusivas para assinantes. */
+export const ExclusivaTag = () => (
+  <span className="inline-block whitespace-nowrap px-2 py-[3px] text-[9px] font-bold uppercase tracking-wide text-white" style={{ background: GREEN }}>★ Exclusiva</span>
+);
+
 export const Tag = ({ children }: { children: React.ReactNode }) => (
   <span className="inline-block whitespace-nowrap px-2 py-[3px] text-[9px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{children}</span>
 );
@@ -12,7 +17,7 @@ export const Overlay = ({ c, className = '', big = false }: { c: Card; className
     {c.image && <img src={c.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
     <div className="absolute inset-x-0 bottom-0 p-[3.2cqmin]">
-      <Tag>{c.category}</Tag>
+      <div className="flex flex-wrap items-center gap-1"><Tag>{c.category}</Tag>{c.exclusive && <ExclusivaTag />}</div>
       <h3 className="mt-[1.6cqmin] font-semibold leading-snug text-white" style={{ fontSize: big ? 'clamp(16px, 8.2cqmin, 21px)' : 'clamp(13px, 7.6cqmin, 15px)' }}>{c.title}</h3>
     </div>
   </a>
@@ -29,7 +34,7 @@ export const NewsCard = ({ c, imageClassName = 'h-[170px]' }: { c: Card; imageCl
       {c.image && <img src={c.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
     </a>
     <div className="flex flex-1 flex-col gap-3 p-4">
-      <div><Tag>{c.category}</Tag></div>
+      <div className="flex flex-wrap items-center gap-1"><Tag>{c.category}</Tag>{c.exclusive && <ExclusivaTag />}</div>
       <h3 className="line-clamp-2 min-h-[2.75em] text-[13px] font-bold leading-snug text-neutral-900"><a href={c.url} className="hover:text-[#047857]">{c.title}</a></h3>
       {/* descrição com pelo menos 3 linhas de altura, para os cartões ficarem alinhados */}
       <p className="line-clamp-4 min-h-[4.5em] text-xs leading-normal text-neutral-500">{c.excerpt}</p>

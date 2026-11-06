@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { destinoDepoisDeEntrar, proximoDoEndereco } from '@/lib/auth';
 import { getSupabase } from '@/lib/supabase';
 import { Mail, Lock, ChevronRight, Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
@@ -21,7 +22,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!authLoading && user) {
-      router.replace('/admin');
+      router.replace(destinoDepoisDeEntrar(user.role, proximoDoEndereco()));
     }
   }, [authLoading, user, router]);
 
@@ -31,7 +32,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(formData.email, formData.password);
-      router.push('/admin'); // o /admin leva cada papel ao seu painel (visitante, contribuidor, editor, admin)
+      // o redireccionamento é feito acima, assim que a sessão fica aberta: leitores vão para a área de assinantes, a redacção para o painel
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Erro ao entrar. Tente novamente.';
       setError(message);

@@ -72,3 +72,18 @@ export function translateAuthError(message: string): string {
   }
   return message || 'Ocorreu um erro. Tente novamente.';
 }
+
+/**
+ * Para onde vai quem acabou de entrar: o endereço pedido (`next`, só se for desta página) ou o espaço do seu papel.
+ * Leitores/subscritores vão para a área de assinantes; a redacção, para o painel.
+ */
+export function destinoDepoisDeEntrar(role: UserRole, next?: string | null): string {
+  if (next && next.startsWith('/') && !next.startsWith('//') && !next.includes('\\')) return next;
+  return role === 'guest' ? '/assinante' : '/admin';
+}
+
+/** `?next=` do endereço actual (só no navegador). */
+export function proximoDoEndereco(): string | null {
+  if (typeof window === 'undefined') return null;
+  return new URLSearchParams(window.location.search).get('next');
+}
