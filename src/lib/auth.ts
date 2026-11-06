@@ -78,8 +78,21 @@ export function translateAuthError(message: string): string {
  * Leitores/subscritores vão para a área de assinantes; a redacção, para o painel.
  */
 export function destinoDepoisDeEntrar(role: UserRole, next?: string | null): string {
-  if (next && next.startsWith('/') && !next.startsWith('//') && !next.includes('\\')) return next;
+  const seguro = caminhoInterno(next);
+  if (seguro) return seguro;
   return role === 'guest' ? '/assinante' : '/admin';
+}
+
+/** Só aceita caminhos desta mesma página (nunca outro site): sem caracteres de controlo, espaços ou barras invertidas, e que o URL resolva para a mesma origem. */
+export function caminhoInterno(next?: string | null): string | null {
+  if (!next || !next.startsWith('/') || next.startsWith('//') || /[\x00-\x20\x7f\\]/.test(next)) return null;
+  try {
+    const base = 'http://interno.invalid';
+    const u = new URL(next, base);
+    return u.origin === base ? u.pathname + u.search + u.hash : null;
+  } catch {
+    return null;
+  }
 }
 
 /** `?next=` do endereço actual (só no navegador). */
