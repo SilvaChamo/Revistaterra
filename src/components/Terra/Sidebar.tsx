@@ -2,14 +2,17 @@ import Link from 'next/link';
 import { Widget } from './Bits';
 import Weather from './Weather';
 import RadioPlayer from './RadioPlayer';
+import RadioGrelha from './RadioGrelha';
 import Cambio from './Cambio';
 import StickyAside from './StickyAside';
 import { GREEN, terra } from '@/lib/terra';
 import { loadCards } from '@/lib/terra-news';
+import { loadRadioSlots } from '@/lib/radio-schedule';
 
 export default async function Sidebar({ only }: { only?: string[] }) {
   const allCards = await loadCards();
   const show = (k: string) => !only || only.includes(k);
+  const { slots: radioSlots } = show('radio') ? await loadRadioSlots() : { slots: [] };
   const trending = allCards.slice(0, 5);
   const recent = allCards.slice(5, 10);
   return (
@@ -17,14 +20,8 @@ export default async function Sidebar({ only }: { only?: string[] }) {
       {show('tempo') && <Widget title="Tempo · Moçambique" flush fill green><Weather /></Widget>}
       {show('radio') && (
         <Widget title="Rádio +Agro" flush>
-          <div className="bg-[#eaf3ed] p-4"><RadioPlayer compact /></div>
-          <ul className="border-t border-neutral-300 text-[13px]">
-            {terra.radioFull.map((r) => (
-              <li key={r.time + r.show} className="flex gap-3 border-b border-neutral-300 px-5 py-2 last:border-b-0">
-                <b className="w-[100px] shrink-0 whitespace-nowrap text-xs" style={{ color: GREEN }}>{r.time}–{r.end}</b><span className="sm:whitespace-nowrap">{r.show}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="bg-[#eaf3ed] p-4"><RadioPlayer compact slots={radioSlots} /></div>
+          <div className="border-t border-neutral-300"><RadioGrelha slots={radioSlots} /></div>
           <Link href="/radio" className="block border-t border-neutral-300 px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-wide text-white transition-colors hover:text-[#9BCB3C]" style={{ background: '#084030' }}>Ver programação ›</Link>
         </Widget>
       )}

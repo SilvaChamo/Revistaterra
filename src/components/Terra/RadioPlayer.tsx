@@ -1,21 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { GREEN, terra } from '@/lib/terra';
+import { GREEN } from '@/lib/terra';
+import { onAirNow, type RadioSlot } from '@/lib/radio-types';
 import { useRadio } from './RadioProvider';
-const mins = (t: string) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
 
-export function nowOnAir(): { show: string; time: string } | null {
-  const d = new Date(), now = ((d.getUTCHours() + 2) % 24) * 60 + d.getUTCMinutes(); // hora de Maputo (CAT)
-  const s = terra.radioFull.find((r) => now >= mins(r.time) && now < mins(r.end));
-  return s ? { show: s.show, time: `${s.time}–${s.end}` } : null;
+export function nowOnAir(slots: RadioSlot[]): { show: string; time: string } | null {
+  const s = onAirNow(slots); // hora de Maputo (CAT)
+  return s ? { show: s.show, time: `${s.start}–${s.end}` } : null;
 }
 
-export default function RadioPlayer({ compact = false }: { compact?: boolean }) {
+export default function RadioPlayer({ compact = false, slots = [] }: { compact?: boolean; slots?: RadioSlot[] }) {
   // o áudio vive no RadioProvider (raiz do site): continua a tocar ao mudar de página
   const { playing, loading, toggle } = useRadio();
   const [now, setNow] = useState<ReturnType<typeof nowOnAir>>(null);
-  useEffect(() => { setNow(nowOnAir()); const id = setInterval(() => setNow(nowOnAir()), 60000); return () => clearInterval(id); }, []);
+  useEffect(() => { setNow(nowOnAir(slots)); const id = setInterval(() => setNow(nowOnAir(slots)), 60000); return () => clearInterval(id); }, [slots]);
 
   return (
     <div className="flex items-center gap-4">

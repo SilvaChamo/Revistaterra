@@ -32,7 +32,8 @@ import {
   Layers,
   Boxes,
   Loader2,
-  MessageSquare
+  MessageSquare,
+  Radio
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 
@@ -289,6 +290,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           ]
         },
         { href: '/admin/comentarios', icon: MessageSquare, label: 'Comentários' },
+        { href: '/admin/radio', icon: Radio, label: 'Rádio' },
         { 
           href: '/admin/media', 
           icon: ImageIcon, 
@@ -350,6 +352,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       items.push(
         { href: '/admin/noticias/pendentes', icon: Clock, label: 'Notícias Pendentes' },
         { href: '/admin/comentarios', icon: MessageSquare, label: 'Comentários' },
+        { href: '/admin/radio', icon: Radio, label: 'Rádio' },
         { href: '/admin/noticias/revistas', icon: CheckSquare, label: 'Últimos Revistos' },
         { href: '/admin/noticias', icon: Newspaper, label: 'Todas as Notícias' },
         { href: '/admin/media', icon: ImageIcon, label: 'Multimédia' },
