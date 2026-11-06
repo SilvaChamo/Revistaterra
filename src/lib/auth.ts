@@ -89,7 +89,10 @@ export function caminhoInterno(next?: string | null): string | null {
   try {
     const base = 'http://interno.invalid';
     const u = new URL(next, base);
-    return u.origin === base ? u.pathname + u.search + u.hash : null;
+    if (u.origin !== base) return null;
+    const out = u.pathname + u.search + u.hash;
+    // depois de normalizado (ex.: "/.//x" vira "//x") continua a ter de ser um caminho desta página
+    return out.startsWith('/') && !out.startsWith('//') && !out.includes('\\') ? out : null;
   } catch {
     return null;
   }
