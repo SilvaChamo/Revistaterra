@@ -174,7 +174,7 @@ async function main() {
   console.log('\nCredenciais:');
   console.log('  E-mail:', adminEmail);
   console.log('  Senha: ', adminPassword);
-  console.log('  Login: http://localhost:3004/login');
+  console.log('  Login: http://localhost:3014/login');
   console.log('\nSe a tabela sites falhou, aplica o SQL no Studio e volta a correr este script.');
 }
 
