@@ -25,7 +25,7 @@ export default async function Planos() {
       destaque: true,
       itens: p.features,
       acao: p.price == null ? 'Brevemente' : 'Assinar',
-      href: p.price == null ? undefined : `/assinante?plano=${encodeURIComponent(p.id)}`,
+      href: p.price == null ? undefined : `/checkout?plano=${encodeURIComponent(p.id)}`,
     })),
     { id: 'empresarial', nome: 'Empresarial', para: 'Para equipas e empresas', preco: 'Sob consulta', itens: ['Vários leitores na mesma conta', 'Relatórios de mercado', 'Alertas à medida do negócio'], acao: 'Falar connosco', href: '/contacto' },
   ];
@@ -56,9 +56,9 @@ export default async function Planos() {
           <div className="bg-white px-6 py-5 text-[13px] leading-relaxed text-neutral-600 shadow-sm">
             <b className="text-neutral-800">Como funciona</b>
             <ol className="mt-2 list-decimal space-y-1 pl-5">
-              <li>Crie a sua conta (ou entre) e escolha o plano na <Link href="/assinante" className="font-semibold hover:underline" style={{ color: GREEN }}>área de assinantes</Link>.</li>
-              <li>Faça o pagamento como indicado e escreva a referência.</li>
-              <li>Confirmamos o pagamento e a subscrição fica activa. Quem já é assinante renova na mesma área, sem perder dias.</li>
+              <li>Escolha o plano e carregue em Assinar.</li>
+              <li>Entre ou crie a sua conta, faça o pagamento como indicado e escreva a referência.</li>
+              <li>Confirmamos o pagamento e a subscrição fica activa. Só depois passa a ter a sua área de assinante, onde vê o tempo que resta e renova sem perder dias.</li>
             </ol>
           </div>
         </main>

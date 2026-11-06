@@ -58,8 +58,8 @@ export function somarMeses(from: Date, months: number): Date {
 }
 
 export const PLANOS_BASE: Plano[] = [
-  { id: 'assinante-mensal', name: 'Assinante · mensal', description: 'Para quem vive do sector', price: null, months: 1, features: ['Notícias e análises exclusivas', 'Revista digital completa e arquivo', 'Resumo da manhã'], active: true },
-  { id: 'assinante-anual', name: 'Assinante · anual', description: 'Melhor preço', price: null, months: 12, features: ['Tudo o que o plano mensal inclui', 'Desconto sobre 12 meses'], active: true },
+  { id: 'assinante-mensal', name: 'Assinante mensal', description: 'Para quem vive do sector', price: null, months: 1, features: ['Notícias e análises exclusivas', 'Revista digital completa e arquivo', 'Resumo da manhã'], active: true },
+  { id: 'assinante-anual', name: 'Assinante anual', description: 'Melhor preço', price: null, months: 12, features: ['Tudo o que o plano mensal inclui', 'Desconto sobre 12 meses'], active: true },
 ];
 
 const num = (v: unknown) => {
@@ -76,7 +76,7 @@ export function validarPlanos(input: unknown): { ok: true; config: PlanosConfig 
   const ids = new Set<string>();
   const plans: Plano[] = [];
   for (const raw of body.plans as Record<string, unknown>[]) {
-    const name = clean(raw?.name, 60);
+    const name = clean(raw?.name, 60).replace(/\s*[·•]\s*/g, ' ').replace(/\.+$/, '').trim();
     if (!name) return { ok: false, error: 'Todos os planos precisam de um nome.' };
     const months = num(raw.months);
     if (!Number.isInteger(months) || months < 1 || months > 36) return { ok: false, error: `Duração inválida em "${name}" (1 a 36 meses).` };

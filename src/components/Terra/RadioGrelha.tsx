@@ -41,7 +41,7 @@ export default function RadioGrelha({ slots, semana = false }: { slots: RadioSlo
           ))}
         </div>
       )}
-      {semana && <div className="px-5 pt-3 text-xs font-bold uppercase tracking-wide text-neutral-500">{DIAS_LONGOS[dia]}{dia === hoje ? ' · hoje' : ''}</div>}
+      {semana && <div className="px-5 pt-3 text-xs font-bold uppercase tracking-wide text-neutral-500">{DIAS_LONGOS[dia]}{dia === hoje ? ' (hoje)' : ''}</div>}
       {lista.length === 0 ? (
         <p className="px-5 py-4 text-[13px] text-neutral-500">Sem programas neste dia.</p>
       ) : (
