@@ -33,7 +33,8 @@ import {
   Boxes,
   Loader2,
   MessageSquare,
-  Radio
+  Radio,
+  Mail
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 
@@ -301,6 +302,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Notícias exclusivas', href: '/admin/subscricoes/exclusivas' },
           ]
         },
+        { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
         { 
           href: '/admin/media', 
           icon: ImageIcon, 

@@ -408,3 +408,12 @@ body {
 .podcast-audio::-webkit-media-controls-panel { background-color: transparent; padding-left: 0; padding-right: 0; }
 .podcast-audio::-webkit-media-controls-current-time-display,
 .podcast-audio::-webkit-media-controls-time-remaining-display { font-family: Verdana, sans-serif; font-size: 12px; color: #222; }
+
+/* Margens e espaços uniformes nas páginas do painel.
+   Computador: 24px à volta. Telemóvel: 12px à volta e 12px entre secções; as caixas nunca tocam nas laterais do ecrã. */
+.ec-page { padding: 24px; }
+@media (max-width: 767px) {
+  .ec-page { padding: 12px; }
+  .ec-page > * { margin-top: 0 !important; margin-bottom: 12px !important; }
+  .ec-page > :last-child { margin-bottom: 0 !important; }
+}

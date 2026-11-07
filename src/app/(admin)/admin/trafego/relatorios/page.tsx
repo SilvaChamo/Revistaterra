@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { FileText, Download, Calendar, BarChart3, TrendingUp, TrendingDown } from 'lucide-react';
+import NewsletterReport from '@/components/Admin/NewsletterReport';
 
 export default function TrafegoRelatoriosPage() {
   const [dateRange, setDateRange] = useState('7d');
@@ -119,6 +120,8 @@ export default function TrafegoRelatoriosPage() {
           </tbody>
         </table>
       </div>
+
+      <div className="mt-8"><NewsletterReport /></div>
     </div>
   );
 }
