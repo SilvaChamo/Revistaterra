@@ -53,6 +53,8 @@ export async function GET() {
         lastName: user.user_metadata?.last_name || '',
         email: user.email || '',
         role: siteAccess(user)!.role,
+        // Colunista (nível próprio ou somado a outro papel): o editor de notícias só deixa escrever artigos de Opinião.
+        colunista: siteAccess(user)!.colunista === true || /^colunista$/i.test(siteAccess(user)!.role),
         alcunha: user.user_metadata?.alcunha || '',
         displayNameType: user.user_metadata?.displayNameType || 'full_name',
         bio: user.user_metadata?.bio || '',

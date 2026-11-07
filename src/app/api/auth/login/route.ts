@@ -6,7 +6,7 @@ import { clearAttempts, tooManyAttempts } from '@/lib/rate-limit';
 import { findSiteEmailByUsername, siteAccess } from '@/lib/site-accounts';
 import { serverDb } from '@/lib/antispam';
 
-function startSession(user: { id: string; email: string; name: string; role: 'admin' | 'editor' | 'contribuidor' | 'guest' }, extra: object = {}) {
+function startSession(user: { id: string; email: string; name: string; role: 'admin' | 'editor' | 'contribuidor' | 'guest'; colunista?: boolean }, extra: object = {}) {
   const res = NextResponse.json({ user, ...extra });
   res.cookies.set(SESSION_COOKIE, signSession(user), cookieOptions());
   return res;
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
 
     clearAttempts(throttleKey);
     return startSession(
-      { id: data.user.id, email: data.user.email || login, name, role },
+      { id: data.user.id, email: data.user.email || login, name, role, colunista: access.colunista === true || /^colunista$/i.test(access.role) },
       { access_token: data.session?.access_token }
     );
   } catch (err: unknown) {

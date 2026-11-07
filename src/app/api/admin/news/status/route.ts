@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { refreshSite } from '@/lib/refresh-site';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
 import { hasPermission } from '@/lib/permissions';
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    revalidatePath('/', 'layout'); // publicar, despublicar ou arquivar reflecte-se logo no site público
+    refreshSite(); // publicar, despublicar ou arquivar reflecte-se logo no site público
     return NextResponse.json({ success: true, updated: targetIds.length });
   } catch (err: any) {
     console.error('Erro ao atualizar status:', err);

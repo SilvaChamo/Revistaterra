@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     const meta = user.user_metadata || {};
     const name = meta.full_name || meta.name || email.split('@')[0];
-    const payload = { id: user.id, email, name: String(name), role: mapRole(access.role) };
+    const payload = { id: user.id, email, name: String(name), role: mapRole(access.role), colunista: access.colunista === true || /^colunista$/i.test(access.role) };
     const res = NextResponse.json({ user: payload });
     res.cookies.set(SESSION_COOKIE, signSession(payload), cookieOptions());
     return res;

@@ -7,6 +7,8 @@ export interface AppUser {
   name: string;
   email: string;
   role: UserRole;
+  /** Conta de nível Colunista (sozinho ou também editor): o painel só mostra "Meus artigos". */
+  colunista?: boolean;
   avatarUrl?: string;
 }
 

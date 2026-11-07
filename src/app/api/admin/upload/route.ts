@@ -14,6 +14,18 @@ const ALLOWED_BUCKETS = ['avatars', 'media', process.env.STORAGE_BUCKET, process
 const IMAGE_TYPES: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' };
 const MAX_BYTES = 8 * 1024 * 1024;
 
+// Sem nome pedido, o nome é o da própria foto; sem nome útil (colar do ecrã, "image.png", câmara…) usa-se o título da notícia.
+const GENERIC = /^(image|imagem|img|blob|untitled|sem-?titulo|unknown|upload|foto|photo|screenshot|captura[-_ ]de[-_ ]ecra)[-_ ]?\d*$/i;
+const clean = (s: string, lower: boolean) => {
+  const t = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(lower ? /[^a-zA-Z0-9]+/g : /[^\w.-]+/g, lower ? '-' : '_').replace(/^[-_.]+|[-_.]+$/g, '').slice(0, 90);
+  return lower ? t.toLowerCase() : t;
+};
+function baseName(original: string, title: string) {
+  const own = clean(original.replace(/\.[^.]+$/, ''), false);
+  if (own && !GENERIC.test(own)) return own;
+  return clean(title, true) || own || '';
+}
+
 export async function POST(req: NextRequest) {
   const guard = await requireAuth('upload_imagens', 'usar_media', 'gerir_biblioteca', 'criar_artigos', 'editar_utilizadores');
   if ('error' in guard) return guard.error;
@@ -43,14 +55,25 @@ export async function POST(req: NextRequest) {
     const buffer = packed.buffer;
     // Nome pedido (galeria): só letras, números, ponto, hífen e sublinhado, sem pastas; senão, um nome aleatório.
     const base = wantedName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\.[^.]*$/, '').replace(/[^\w-]+/g, '_').replace(/^[_.-]+/, '').slice(0, 100);
-    const fileName = base ? `${base}.${packed.ext}` : `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${packed.ext}`;
-
-    const { data, error } = await supabaseAdmin.storage
-      .from(bucket)
-      .upload(fileName, buffer, {
-        contentType: packed.mime,
-        upsert
-      });
+    const fallback = baseName(file.name || '', String(formData.get('title') || ''));
+    const bucketStore = supabaseAdmin.storage.from(bucket);
+    const opts = { contentType: packed.mime, upsert, cacheControl: '31536000' };
+    let fileName = '';
+    let error: { message: string } | null = null;
+    if (base) {
+      fileName = `${base}.${packed.ext}`;
+      error = (await bucketStore.upload(fileName, buffer, opts)).error;
+    } else if (fallback) {
+      // Nunca se substitui uma foto existente: se o nome já existe, acrescenta -2, -3…
+      for (let n = 1; n <= 30; n++) {
+        fileName = `${fallback}${n > 1 ? `-${n}` : ''}.${packed.ext}`;
+        error = (await bucketStore.upload(fileName, buffer, { ...opts, upsert: false })).error;
+        if (!error || !/exist|duplicate|409/i.test(error.message)) break;
+      }
+    } else {
+      fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${packed.ext}`;
+      error = (await bucketStore.upload(fileName, buffer, opts)).error;
+    }
 
     if (error) {
       console.error('Erro no upload Supabase:', error.message);

@@ -16,6 +16,12 @@ export default function AdminPageRedirect() {
         return;
       }
 
+      // Colunista: só tem os seus artigos
+      if (user.colunista) {
+        router.push('/admin/colunista');
+        return;
+      }
+
       // Redirect based on role
       switch (user.role) {
         case 'admin':

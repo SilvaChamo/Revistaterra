@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { WEATHER_URL, parseWeather, type Now } from '@/lib/weather';
+import type { Now } from '@/lib/weather';
 
 type Ctx = { data: Now[] | null; failed: boolean; retry: () => void };
 const WeatherCtx = createContext<Ctx>({ data: null, failed: false, retry: () => {} });
@@ -18,7 +18,7 @@ export default function WeatherProvider({ initial, children }: { initial: Now[] 
   const [attempt, setAttempt] = useState(0);
 
   const refresh = useCallback((left: number): Promise<void> =>
-    fetch(WEATHER_URL).then((r) => r.json()).then((j) => { setData(parseWeather(j)); setFailed(false); })
+    fetch('/api/clima').then((r) => (r.ok ? r.json() : Promise.reject(new Error('clima')))).then((j: Now[]) => { setData(j); setFailed(false); })
       .catch(() => { if (left > 0) return new Promise<void>((res) => setTimeout(() => res(refresh(left - 1)), 3000)); setFailed(true); }), []);
 
   useEffect(() => { if (!initial) refresh(3); }, [initial, attempt, refresh]);

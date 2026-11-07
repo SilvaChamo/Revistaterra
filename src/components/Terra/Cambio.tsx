@@ -1,4 +1,5 @@
 import { terra } from '@/lib/terra';
+import { loadCambio } from '@/lib/cambio';
 
 const MOEDAS: Record<string, { nome: string; bandeira: string }> = {
   USD: { nome: 'Dólar Americano', bandeira: '🇺🇸' },
@@ -9,14 +10,20 @@ const MOEDAS: Record<string, { nome: string; bandeira: string }> = {
 };
 const ORDEM = ['USD', 'EUR', 'AED', 'AUD', 'JPY'];
 
-export default function Cambio() {
-  const linhas = terra.market
-    .map((m) => {
-      const code = m.pair.split('/')[0];
-      const [valor] = m.price.split(' ');
-      return { code, valor: Number(valor).toFixed(2).replace('.', ','), variacao: m.change.replace('.', ','), sobe: !m.change.startsWith('-'), ...MOEDAS[code] };
-    })
-    .sort((a, b) => ORDEM.indexOf(a.code) - ORDEM.indexOf(b.code));
+/** Valores reais (servidor, em cache de uma hora); se o serviço falhar, usa os últimos valores guardados no site. */
+export default async function Cambio() {
+  const real = await loadCambio();
+  const fmt = (n: number) => (n < 1 ? n.toFixed(3) : n.toFixed(2)).replace('.', ',');
+  const linhas: { code: string; valor: string; variacao: string; sobe: boolean; nome: string; bandeira: string }[] = real
+    ? ORDEM.filter((c) => real.rates[c]).map((code) => ({ code, valor: fmt(real.rates[code]), variacao: '', sobe: true, ...MOEDAS[code] }))
+    : terra.market
+        .map((m) => {
+          const code = m.pair.split('/')[0];
+          const [valor] = m.price.split(' ');
+          return { code, valor: Number(valor).toFixed(2).replace('.', ','), variacao: m.change.replace('.', ','), sobe: !m.change.startsWith('-'), ...MOEDAS[code] };
+        })
+        .sort((a, b) => ORDEM.indexOf(a.code) - ORDEM.indexOf(b.code));
+  const atualizado = real?.updated ? new Date(real.updated).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' }) : '';
 
   return (
     <div>
@@ -32,12 +39,12 @@ export default function Cambio() {
             </div>
             <div className="text-right">
               <div className="whitespace-nowrap text-[15px] font-extrabold tabular-nums">{l.valor} <span className="text-[10px] font-semibold text-neutral-500">MT</span></div>
-              <span className={`inline-block rounded px-1.5 py-[1px] text-[10px] font-bold ${l.sobe ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-600'}`}>{l.sobe ? '▲' : '▼'} {l.variacao.replace(/^[+-]/, '')}</span>
+              {l.variacao && <span className={`inline-block rounded px-1.5 py-[1px] text-[10px] font-bold ${l.sobe ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-600'}`}>{l.sobe ? '▲' : '▼'} {l.variacao.replace(/^[+-]/, '')}</span>}
             </div>
           </li>
         ))}
       </ul>
-      <p className="px-5 py-3 text-[10px] leading-snug text-neutral-400">Dados informativos; confirme a cotação junto da fonte antes de tomar decisões financeiras.</p>
+      <p className="px-5 py-3 text-[10px] leading-snug text-neutral-400">Dados informativos{atualizado ? ` (atualizado a ${atualizado})` : ''}; confirme a cotação junto da fonte antes de tomar decisões financeiras.</p>
     </div>
   );
 }

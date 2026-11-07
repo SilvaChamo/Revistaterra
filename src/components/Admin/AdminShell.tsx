@@ -434,7 +434,16 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     return items;
   };
 
-  const menuItems = getMenuItems(user?.role || 'guest');
+  // Colunista (com ou sem o segundo nível editor): só tem o dashboard, escrever artigo e "Meus artigos".
+  // Nome do nível das contas de colunista (a sessão do colunista-editor tem papel editor, mas o nível dele é Colunista editor).
+  const colunistaLabel = user?.colunista ? (user.role === 'editor' ? 'Colunista editor' : 'Colunista') : '';
+  const menuItems = user?.colunista
+    ? [
+        { href: '/admin/colunista', icon: LayoutDashboard, label: 'Dashboard' },
+        { href: '/admin/noticias/nova', icon: Plus, label: 'Escrever artigo' },
+        { href: '/admin/meus-artigos', icon: FileText, label: 'Meus artigos' },
+      ]
+    : getMenuItems(user?.role || 'guest');
 
   return (
     <div className={`ec-admin flex flex-col h-[100dvh] bg-[#f0f0f1] ${viewAs ? 'ec-viewing-as' : ''}`}>
@@ -468,7 +477,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             aria-label="Menu do utilizador"
             className="flex h-10 items-center gap-2 px-1 lg:h-8"
           >
-            <span className="capitalize max-sm:hidden">Olá, {user?.name || 'Visitante'} ({user?.role || 'guest'})</span>
+            <span className="capitalize max-sm:hidden">Olá, {user?.name || 'Visitante'} ({colunistaLabel || user?.role || 'guest'})</span>
             <UserIcon className="w-6 h-6 lg:w-4 lg:h-4 bg-[#2c3338] p-1 lg:p-0.5 rounded-full" />
           </button>
 

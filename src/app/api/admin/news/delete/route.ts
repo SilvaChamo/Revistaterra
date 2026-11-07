@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { refreshSite } from '@/lib/refresh-site';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
 
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    revalidatePath('/', 'layout'); // o site público deixa de mostrar logo a notícia apagada
+    refreshSite(); // o site público deixa de mostrar logo a notícia apagada
     return NextResponse.json({ success: true, deleted: targetIds.length });
   } catch (err: any) {
     console.error('Erro ao eliminar:', err);

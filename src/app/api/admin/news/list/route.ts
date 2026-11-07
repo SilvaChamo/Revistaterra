@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
 import { getAllPosts } from '@/lib/news-data';
 import { hasPermission } from '@/lib/permissions';
+import { sameAuthor } from '@/lib/columnist-utils';
+import { displayNameOf } from '@/lib/display-name';
 
 const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
@@ -11,6 +13,13 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY!,
   { auth: { autoRefreshToken: false, persistSession: false } }
 );
+
+/** Nome de autor da conta (é o que ficou gravado nos artigos dela); sem conta no Supabase, o nome da sessão. */
+async function myAuthorName(userId: string, fallback: string): Promise<string> {
+  if (!/^[0-9a-f-]{36}$/i.test(userId)) return fallback;
+  const { data } = await supabaseAdmin.auth.admin.getUserById(userId);
+  return data?.user ? displayNameOf(data.user) : fallback;
+}
 
 /**
  * Lista de notícias do painel. Lê do Supabase no servidor (com a sessão do painel a decidir
@@ -37,8 +46,11 @@ export async function GET(req: NextRequest) {
       // não as vê misturadas com as notícias. Quem só escreve (contribuidor, colunista) continua a ver os seus artigos todos.
       const opinion = (r: any) => String(r.category ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim() === 'opiniao';
       const onlyOpinion = req.nextUrl.searchParams.get('tipo') === 'opiniao';
-      const hideOpinion = !onlyOpinion && hasPermission(guard.session.role, 'publicar_artigos');
+      const hideOpinion = !onlyOpinion && req.nextUrl.searchParams.get('meus') !== '1' && hasPermission(guard.session.role, 'publicar_artigos');
+      // `?meus=1`: só os artigos do próprio (pelo nome de autor da conta), de qualquer categoria e estado.
+      const mine = req.nextUrl.searchParams.get('meus') === '1' ? await myAuthorName(guard.session.id, guard.session.name) : null;
       const items = (data as any[])
+        .filter((r) => mine === null || sameAuthor(String(r.author_name ?? ''), mine))
         .filter((r) => (onlyOpinion ? opinion(r) : hideOpinion ? !opinion(r) : true))
         .map((r) => ({ ...r, status: r.status || 'Published' }));
       return NextResponse.json({ items, source: 'supabase' });

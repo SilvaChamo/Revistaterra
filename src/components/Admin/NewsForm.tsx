@@ -4,8 +4,9 @@ import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase, SITE_ID } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
-import ImageSelector from '@/components/Admin/ImageSelector';
+import ImageChooser, { type ChosenImage } from '@/components/Admin/ImageChooser';
 import dynamic from 'next/dynamic';
+import Spinner from '@/components/Common/Spinner';
 import {
   ImageIcon,
   Key,
@@ -15,13 +16,28 @@ import {
 } from 'lucide-react';
 
 // O editor só corre no navegador
-const RichEditor = dynamic(() => import('@/components/Admin/RichEditor'), { ssr: false });
+// O editor de texto é pesado: começa a descarregar assim que este ficheiro carrega (antes de o formulário aparecer) e, enquanto
+// não chega, mostra uma caixa com o aviso em vez de um espaço em branco.
+const loadRichEditor = () => import('@/components/Admin/RichEditor');
+if (typeof window !== 'undefined') void loadRichEditor();
+const RichEditor = dynamic(loadRichEditor, {
+  ssr: false,
+  loading: () => (
+    <div className="flex min-h-[360px] flex-col items-center justify-center gap-3 text-[13px] text-[#50575e]">
+      <Spinner size={32} className="mx-auto" />
+      A carregar o editor de texto…
+    </div>
+  ),
+});
 
 // Categorias da Revista Terra
 const CATEGORIES = ['Agricultura', 'Mercado', 'Economia', 'Meio Ambiente', 'Clima', 'Tempo', 'Pesca', 'Energia', 'Sociedade', 'Política', 'Internacional', 'Fora de Campo', 'Opinião'];
 
 // Compara categorias sem depender de maiúsculas, acentos ou hífenes ("agro-negocio" = "Agro-negócio").
-const catKey = (v: string) => v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const catKey = (v: string) => {
+  const key = v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return key;
+};
 
 /** Cabeçalho de um card da barra lateral: a seta recolhe/expande o conteúdo. */
 function CollapsibleHeader({ title, open, onToggle }: { title: string; open: boolean; onToggle: () => void }) {
@@ -57,6 +73,25 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
   const { user: authUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
+  // Foto vinda do computador: aparece logo e segue para a biblioteca em segundo plano.
+  const pendingImage = useRef<Promise<string> | null>(null);
+  const [imageStatus, setImageStatus] = useState<'' | 'uploading' | 'failed'>('');
+
+  const chooseImage = (img: ChosenImage) => {
+    setFormData((prev) => ({ ...prev, image_url: img.url }));
+    if (!img.uploading) { pendingImage.current = null; setImageStatus(''); return; }
+    setImageStatus('uploading');
+    const job = img.uploading;
+    pendingImage.current = job;
+    job
+      .then((finalUrl) => {
+        if (pendingImage.current !== job) return; // entretanto escolheu outra foto
+        pendingImage.current = null;
+        setImageStatus('');
+        setFormData((prev) => (prev.image_url === img.url ? { ...prev, image_url: finalUrl } : prev));
+      })
+      .catch(() => { if (pendingImage.current === job) setImageStatus('failed'); });
+  };
   const [lockModifiedDate, setLockModifiedDate] = useState(false);
   // Cards da barra lateral recolhidos (a chave é o nome do card).
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -74,12 +109,61 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
     date: new Date().toISOString()
   });
 
+  // Ao ir à galeria escolher uma foto sai-se desta página: guarda-se o que já está escrito e repõe-se ao voltar.
+  const saveDraft = () => {
+    try {
+      sessionStorage.setItem('ec-news-draft', JSON.stringify({ path: window.location.pathname, ts: Date.now(), formData: { ...formData, image_url: formData.image_url.startsWith('blob:') ? '' : formData.image_url } }));
+    } catch { /* sem armazenamento */ }
+  };
+
+  const saveDraftRef = useRef(saveDraft);
+  useEffect(() => { saveDraftRef.current = saveDraft; });
   useEffect(() => {
+    const h = () => saveDraftRef.current();
+    window.addEventListener('ec-news-save-draft', h); // o editor de texto pede-o antes de ir à galeria
+    return () => window.removeEventListener('ec-news-save-draft', h);
+  }, []);
+
+
+  // Volta da galeria: o rascunho lê-se uma só vez (o React em desenvolvimento corre os efeitos duas vezes: se o rascunho
+  // se perdesse na 1.ª, a 2.ª repunha a notícia gravada e as alterações por gravar desapareciam).
+  const draftRef = useRef<{ formData?: Record<string, unknown>; pick?: { target?: string; url?: string } } | null | undefined>(undefined);
+  const readDraft = () => {
+    if (draftRef.current !== undefined) return draftRef.current;
+    draftRef.current = null;
+    try {
+      const raw = sessionStorage.getItem('ec-news-draft');
+      if (!raw) return null;
+      const d = JSON.parse(raw) as { path?: string; ts?: number; formData?: Record<string, unknown> };
+      sessionStorage.removeItem('ec-news-draft');
+      if (d.path !== window.location.pathname || !d.formData || Date.now() - (d.ts ?? 0) > 3600_000) return null;
+      let pick: { target?: string; url?: string } | undefined;
+      const res = sessionStorage.getItem('ec-pick-result');
+      if (res) {
+        const r = JSON.parse(res) as { target?: string; url?: string };
+        if (r.target === 'featured' && r.url) { sessionStorage.removeItem('ec-pick-result'); pick = r; }
+      }
+      draftRef.current = { formData: d.formData, pick };
+    } catch { /* rascunho inválido: ignora */ }
+    return draftRef.current;
+  };
+
+  // Notícia aberta para edição, ou rascunho reposto ao voltar da galeria (se escolheu a foto de destaque, aplica-a; a foto
+  // do texto é tratada pelo editor).
+  useEffect(() => {
+    if (isEdit && !initialData) return;
+    let next: Record<string, unknown> = {};
     if (initialData) {
       const list = Array.isArray(initialData.categories) && initialData.categories.length ? initialData.categories : [initialData.category || 'agricultura'];
-      setFormData({ ...initialData, categories: list });
+      next = { ...initialData, categories: list };
     }
-  }, [initialData]);
+    const d = readDraft();
+    if (d?.formData) next = { ...next, ...d.formData };
+    if (d?.pick?.url) next.image_url = d.pick.url;
+    if (Object.keys(next).length) setFormData((prev) => ({ ...prev, ...next }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialData, isEdit]);
+
 
   // Gerar slug automaticamente a partir do título (só se não for edição)
   useEffect(() => {
@@ -109,6 +193,18 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
     return () => window.removeEventListener('resize', fit);
   }, [formData.title]);
 
+  // Colunista (nível próprio ou somado a outro): só escreve artigos de Opinião, por isso não tem os cards de categorias nem de imagem de destaque.
+  // Quem escreve notícias não escreve Opinião. O servidor impõe as mesmas regras ao gravar.
+  const [isColumnist, setIsColumnist] = useState(false);
+  useEffect(() => {
+    fetch('/api/admin/users/me', { credentials: 'include' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setIsColumnist(data?.user?.colunista === true))
+      .catch(() => {});
+  }, []);
+
+  const categoryLabels = CATEGORIES;
+
   // Várias categorias: a primeira escolhida é a principal (`category`); tem de sobrar pelo menos uma.
   const toggleCategory = (cat: string) => {
     const key = cat.toLowerCase();
@@ -125,7 +221,12 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
     setLoading(true);
 
     try {
-      // Buscar o usuário atual do Supabase para obter o ID real
+      // Se a foto ainda está a seguir para a biblioteca, espera só o que falta (normalmente já terminou).
+      let imageUrl = formData.image_url;
+      if (pendingImage.current) {
+        try { imageUrl = await pendingImage.current; } catch { throw new Error('A foto não chegou à biblioteca. Escolha-a de novo.'); }
+      } else if (imageUrl.startsWith('blob:')) throw new Error('A foto ainda não foi enviada. Escolha-a de novo.');
+      // Buscar o utilizador actual do Supabase para obter o ID real
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       
       // Usar a nossa nova action server-side para contornar problemas de RLS na view/tabela
@@ -134,6 +235,8 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          ...(isColumnist ? { category: 'Opinião', categories: ['opiniao'], featured: false } : {}),
+          image_url: imageUrl,
           isEdit,
           site_id: SITE_ID,
           author_id: currentUser?.id || authUser?.id || null
@@ -147,7 +250,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
 
       const result = await response.json().catch(() => ({}));
       alert(`Notícia ${isEdit ? 'atualizada' : 'criada'} com sucesso!${result.warning ? `\n\n${result.warning}` : ''}`);
-      router.push('/admin/noticias');
+      router.push(isColumnist ? '/admin/meus-artigos' : '/admin/noticias');
     } catch (err: any) {
       alert('Erro ao guardar: ' + err.message);
     } finally {
@@ -175,12 +278,13 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value.replace(/\s*\n+\s*/g, ' ') })}
             onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
-            className="block w-full min-h-[50px] resize-y overflow-auto px-3 py-2.5 text-[1.4rem] leading-snug bg-white border border-[#8c8f94] rounded-[6px] outline-none focus:border-[#047857] focus:ring-1 focus:ring-[#047857] shadow-[inset_0_1px_2px_rgba(0,0,0,0.07)]"
+            className="block w-full min-h-[50px] resize-y overflow-auto px-3 py-2.5 text-[1.25rem] leading-snug bg-white border border-[#8c8f94] rounded-[6px] outline-none focus:border-[#047857] focus:ring-1 focus:ring-[#047857] shadow-[inset_0_1px_2px_rgba(0,0,0,0.07)]"
           />
 
           <div className="bg-white border border-[#ccd0d4] rounded-[8px] overflow-hidden">
             <RichEditor
               value={formData.content}
+              newsTitle={formData.title}
               onChange={(val) => setFormData((prev) => ({ ...prev, content: val }))}
             />
           </div>
@@ -212,13 +316,13 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
               <div className="flex gap-2 mb-4">
                 <button
                   type="button"
-                  className="flex-1 px-1 py-2 text-[12px] whitespace-nowrap border border-[#047857] text-[#047857] rounded-[4px] bg-[#f6f7f7] hover:bg-white font-medium transition-colors"
+                  className="flex-1 px-1 py-2 text-[12px] whitespace-nowrap border border-[#047857] text-[#065f46] rounded-[4px] bg-[#f6f7f7] hover:bg-white font-medium transition-colors"
                 >
                   Guardar Rascunho
                 </button>
                 <button
                   type="button"
-                  className="flex-1 px-1 py-2 text-[12px] border border-[#047857] text-[#047857] rounded-[4px] bg-[#f6f7f7] hover:bg-white font-medium transition-colors"
+                  className="flex-1 px-1 py-2 text-[12px] border border-[#047857] text-[#065f46] rounded-[4px] bg-[#f6f7f7] hover:bg-white font-medium transition-colors"
                 >
                   Pré-visualizar
                 </button>
@@ -252,18 +356,27 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
               </div>
             </div>
 
-            <div className={`p-3 bg-[#f6f7f7] flex justify-end ${collapsed.publish ? '' : 'border-t border-[#ccd0d4]'}`}>
+            <div className={`p-3 bg-[#f6f7f7] flex items-center justify-between ${collapsed.publish ? '' : 'border-t border-[#ccd0d4]'}`}>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-[#047857] text-white text-[14px] font-medium rounded-[4px] hover:bg-[#065f46] disabled:opacity-50"
+                className="h-9 px-6 bg-[#047857] text-white text-[14px] font-medium rounded-[4px] hover:bg-[#065f46] disabled:opacity-50"
               >
                 {loading ? 'A guardar...' : (isEdit ? 'Atualizar' : 'Publicar')}
+              </button>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={() => router.push('/admin/noticias')}
+                className="h-9 px-5 bg-white border border-[#ccd0d4] text-[#50575e] text-[14px] font-medium rounded-[4px] hover:bg-[#f0f0f1] disabled:opacity-50"
+              >
+                Cancelar
               </button>
             </div>
           </div>
 
-          {/* Categories Box */}
+          {/* Categories Box (colunistas não a têm: escrevem só Opinião) */}
+          {!isColumnist && (
           <div className="bg-white border border-[#ccd0d4] rounded-[8px] overflow-hidden shadow-sm">
             <CollapsibleHeader title="Categorias" open={!collapsed.categories} onToggle={() => toggleCard('categories')} />
 
@@ -289,11 +402,11 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
               <div className="p-3 bg-white max-h-80 overflow-y-auto">
                 <div className="space-y-1.5">
                   {/* Categorias da notícia que não estão na lista (ex.: vindas da Base) também aparecem, já marcadas. */}
-                  {[...CATEGORIES, ...formData.categories.filter((c) => !CATEGORIES.some((k) => catKey(k) === catKey(c))).map((c) => c.charAt(0).toUpperCase() + c.slice(1))].map(cat => (
+                  {[...categoryLabels.filter((k) => catKey(k) !== 'opiniao' || formData.categories.some((c) => catKey(c) === 'opiniao')), ...formData.categories.filter((c) => !categoryLabels.some((k) => catKey(k) === catKey(c))).map((c) => c.charAt(0).toUpperCase() + c.slice(1))].map(cat => (
                     <label key={cat} className="flex items-start gap-2 cursor-pointer">
                       <input
                         type="checkbox"
-                        className="mt-0.5 rounded border-[#8c8f94] text-[#047857] focus:ring-[#047857]"
+                        className="mt-0.5 rounded border-[#8c8f94] text-[#2271b1] focus:ring-[#047857]"
                         checked={formData.categories.some((c) => catKey(c) === catKey(cat))}
                         onChange={() => toggleCategory(cat)}
                       />
@@ -305,24 +418,29 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
             </div>
           </div>
 
-          {/* Featured Image Box */}
+          )}
+
+          {/* Featured Image Box (colunistas não a têm) */}
+          {!isColumnist && (
           <div className="bg-white border border-[#ccd0d4] rounded-[8px] overflow-hidden shadow-sm">
             <CollapsibleHeader title="Imagem de destaque" open={!collapsed.image} onToggle={() => toggleCard('image')} />
             <div className={`p-3 ${collapsed.image ? 'hidden' : ''}`}>
               {formData.image_url ? (
                 <div className="space-y-3">
                   <img src={formData.image_url} className="w-full h-auto border border-[#ccd0d4]" alt="" />
+                  {imageStatus === 'uploading' && <p className="text-[12px] text-[#50575e]">A enviar para a biblioteca…</p>}
+                  {imageStatus === 'failed' && <p className="text-[12px] text-[#d63638]">Não foi possível enviar esta foto para a biblioteca. Escolha-a de novo.</p>}
                   <button
                     type="button"
                     onClick={() => setIsImageSelectorOpen(true)}
-                    className="text-[#047857] text-[13px] hover:underline underline-offset-2"
+                    className="text-[#2271b1] text-[13px] hover:underline underline-offset-2"
                   >
                     Substituir imagem
                   </button>
                   <br />
                   <button
                     type="button"
-                    onClick={() => setFormData({ ...formData, image_url: '' })}
+                    onClick={() => { pendingImage.current = null; setImageStatus(''); setFormData({ ...formData, image_url: '' }); }}
                     className="text-[#d63638] text-[13px] hover:underline underline-offset-2"
                   >
                     Remover imagem
@@ -332,13 +450,14 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                 <button
                   type="button"
                   onClick={() => setIsImageSelectorOpen(true)}
-                  className="text-[#047857] text-[13px] hover:text-[#065f46] underline underline-offset-2 text-left"
+                  className="text-[#2271b1] text-[13px] hover:text-[#135e96] underline underline-offset-2 text-left"
                 >
                   Definir imagem de destaque
                 </button>
               )}
             </div>
           </div>
+          )}
 
         </div>
 
@@ -356,15 +475,15 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
         </div>
       </form>
 
-      {/* Image Selector Modal */}
+      {/* Escolher a foto: Galeria ou Computador */}
       {isImageSelectorOpen && (
-        <ImageSelector
+        <ImageChooser
+          title="Imagem de destaque"
+          newsTitle={formData.title}
+          target="featured"
+          onBeforeLeave={saveDraft}
           onClose={() => setIsImageSelectorOpen(false)}
-          onSelect={(url) => {
-            setFormData(prev => ({ ...prev, image_url: url }));
-            setIsImageSelectorOpen(false);
-          }}
-          currentImageUrl={formData.image_url}
+          onChoose={chooseImage}
         />
       )}
     </div>

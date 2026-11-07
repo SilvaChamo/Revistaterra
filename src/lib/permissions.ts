@@ -93,6 +93,8 @@ export function canAccessRoute(role: string, route: string): boolean {
     '/admin/dashboard': ['acesso_total'],
     '/admin/editor': ['ler_artigos', 'editar_artigos', 'acesso_total'],
     '/admin/contribuidor': ['criar_artigos', 'ler_artigos', 'acesso_total'],
+    '/admin/colunista': ['criar_artigos', 'ler_artigos', 'acesso_total'],
+    '/admin/meus-artigos': ['criar_artigos', 'ler_artigos', 'acesso_total'],
     '/admin/guest': ['ler_artigos'],
   };
 

@@ -20,7 +20,7 @@ import {
   Strikethrough,
   Underline as UnderlineIcon,
 } from 'lucide-react';
-import ImageSelector from '@/components/Admin/ImageSelector';
+import ImageChooser from '@/components/Admin/ImageChooser';
 
 /** Imagem com legenda editável: <figure><img><figcaption>…</figcaption></figure>. */
 const Figure = Node.create({
@@ -89,6 +89,35 @@ function insertBlock(editor: Editor, node: Json) {
     .run();
 }
 
+/** Posição do bloco de topo onde o cursor está, para a foto escolhida na galeria voltar a cair nele (-1 = no início). */
+function cursorBlockIndex(editor: Editor) {
+  const { $to } = editor.state.selection;
+  return $to.depth >= 1 ? $to.index(0) : $to.index(0) - 1;
+}
+
+/** Insere um bloco depois do bloco de topo `index` (ou no lugar dele, se estiver vazio). */
+function insertBlockAtIndex(editor: Editor, index: number, node: Json) {
+  const doc = editor.state.doc;
+  const last = doc.childCount - 1;
+  const i = Math.min(index, last);
+  let before = 0;
+  for (let k = 0; k < i; k++) before += doc.child(k).nodeSize;
+  const child = i >= 0 ? doc.child(i) : null;
+  const emptyHere = !!child && child.isTextblock && child.content.size === 0;
+  const at = !child ? 0 : emptyHere ? before : before + child.nodeSize;
+  const chain = editor.chain();
+  if (emptyHere && child) chain.deleteRange({ from: before, to: before + child.nodeSize });
+  chain
+    .insertContentAt(at, node)
+    .command(({ tr }) => {
+      tr.setSelection(Selection.near(tr.doc.resolve(Math.min(at + 1, tr.doc.content.size)), 1));
+      return true;
+    })
+    .focus()
+    .scrollIntoView()
+    .run();
+}
+
 const BLOCKS: Array<{ label: string; node: Json }> = [
   { label: 'Parágrafo', node: { type: 'paragraph' } },
   { label: 'Título', node: { type: 'heading', attrs: { level: 2 } } },
@@ -136,7 +165,7 @@ function Btn({
 const Divider = () => <span className="mx-1 h-5 w-px bg-gray-300" />;
 
 /** Editor de texto da notícia, por blocos: texto, títulos, imagens com legenda e caixas de destaque. */
-export default function RichEditor({ value, onChange }: { value: string; onChange: (html: string) => void }) {
+export default function RichEditor({ value, onChange, newsTitle = '' }: { value: string; onChange: (html: string) => void; newsTitle?: string }) {
   const [picking, setPicking] = useState(false);
   const [blocksOpen, setBlocksOpen] = useState(false);
   const lastEmitted = useRef(value);
@@ -154,11 +183,32 @@ export default function RichEditor({ value, onChange }: { value: string; onChang
     },
   });
 
-  // O texto da notícia chega depois de o editor abrir (edição): carrega-o sem contar como alteração.
+  // O texto da notícia chega depois de o editor abrir (edição, ou rascunho reposto ao voltar da galeria): carrega-o sem
+  // contar como alteração. Só depois de o texto assentar (sem mudar por um instante) entra a foto escolhida na galeria,
+  // no bloco onde estava o cursor ao sair.
   useEffect(() => {
-    if (!editor || value === lastEmitted.current) return;
-    lastEmitted.current = value;
-    editor.commands.setContent(value || '', { emitUpdate: false });
+    if (!editor) return;
+    if (value !== lastEmitted.current) {
+      lastEmitted.current = value;
+      editor.commands.setContent(value || '', { emitUpdate: false });
+    }
+    const t = setTimeout(() => {
+      try {
+        const res = sessionStorage.getItem('ec-pick-result');
+        if (!res) return;
+        const r = JSON.parse(res) as { target?: string; url?: string };
+        if (r.target !== 'editor' || !r.url) return;
+        sessionStorage.removeItem('ec-pick-result');
+        let index = editor.state.doc.childCount - 1;
+        try {
+          const p = JSON.parse(sessionStorage.getItem('ec-pick-pos') || 'null') as { index?: number } | null;
+          if (p && Number.isInteger(p.index)) index = p.index as number;
+        } catch { /* sem posição guardada: vai para o fim */ }
+        sessionStorage.removeItem('ec-pick-pos');
+        insertBlockAtIndex(editor, index, { type: 'figure', attrs: { src: r.url, alt: '' } });
+      } catch { /* ignora */ }
+    }, 600);
+    return () => clearTimeout(t);
   }, [editor, value]);
 
   if (!editor) return <div className="min-h-[400px] bg-white" />;
@@ -280,11 +330,23 @@ export default function RichEditor({ value, onChange }: { value: string; onChang
       <EditorContent editor={editor} />
 
       {picking && (
-        <ImageSelector
+        <ImageChooser
+          title="Inserir imagem"
+          newsTitle={newsTitle}
+          target="editor"
+          onBeforeLeave={() => {
+            try { sessionStorage.setItem('ec-pick-pos', JSON.stringify({ index: cursorBlockIndex(editor) })); } catch { /* sem armazenamento */ }
+            window.dispatchEvent(new Event('ec-news-save-draft'));
+          }}
           onClose={() => setPicking(false)}
-          onSelect={(url) => {
-            insertBlock(editor, { type: 'figure', attrs: { src: url, alt: '' } });
-            setPicking(false);
+          onChoose={async (img) => {
+            // Na imagem dentro do texto espera-se o endereço final (curto): assim o texto nunca guarda um endereço temporário.
+            try {
+              const url = img.uploading ? await img.uploading : img.url;
+              insertBlock(editor, { type: 'figure', attrs: { src: url, alt: '' } });
+            } catch {
+              alert('Não foi possível enviar a foto. Tente de novo.');
+            }
           }}
         />
       )}
