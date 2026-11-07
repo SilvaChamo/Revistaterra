@@ -27,7 +27,8 @@ export const MAX_MESSAGES = 60;
 
 export const mailConfigured = () => Boolean(process.env.IMAP_HOST && process.env.IMAP_USER && process.env.IMAP_PASS);
 
-export const mailAddress = () => process.env.IMAP_USER || 'redaccao@revistaterraonline.com';
+/** Endereço da redacção deste site (o utilizador IMAP configurado); vazio enquanto não estiver definido. */
+export const mailAddress = () => process.env.IMAP_USER || '';
 
 function newClient() {
   return new ImapFlow({

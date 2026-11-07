@@ -74,7 +74,7 @@ export default function PartilhadoPage() {
   return (
     <div className="ec-page min-h-screen text-[#2c3338]">
       <h1 className="mb-1 text-2xl font-normal">Arquivo de fotos</h1>
-      <p className="mb-3 text-sm text-[#50575e]">Arquivos partilhados por email: <strong>{data?.address ?? 'redaccao@revistaterraonline.com'}</strong>.</p>
+      <p className="mb-3 text-sm text-[#50575e]">{data?.address ? <>Arquivos partilhados por email: <strong>{data.address}</strong>.</> : 'Arquivos partilhados por email: o endereço da redacção ainda não está definido.'}</p>
 
       <ArquivoTabs
         active="partilhadas"
