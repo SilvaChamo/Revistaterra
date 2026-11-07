@@ -90,8 +90,6 @@ export function canAccessRoute(role: string, route: string): boolean {
     '/admin/partilhado': ['gerir_biblioteca', 'upload_imagens', 'publicar_artigos', 'acesso_total'],
     '/admin/media': ['usar_media', 'gerir_biblioteca', 'upload_imagens', 'acesso_total'],
     '/admin/utilizadores': ['listar_utilizadores', 'acesso_total'],
-    '/admin/definicoes': ['ver_definicoes', 'acesso_total'],
-    '/admin/capacidades': ['gerir_permissoes', 'acesso_total'],
     '/admin/dashboard': ['acesso_total'],
     '/admin/editor': ['ler_artigos', 'editar_artigos', 'acesso_total'],
     '/admin/contribuidor': ['criar_artigos', 'ler_artigos', 'acesso_total'],

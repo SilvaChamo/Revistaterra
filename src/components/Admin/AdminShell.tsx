@@ -352,16 +352,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           ]
         },
         { 
-          href: '/admin/capacidades', 
-          icon: Shield, 
-          label: 'Capacidades',
-          submenu: [
-            { label: 'Redirecionamentos', href: '/admin/capacidades/redirecionamentos' },
-            { label: 'Gerir capacidades', href: '/admin/capacidades' },
-            { label: 'Recursos', href: '/admin/capacidades/recursos' },
-          ]
-        },
-        { 
           href: '/admin/trafego', 
           icon: BarChart3, 
           label: 'Visitor Traffic',
@@ -369,20 +359,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Estatísticas em tempo real', href: '/admin/trafego' },
             { label: 'Relatórios detalhados', href: '/admin/trafego/relatorios' },
             { label: 'Visitantes por país', href: '/admin/trafego/paises' },
-          ]
-        },
-        { 
-          href: '/admin/definicoes', 
-          icon: Settings, 
-          label: 'Definições',
-          submenu: [
-            { label: 'Geral', href: '/admin/definicoes' },
-            { label: 'Notícias', href: '/admin/definicoes/noticias' },
-            { label: 'Utilizadores', href: '/admin/definicoes/utilizadores' },
-            { label: 'Media', href: '/admin/definicoes/media' },
-            { label: 'Segurança', href: '/admin/definicoes/seguranca' },
-            { label: 'Backup', href: '/admin/definicoes/backup' },
-            { label: 'API & Integrações', href: '/admin/definicoes/api' },
           ]
         },
       );
