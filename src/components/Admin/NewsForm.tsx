@@ -197,7 +197,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
   // Quem escreve notícias não escreve Opinião. O servidor impõe as mesmas regras ao gravar.
   const [isColumnist, setIsColumnist] = useState(false);
   useEffect(() => {
-    fetch('/api/admin/users/me', { credentials: 'include' })
+    fetch('/api/auth/me', { credentials: 'include' })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => setIsColumnist(data?.user?.colunista === true))
       .catch(() => {});

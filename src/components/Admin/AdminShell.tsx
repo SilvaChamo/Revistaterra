@@ -452,7 +452,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         <div className="flex min-w-0 items-center gap-3 lg:gap-6">
           <Link href="/" className="flex items-center gap-2 hover:text-[#9BCB3C]">
             <Settings className="w-4 h-4 max-lg:hidden" />
-            <span className="flex items-center bg-white px-2 py-px"><img src="/terra/logo-revista-terra.webp" alt="Revista Terra" width={446} height={220} className="h-6 w-auto" /></span>
+            <span className="whitespace-nowrap text-[13px] font-bold tracking-wide" style={{ fontFamily: 'Verdana, sans-serif' }}>Revista Terra</span>
           </Link>
           
           <div className="flex items-center gap-3 lg:gap-4">

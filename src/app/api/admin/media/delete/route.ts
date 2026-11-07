@@ -11,6 +11,15 @@ const supabaseAdmin = createClient(
 const BUCKET = process.env.NEXT_PUBLIC_STORAGE_BUCKET || process.env.STORAGE_BUCKET || 'revistaterra-media';
 const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 const TRASH = '_lixo/';
+const SHARED_KEY = /(?:^|\/)partilhado\/[a-z]+\/(\d+-[\d_]+)-/;
+
+/** Uma foto das partilhadas que se tira do sítio não pode voltar a ser importada do e-mail: fica uma marca. */
+async function markRemoved(names: string[]) {
+  const keys = [...new Set(names.map((n) => SHARED_KEY.exec(n)?.[1]).filter((k): k is string => !!k))];
+  for (const key of keys) {
+    await supabaseAdmin.storage.from(BUCKET).upload(`partilhado/_removidos/${key}`, Buffer.from(''), { contentType: 'text/plain', upsert: true });
+  }
+}
 const ARCHIVE = '_arquivo/';
 
 /**
@@ -23,8 +32,17 @@ const ARCHIVE = '_arquivo/';
  */
 export async function POST(req: NextRequest) {
   const { action = 'trash', names } = (await req.json().catch(() => ({}))) as { action?: string; names?: unknown };
-  const guard =
-    action === 'trash'
+  // Fotos partilhadas (e-mail da redacção): eliminar = quem tem acesso a essa área; a reciclagem (restaurar e eliminar para sempre) é só do administrador.
+  const nameList = Array.isArray(names) ? names.map(String) : [];
+  const isShared = (n: string) => n.startsWith('partilhado/') || /^_(lixo|arquivo)\/\d+\/partilhado\//.test(n);
+  const shared = nameList.some(isShared);
+  // Um pedido não mistura fotos partilhadas com as outras: cada grupo tem as suas permissões.
+  if (shared && !nameList.every(isShared)) return NextResponse.json({ error: 'Não misture fotos partilhadas com outras no mesmo pedido.' }, { status: 400 });
+  const guard = shared
+    ? action === 'trash' || action === 'archive'
+      ? await requireAuth('gerir_biblioteca', 'upload_imagens', 'publicar_artigos')
+      : await requireAuth('acesso_total')
+    : action === 'trash'
       ? await requireAuth('usar_media', 'gerir_biblioteca', 'upload_imagens')
       : await requireAuth('gerir_biblioteca', 'publicar_artigos');
   if ('error' in guard) return guard.error;
@@ -54,6 +72,7 @@ export async function POST(req: NextRequest) {
         if (error) return NextResponse.json({ error: error.message, moved }, { status: 500 });
         moved++;
       }
+      await markRemoved(list);
       return NextResponse.json({ moved });
     }
 
@@ -74,6 +93,7 @@ export async function POST(req: NextRequest) {
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     if (!data || data.length === 0) return NextResponse.json({ error: 'Nenhum ficheiro foi eliminado.' }, { status: 404 });
     await supabaseAdmin.from('media_details').delete().in('file_name', list);
+    await markRemoved(list);
     return NextResponse.json({ deleted: data.length });
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : 'Erro.' }, { status: 500 });

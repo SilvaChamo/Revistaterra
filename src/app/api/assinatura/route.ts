@@ -4,6 +4,7 @@ import { loadPosts } from '@/lib/terra-news';
 import { label } from '@/lib/terra-news';
 import { subscricaoActiva, type Exclusiva, type Pedido } from '@/lib/assinaturas-types';
 import { tooManyAttempts } from '@/lib/rate-limit';
+import { isUuid } from '@/lib/api-guard';
 
 const SEM_SESSAO = NextResponse.json({ error: 'Inicie sessão para continuar.' }, { status: 401 });
 
@@ -12,7 +13,7 @@ export async function GET() {
   const session = await leitorActual();
   if (!session) return SEM_SESSAO;
   try {
-    const [{ data }, config, pedidos, slugs, posts] = await Promise.all([db().auth.admin.getUserById(session.id), loadPlanos(), loadPedidos(), loadExclusivas(), loadPosts()]);
+    const [{ data }, config, pedidos, slugs, posts] = await Promise.all([(isUuid(session.id) ? db().auth.admin.getUserById(session.id) : Promise.resolve({ data: { user: null } })), loadPlanos(), loadPedidos(), loadExclusivas(), loadPosts()]);
     const sub = subscricaoDe(data?.user);
     const meus = pedidos.filter((p) => p.userId === session.id).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     const exclusivas: Exclusiva[] = posts.filter((p) => slugs.includes(p.slug)).slice(0, 12).map((p) => ({ slug: p.slug, title: p.title, date: p.date, category: label(p.category) }));
