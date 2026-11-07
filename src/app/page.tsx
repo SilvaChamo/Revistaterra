@@ -41,6 +41,12 @@ export default async function Home() {
     const p = mine.find((x) => x.slug === columnist.artigo) ?? mine[0];
     return p ? [{ columnist, post: { slug: p.slug, title: p.title } }] : [];
   });
+  const cards = columnistItems.length > 0
+    ? columnistItems
+    : terra.authors.map((a) => ({
+        columnist: { id: a.author, nome: a.author, handle: '', foto: a.image || '', autor: a.author, artigo: '', facebook: '', instagram: '', linkedin: '', x: '' },
+        post: { slug: '', title: a.title, href: a.url },
+      }));
   const take = makePicker(allCards);
   const todas = allCards.filter((c) => c.image);
   const recentSets: RecentSet[] = [
@@ -64,14 +70,6 @@ export default async function Home() {
           <Heading>Ambiente e Clima</Heading>
           <div className="grid gap-3 sm:grid-cols-2">{env.map((c) => <Overlay key={c.title} c={c} big className="h-[230px]" />)}</div>
 
-          {/* Colunistas: antes dos vídeos; sem colunistas o bloco não aparece */}
-          {columnistItems.length > 0 && (
-            <>
-              <Heading>Colunistas</Heading>
-              <Columnists items={columnistItems} />
-            </>
-          )}
-
           <Heading>Vídeos</Heading>
           <VideoSpotlight />
 
@@ -81,22 +79,9 @@ export default async function Home() {
           <Heading>Fora de Campo</Heading>
           <div className="grid gap-3 md:grid-cols-3">{out.map((c) => <Overlay key={c.title} c={c} className="h-[190px]" />)}</div>
 
-          {columnistItems.length === 0 && (
-            <>
-            <Heading>Opinião</Heading>
-            <div className="grid gap-3 md:grid-cols-3">
-              {terra.authors.map((a) => (
-                <a key={a.title} href={a.url} className="flex gap-3 bg-white p-4 hover:shadow-md">
-                  {a.image && <img src={a.image} alt={a.author} className="h-14 w-14 shrink-0 rounded-full object-cover" />}
-                  <div>
-                    <span className="text-[10px] font-bold uppercase" style={{ color: GREEN }}>{a.author}</span>
-                    <h3 className="mt-1 text-sm font-semibold leading-snug">“{a.title}”</h3>
-                  </div>
-                </a>
-              ))}
-            </div>
-            </>
-          )}
+          {/* Colunistas do painel; enquanto não houver, mostram-se os autores de opinião de sempre, no mesmo desenho de cartão */}
+          <Heading>{columnistItems.length > 0 ? 'Colunistas' : 'Opinião'}</Heading>
+          <Columnists items={cards} />
 
           <Heading>Mais notícias</Heading>
           <div className="grid gap-3 sm:grid-cols-2">

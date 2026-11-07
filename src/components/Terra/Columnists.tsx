@@ -2,7 +2,8 @@ import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { DARK, GREEN } from '@/lib/terra';
 import type { Columnist } from '@/lib/columnists';
 
-export type ColumnistItem = { columnist: Columnist; post: { slug: string; title: string } };
+/** `href` só se o artigo não for do próprio site (por defeito abre /noticias/<slug>). */
+export type ColumnistItem = { columnist: Columnist; post: { slug: string; title: string; href?: string } };
 
 const SOCIALS = [
   { key: 'facebook', label: 'Facebook', Icon: Facebook },
@@ -39,8 +40,10 @@ function Socials({ c }: { c: Columnist }) {
  */
 export default function Columnists({ items }: { items: ColumnistItem[] }) {
   return (
-    <div className="grid gap-x-3 gap-y-12 pt-12 md:grid-cols-2">
-      {items.map(({ columnist: c, post }) => (
+    <div className={`grid gap-x-3 gap-y-12 pt-12 ${items.length % 3 === 0 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+      {items.map(({ columnist: c, post }) => {
+        const href = post.href ?? `/noticias/${post.slug}`;
+        return (
         <article key={c.id} className="relative flex min-w-0 flex-col items-center bg-white px-4 pb-5 pt-14 text-center shadow-sm">
           {/* Avatar centrado, metade fora do cartão */}
           {c.foto ? (
@@ -56,14 +59,15 @@ export default function Columnists({ items }: { items: ColumnistItem[] }) {
             {c.handle && <div className="truncate text-[10px] text-neutral-500">@{c.handle}</div>}
           </div>
           <Socials c={c} />
-          <a href={`/noticias/${post.slug}`} className="mt-3 block w-full">
+          <a href={href} className="mt-3 block w-full">
             <h3 className="line-clamp-3 text-[12px] font-semibold leading-snug text-neutral-800 hover:text-[#047857]">{post.title}</h3>
           </a>
-          <a href={`/noticias/${post.slug}`} className="mt-3 inline-flex h-8 items-center px-4 text-[10px] font-medium uppercase tracking-wide text-white transition-colors hover:bg-[#064E3B]" style={{ background: GREEN }}>
+          <a href={href} className="mt-3 inline-flex h-8 items-center px-4 text-[10px] font-medium uppercase tracking-wide text-white transition-colors hover:bg-[#064E3B]" style={{ background: GREEN }}>
             Ler artigo
           </a>
         </article>
-      ))}
+        );
+      })}
     </div>
   );
 }
