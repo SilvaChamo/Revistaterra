@@ -102,11 +102,20 @@ export async function getQueue(state?: NewsletterState): Promise<Post[]> {
 }
 
 /** Ligação para cancelar a subscrição: o código só o servidor o sabe fazer (um e-mail não se cancela às cegas). */
-const secret = () => process.env.AUTH_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const secret = () => {
+  const s = process.env.AUTH_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // Sem segredo não há ligações assinadas: falha em vez de assinar com uma chave vazia (qualquer pessoa a poderia forjar).
+  if (!s || s.length < 32) throw new Error('AUTH_SECRET não está definido.');
+  return s;
+};
 export const unsubscribeToken = (email: string) => createHmac('sha256', secret()).update(`newsletter:${email}`).digest('hex').slice(0, 32);
 export function validUnsubscribeToken(email: string, token: string) {
-  const good = unsubscribeToken(email);
-  return token.length === good.length && timingSafeEqual(Buffer.from(token), Buffer.from(good));
+  try {
+    const good = unsubscribeToken(email);
+    return token.length === good.length && timingSafeEqual(Buffer.from(token), Buffer.from(good));
+  } catch {
+    return false;
+  }
 }
 const unsubscribeUrl = (email: string) => `${SITE_URL()}/api/newsletter/cancelar?e=${encodeURIComponent(email)}&t=${unsubscribeToken(email)}`;
 
