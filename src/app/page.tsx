@@ -64,6 +64,14 @@ export default async function Home() {
           <Heading>Ambiente e Clima</Heading>
           <div className="grid gap-3 sm:grid-cols-2">{env.map((c) => <Overlay key={c.title} c={c} big className="h-[230px]" />)}</div>
 
+          {/* Colunistas: antes dos vídeos; sem colunistas o bloco não aparece */}
+          {columnistItems.length > 0 && (
+            <>
+              <Heading>Colunistas</Heading>
+              <Columnists items={columnistItems} />
+            </>
+          )}
+
           <Heading>Vídeos</Heading>
           <VideoSpotlight />
 
@@ -73,12 +81,7 @@ export default async function Home() {
           <Heading>Fora de Campo</Heading>
           <div className="grid gap-3 md:grid-cols-3">{out.map((c) => <Overlay key={c.title} c={c} className="h-[190px]" />)}</div>
 
-          {columnistItems.length > 0 ? (
-            <>
-              <Heading>Colunistas</Heading>
-              <Columnists items={columnistItems} />
-            </>
-          ) : (
+          {columnistItems.length === 0 && (
             <>
             <Heading>Opinião</Heading>
             <div className="grid gap-3 md:grid-cols-3">

@@ -11,11 +11,11 @@ const SOCIALS = [
   { key: 'x', label: 'X', Icon: Twitter },
 ] as const;
 
-function Socials({ c, className = '' }: { c: Columnist; className?: string }) {
+function Socials({ c }: { c: Columnist }) {
   const list = SOCIALS.filter((s) => c[s.key]);
   if (list.length === 0) return null;
   return (
-    <div className={`items-center gap-1.5 ${className}`}>
+    <div className="mt-2 flex items-center justify-center gap-1.5">
       {list.map(({ key, label, Icon }) => (
         <a
           key={key}
@@ -34,42 +34,34 @@ function Socials({ c, className = '' }: { c: Columnist; className?: string }) {
 
 /**
  * Colunistas da home, no estilo dos cartões da Terra (fundo branco, sombra leve, cantos rectos): duas colunas
- * (uma no telemóvel). A foto redonda sobrepõe-se ao cartão escuro com o nome e o @; por baixo vêm o título do
- * artigo de Opinião e o botão «Ler artigo». No telemóvel as redes sociais passam para junto do botão.
+ * (uma no telemóvel). O avatar fica centrado e sai por cima do cartão; por baixo vêm o nome, o @, as redes sociais,
+ * o título do artigo de Opinião e o botão «Ler artigo».
  */
 export default function Columnists({ items }: { items: ColumnistItem[] }) {
   return (
-    <div className="grid gap-x-3 gap-y-8 md:grid-cols-2">
+    <div className="grid gap-x-3 gap-y-12 pt-12 md:grid-cols-2">
       {items.map(({ columnist: c, post }) => (
-        <article key={c.id} className="min-w-0 pt-10 sm:pt-12">
-          <div className="relative bg-white px-4 pb-4 pt-11 shadow-sm sm:pl-[88px] sm:pt-12">
-            {/* Cartão do nome: nasce por baixo da foto e passa a linha de cima do cartão. */}
-            <div className="absolute -top-6 left-[56px] right-3 z-10 flex items-center gap-3 sm:-top-7 sm:left-[84px]">
-              <div className="flex h-10 min-w-0 flex-col justify-center pl-[46px] pr-4 sm:h-12 sm:pl-[46px]" style={{ background: DARK }}>
-                <div className="truncate text-[13px] font-semibold leading-tight text-white sm:text-sm">{c.nome}</div>
-                {c.handle && <div className="truncate text-[10px] leading-tight text-white/70">@{c.handle}</div>}
-              </div>
-              <Socials c={c} className="hidden sm:flex" />
-            </div>
-            {/* Foto: dentro do cartão, afastada da esquerda, sobre o cartão do nome. */}
-            {c.foto ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={c.foto} alt={c.nome} loading="lazy" decoding="async" className="absolute -top-10 left-3 z-20 h-[72px] w-[72px] rounded-full border-2 object-cover ring-4 ring-[#dcebc0] sm:-top-12 sm:left-6 sm:h-[88px] sm:w-[88px]" style={{ borderColor: DARK }} />
-            ) : (
-              <span aria-hidden className="absolute -top-10 left-3 z-20 flex h-[72px] w-[72px] items-center justify-center rounded-full border-2 bg-[#eef5e1] text-2xl ring-4 ring-[#dcebc0] sm:-top-12 sm:left-6 sm:h-[88px] sm:w-[88px]" style={{ borderColor: DARK, color: DARK }}>
-                {c.nome.charAt(0).toUpperCase()}
-              </span>
-            )}
-            <a href={`/noticias/${post.slug}`} className="block">
-              <h3 className="line-clamp-3 text-[13px] font-bold leading-snug text-neutral-900 hover:text-[#047857]">{post.title}</h3>
-            </a>
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <a href={`/noticias/${post.slug}`} className="inline-flex h-8 items-center px-4 text-[11px] font-medium uppercase tracking-wide text-white transition-colors hover:bg-[#064E3B]" style={{ background: GREEN }}>
-                Ler artigo
-              </a>
-              <Socials c={c} className="flex sm:hidden" />
-            </div>
+        <article key={c.id} className="relative flex min-w-0 flex-col items-center bg-white px-4 pb-5 pt-14 text-center shadow-sm">
+          {/* Avatar centrado, metade fora do cartão */}
+          {c.foto ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={c.foto} alt={c.nome} loading="lazy" decoding="async" className="absolute left-1/2 top-0 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] object-cover shadow-md ring-4 ring-white" style={{ borderColor: GREEN }} />
+          ) : (
+            <span aria-hidden className="absolute left-1/2 top-0 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[3px] bg-[#eef5e1] text-3xl shadow-md ring-4 ring-white" style={{ borderColor: GREEN, color: DARK }}>
+              {c.nome.charAt(0).toUpperCase()}
+            </span>
+          )}
+          <div className="w-full min-w-0">
+            <div className="truncate text-[13px] font-bold" style={{ color: DARK }}>{c.nome}</div>
+            {c.handle && <div className="truncate text-[10px] text-neutral-500">@{c.handle}</div>}
           </div>
+          <Socials c={c} />
+          <a href={`/noticias/${post.slug}`} className="mt-3 block w-full">
+            <h3 className="line-clamp-3 text-[12px] font-semibold leading-snug text-neutral-800 hover:text-[#047857]">{post.title}</h3>
+          </a>
+          <a href={`/noticias/${post.slug}`} className="mt-3 inline-flex h-8 items-center px-4 text-[10px] font-medium uppercase tracking-wide text-white transition-colors hover:bg-[#064E3B]" style={{ background: GREEN }}>
+            Ler artigo
+          </a>
         </article>
       ))}
     </div>
