@@ -11,20 +11,22 @@ const supabaseAdmin = createClient(
 );
 
 /** Papéis que o painel pode atribuir (rótulos guardados em app_metadata.role). */
-const ROLE_LABELS = ['Administrador', 'Editor', 'Contribuidor', 'Subscritor'];
+const ROLE_LABELS = ['Administrador', 'Editor', 'Contribuidor', 'Colunista', 'Subscritor'];
 
 export async function POST(req: NextRequest) {
   const guard = await requireAuth('criar_utilizadores');
   if ('error' in guard) return guard.error;
   try {
-    const { username, email, password, firstName, lastName, alcunha, displayNameType, role, website, avatarUrl, telefone, profissao, cargo } = await req.json();
+    const { username, email, password, firstName, lastName, alcunha, displayNameType, role, colunista, website, avatarUrl, telefone, profissao, cargo } = await req.json();
 
     if (!email || !password || !username) {
       return NextResponse.json({ error: 'Campos obrigatórios em falta' }, { status: 400 });
     }
     const roleLabel = ROLE_LABELS.includes(role) ? role : 'Subscritor';
     // Só quem gere permissões atribui papéis com acesso ao painel.
-    if (roleLabel !== 'Subscritor' && !hasPermission(guard.session.role, 'gerir_permissoes')) {
+    // Segundo nível "colunista" (somado ao papel); o papel Colunista já o inclui.
+    const alsoColumnist = colunista === true && roleLabel !== 'Colunista';
+    if ((roleLabel !== 'Subscritor' || alsoColumnist) && !hasPermission(guard.session.role, 'gerir_permissoes')) {
       return NextResponse.json({ error: 'Não tem permissão para atribuir este papel.' }, { status: 403 });
     }
 
@@ -33,7 +35,7 @@ export async function POST(req: NextRequest) {
       password,
       email_confirm: true,
       // app_metadata só é escrito por aqui (chave de serviço): decide o papel e a aceitação.
-      app_metadata: { [SITE_KEY]: { role: roleLabel, approved: true, via: 'servidor' } },
+      app_metadata: { [SITE_KEY]: { role: roleLabel, approved: true, ...(alsoColumnist ? { colunista: true } : {}), via: 'servidor' } },
       user_metadata: {
         app: SITE_KEY,
         username,

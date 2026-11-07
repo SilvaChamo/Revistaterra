@@ -7,7 +7,7 @@ import { Camera, Trash2, Shield, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Spinner from '@/components/Common/Spinner';
 
-const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor'];
+const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor', 'Colunista'];
 
 export default function EditUserPage() {
   const params = useParams();
@@ -28,6 +28,7 @@ export default function EditUserPage() {
     profissao: '',
     cargo: '',
     role: 'Subscritor',
+    colunista: false,
     isAdmin: false
   });
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -144,6 +145,7 @@ export default function EditUserPage() {
           alcunha: form.alcunha,
           displayNameType: form.displayNameType,
           role: form.role,
+          colunista: form.colunista === true,
           bio: form.bio,
           website: form.website,
           avatarUrl: finalAvatarUrl,
@@ -375,6 +377,12 @@ export default function EditUserPage() {
                   {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
                 </select>
                 {form.isAdmin && <p className="text-[11px] text-[#50575e] mt-1">O papel do administrador não pode ser alterado.</p>}
+                {form.role !== 'Colunista' && (
+                  <label className="mt-2 flex items-center gap-2 text-[13px] text-[#1d2327]">
+                    <input type="checkbox" checked={form.colunista === true} onChange={e => setForm({...form, colunista: e.target.checked})} className="h-4 w-4" />
+                    Também é colunista (segundo nível, somado ao papel)
+                  </label>
+                )}
               </td>
             </tr>
 

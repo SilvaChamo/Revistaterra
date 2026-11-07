@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Camera, Trash2, Shield, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
-const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor'];
+const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor', 'Colunista'];
 
 export default function AddUserPage() {
   const router = useRouter();
@@ -22,7 +22,8 @@ export default function AddUserPage() {
     telefone: '',
     profissao: '',
     cargo: '',
-    role: 'Subscritor'
+    role: 'Subscritor',
+    colunista: false
   });
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
@@ -315,6 +316,12 @@ export default function AddUserPage() {
                   className="h-8 px-2 border border-[#ccd0d4] rounded-md text-[13px] bg-white outline-none focus:border-[#047857]">
                   {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
                 </select>
+                {form.role !== 'Colunista' && (
+                  <label className="mt-2 flex items-center gap-2 text-[13px] text-[#1d2327]">
+                    <input type="checkbox" checked={form.colunista === true} onChange={e => setForm({...form, colunista: e.target.checked})} className="h-4 w-4" />
+                    Também é colunista (segundo nível, somado ao papel)
+                  </label>
+                )}
               </td>
             </tr>
           </tbody>

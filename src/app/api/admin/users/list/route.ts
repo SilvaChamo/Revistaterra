@@ -33,6 +33,7 @@ export async function GET() {
         email: u.email || '',
         role: siteAccess(u)!.role,
         approved: siteAccess(u)!.approved,
+        colunista: siteAccess(u)!.colunista === true,
         alcunha: u.user_metadata?.alcunha || '',
         displayNameType: u.user_metadata?.displayNameType || 'full_name',
         articles: 0,

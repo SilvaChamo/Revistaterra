@@ -11,14 +11,14 @@ const supabaseAdmin = createClient(
 );
 
 /** Papéis que o painel pode atribuir (rótulos guardados em app_metadata.role). */
-const ROLE_LABELS = ['Administrador', 'Editor', 'Contribuidor', 'Subscritor'];
+const ROLE_LABELS = ['Administrador', 'Editor', 'Contribuidor', 'Colunista', 'Subscritor'];
 
 export async function POST(req: NextRequest) {
   const guard = await requireAuth();
   if ('error' in guard) return guard.error;
   const { session } = guard;
   try {
-    const { id, firstName, lastName, alcunha, displayNameType, role, approved, bio, website, avatarUrl, password, telefone, profissao, cargo } = await req.json();
+    const { id, firstName, lastName, alcunha, displayNameType, role, colunista, approved, bio, website, avatarUrl, password, telefone, profissao, cargo } = await req.json();
 
     if (!id || !isUuid(String(id))) {
       return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
@@ -38,13 +38,14 @@ export async function POST(req: NextRequest) {
     const currentRole = siteAccess(currentUser)!.role;
 
     // Ninguém edita (nem muda a palavra-passe de) contas de nível igual ou superior ao seu; só o administrador edita administradores.
-    const RANK: Record<string, number> = { Administrador: 3, Editor: 2, Contribuidor: 1, Subscritor: 0 };
+    const RANK: Record<string, number> = { Administrador: 3, Editor: 2, Contribuidor: 1, Colunista: 1, Subscritor: 0 };
     const callerRank = { admin: 3, editor: 2, contribuidor: 1, guest: 0 }[session.role] ?? 0;
     const targetRank = RANK[currentRole] ?? 0;
     if (!isSelf && (targetRank > callerRank || (targetRank === callerRank && session.role !== 'admin'))) {
       return NextResponse.json({ error: 'Não pode alterar um utilizador de nível igual ou superior ao seu.' }, { status: 403 });
     }
     const currentApproved = siteAccess(currentUser)!.approved;
+    const currentColumnist = siteAccess(currentUser)!.colunista === true;
 
     // Papel e aceitação só por quem gere permissões (nunca o próprio, para não se promover).
     // Reenviar o valor actual (formulário de perfil) não conta como alteração.
@@ -52,7 +53,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Papel inválido' }, { status: 400 });
     }
     const touchesAccess =
-      (role !== undefined && role !== currentRole) || (approved !== undefined && (approved === true) !== currentApproved);
+      (role !== undefined && role !== currentRole) ||
+      (approved !== undefined && (approved === true) !== currentApproved) ||
+      (colunista !== undefined && (colunista === true) !== currentColumnist);
     if (touchesAccess && (isSelf || !hasPermission(session.role, 'gerir_permissoes'))) {
       return NextResponse.json({ error: 'Não tem permissão para alterar o papel ou a aceitação.' }, { status: 403 });
     }
@@ -79,6 +82,7 @@ export async function POST(req: NextRequest) {
       updateData.app_metadata = withSiteAccess(currentUser, {
         ...(role !== undefined && role !== currentRole ? { role } : {}),
         ...(approved !== undefined ? { approved: approved === true } : {}),
+        ...(colunista !== undefined ? { colunista: colunista === true && (role ?? currentRole) !== 'Colunista' } : {}),
       });
     }
 

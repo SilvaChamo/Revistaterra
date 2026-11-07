@@ -27,6 +27,9 @@ export function longDate(iso: string) {
   return isNaN(+d) ? '' : `${d.getUTCDate()} de ${MESES[d.getUTCMonth()].toLowerCase()} de ${d.getUTCFullYear()}`;
 }
 
+/** Artigos de opinião (muitos sem foto) não se misturam com as notícias da home: só aparecem no bloco Colunistas e na categoria Opinião. */
+const notOpinion = (p: TerraPost) => slugify(p.category) !== 'opiniao';
+
 const toCard = (p: TerraPost): Card => ({ category: label(p.category), title: p.title, excerpt: p.summary, url: `/noticias/${p.slug}`, image: p.image_url, date: cardDate(p.date) });
 
 /** Notícias publicadas deste site, da mais recente para a mais antiga. Se a base de dados falhar, usa o ficheiro de reserva. */
@@ -66,11 +69,11 @@ function fallbackPosts(): TerraPost[] {
 
 export const loadCards = cache(async (): Promise<Card[]> => {
   const [posts, exclusivas] = await Promise.all([loadPosts(), loadExclusivas()]);
-  return posts.map((p) => ({ ...toCard(p), exclusive: exclusivas.includes(p.slug) }));
+  return posts.filter(notOpinion).map((p) => ({ ...toCard(p), exclusive: exclusivas.includes(p.slug) }));
 });
 
 export const loadHero = cache(async () => {
-  const posts = await loadPosts();
+  const posts = (await loadPosts()).filter(notOpinion);
   const feat = posts.filter((p) => p.featured && p.image_url);
   const pick = feat.length >= 3 ? feat : [...feat, ...posts.filter((p) => !p.featured && p.image_url)];
   return pick.slice(0, 7).map((p) => ({ category: label(p.category), title: p.title, excerpt: p.summary, url: `/noticias/${p.slug}`, image: p.image_url }));

@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
 import { getAllPosts } from '@/lib/news-data';
+import { hasPermission } from '@/lib/permissions';
 
 const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
@@ -15,7 +16,7 @@ const supabaseAdmin = createClient(
  * Lista de notícias do painel. Lê do Supabase no servidor (com a sessão do painel a decidir
  * quem pode ver); se o Supabase recusar ou estiver inacessível, mostra a cópia local do site.
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
   const guard = await requireAuth('ler_artigos');
   if ('error' in guard) return guard.error;
 
@@ -32,7 +33,14 @@ export async function GET() {
       if (!error || !/status|author_name/i.test(error.message)) break;
     }
     if (!error && data) {
-      const items = (data as any[]).map((r) => ({ ...r, status: r.status || 'Published' }));
+      // Opinião tem listas próprias (menu Artigos de Opinião): com ?tipo=opiniao só vêm elas; quem publica (administrador, editor)
+      // não as vê misturadas com as notícias. Quem só escreve (contribuidor, colunista) continua a ver os seus artigos todos.
+      const opinion = (r: any) => String(r.category ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim() === 'opiniao';
+      const onlyOpinion = req.nextUrl.searchParams.get('tipo') === 'opiniao';
+      const hideOpinion = !onlyOpinion && hasPermission(guard.session.role, 'publicar_artigos');
+      const items = (data as any[])
+        .filter((r) => (onlyOpinion ? opinion(r) : hideOpinion ? !opinion(r) : true))
+        .map((r) => ({ ...r, status: r.status || 'Published' }));
       return NextResponse.json({ items, source: 'supabase' });
     }
     console.warn('[admin/news/list] Supabase recusou:', error?.message);

@@ -6,6 +6,10 @@ import { Heading, NewsCard, Overlay } from '@/components/Terra/Bits';
 import RecentNews, { type RecentSet } from '@/components/Terra/RecentNews';
 import { GREEN, makePicker, parseDate, terra, type Card } from '@/lib/terra';
 import { loadCards, loadHero } from '@/lib/terra-news';
+import { getAllPosts } from '@/lib/news-data';
+import { getColumnists } from '@/lib/columnists';
+import { opinionPosts, sameAuthor } from '@/lib/columnist-utils';
+import Columnists from '@/components/Terra/Columnists';
 
 /** Até 9 notícias para o carrossel, na ordem do separador. */
 function buildSet(id: string, label: string, ordered: Card[]): RecentSet {
@@ -29,6 +33,14 @@ export const revalidate = 60; // o que se edita no painel aparece em ~1 minuto
 export default async function Home() {
   const allCards = (await loadCards()).map((c) => ({ ...c, category: c.category || 'Fora de Campo' }));
   const hero = await loadHero();
+  // Colunistas: o card mostra o artigo de Opinião fixado ou, sem fixado, o mais recente do autor; sem artigos, o colunista não aparece.
+  const [columnists, { posts: allPosts }] = await Promise.all([getColumnists(), getAllPosts().catch(() => ({ posts: [] as Awaited<ReturnType<typeof getAllPosts>>['posts'] }))]);
+  const opinion = opinionPosts(allPosts);
+  const columnistItems = columnists.flatMap((columnist) => {
+    const mine = opinion.filter((p) => sameAuthor(p.author, columnist.autor));
+    const p = mine.find((x) => x.slug === columnist.artigo) ?? mine[0];
+    return p ? [{ columnist, post: { slug: p.slug, title: p.title } }] : [];
+  });
   const take = makePicker(allCards);
   const todas = allCards.filter((c) => c.image);
   const recentSets: RecentSet[] = [
@@ -61,18 +73,27 @@ export default async function Home() {
           <Heading>Fora de Campo</Heading>
           <div className="grid gap-3 md:grid-cols-3">{out.map((c) => <Overlay key={c.title} c={c} className="h-[190px]" />)}</div>
 
-          <Heading>Opinião</Heading>
-          <div className="grid gap-3 md:grid-cols-3">
-            {terra.authors.map((a) => (
-              <a key={a.title} href={a.url} className="flex gap-3 bg-white p-4 hover:shadow-md">
-                {a.image && <img src={a.image} alt={a.author} className="h-14 w-14 shrink-0 rounded-full object-cover" />}
-                <div>
-                  <span className="text-[10px] font-bold uppercase" style={{ color: GREEN }}>{a.author}</span>
-                  <h3 className="mt-1 text-sm font-semibold leading-snug">“{a.title}”</h3>
-                </div>
-              </a>
-            ))}
-          </div>
+          {columnistItems.length > 0 ? (
+            <>
+              <Heading>Colunistas</Heading>
+              <Columnists items={columnistItems} />
+            </>
+          ) : (
+            <>
+            <Heading>Opinião</Heading>
+            <div className="grid gap-3 md:grid-cols-3">
+              {terra.authors.map((a) => (
+                <a key={a.title} href={a.url} className="flex gap-3 bg-white p-4 hover:shadow-md">
+                  {a.image && <img src={a.image} alt={a.author} className="h-14 w-14 shrink-0 rounded-full object-cover" />}
+                  <div>
+                    <span className="text-[10px] font-bold uppercase" style={{ color: GREEN }}>{a.author}</span>
+                    <h3 className="mt-1 text-sm font-semibold leading-snug">“{a.title}”</h3>
+                  </div>
+                </a>
+              ))}
+            </div>
+            </>
+          )}
 
           <Heading>Mais notícias</Heading>
           <div className="grid gap-3 sm:grid-cols-2">

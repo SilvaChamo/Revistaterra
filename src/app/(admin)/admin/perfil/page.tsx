@@ -6,7 +6,7 @@ import { Camera, Trash2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Spinner from '@/components/Common/Spinner';
 
-const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor'];
+const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor', 'Colunista'];
 
 export default function MeuPerfilPage() {
   const { user: authUser } = useAuth();

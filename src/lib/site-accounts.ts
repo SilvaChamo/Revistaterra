@@ -8,13 +8,14 @@ import type { SupabaseClient, User } from '@supabase/supabase-js';
  */
 export const SITE_KEY = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 
-export type SiteAccess = { role: string; approved: boolean };
+/** `colunista`: segundo nível, somado ao papel (ex.: Editor e colunista ao mesmo tempo). */
+export type SiteAccess = { role: string; approved: boolean; colunista?: boolean };
 
 export function siteAccess(user: Pick<User, 'app_metadata'> | null | undefined): SiteAccess | null {
   const raw = user?.app_metadata?.[SITE_KEY];
   if (!raw || typeof raw !== 'object') return null;
-  const { role, approved } = raw as { role?: unknown; approved?: unknown };
-  return { role: typeof role === 'string' && role ? role : 'Subscritor', approved: approved === true };
+  const { role, approved, colunista } = raw as { role?: unknown; approved?: unknown; colunista?: unknown };
+  return { role: typeof role === 'string' && role ? role : 'Subscritor', approved: approved === true, colunista: colunista === true };
 }
 
 export const isSiteAccount = (user: Pick<User, 'app_metadata'> | null | undefined) => siteAccess(user) !== null;

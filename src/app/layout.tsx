@@ -3,6 +3,7 @@ import RevealOnView from "@/components/Expnews/RevealOnView";
 
 import { AuthProvider } from "@/context/AuthContext";
 import RadioProvider from "@/components/Terra/RadioProvider";
+import NewsletterPulse from "@/components/Site/NewsletterPulse";
 
 export const metadata = {
   title: 'Revista Terra',
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body style={{ fontFamily: 'Verdana, sans-serif' }}>
         <AuthProvider>
           <RevealOnView />
+          <NewsletterPulse />
           <RadioProvider>{children}</RadioProvider>
         </AuthProvider>
       </body>

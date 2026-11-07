@@ -34,9 +34,14 @@ import {
   Loader2,
   MessageSquare,
   Radio,
-  Mail
+  Mail,
+  FolderOpen,
+  PenLine
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
+
+/** Avisa a página aberta de que se clicou nesta entrada do menu (ex.: «Arquivo de fotos» estando já nele fecha a pasta aberta). */
+const avisarNavegacao = (href: string) => window.dispatchEvent(new CustomEvent('ec-nav', { detail: href }));
 
 interface SidebarItemProps {
   href: string;
@@ -74,7 +79,7 @@ const SidebarItem = ({ href, icon: Icon, label, active, submenu, isOpen = false,
                 : 'text-[#f0f0f1] hover:text-white hover:bg-[#2c3338] hover:border-[#047857]'
             }`}
           >
-            <Link href={href} className="flex items-center gap-3 flex-1">
+            <Link href={href} onClick={() => avisarNavegacao(href)} className="flex items-center gap-3 flex-1">
               <Icon className={`w-5 h-5 transition-colors ${active ? 'text-white' : 'text-[#8c8f94] group-hover/item:text-white'}`} />
               <span className="font-medium">{label}</span>
             </Link>
@@ -95,7 +100,7 @@ const SidebarItem = ({ href, icon: Icon, label, active, submenu, isOpen = false,
               ? 'bg-[#047857] text-white border-[#047857]' 
               : 'text-[#f0f0f1] hover:text-white hover:bg-[#2c3338] hover:border-[#047857]'
           }`}>
-            <Link href={href} className="flex items-center gap-3 flex-1">
+            <Link href={href} onClick={() => avisarNavegacao(href)} className="flex items-center gap-3 flex-1">
               <Icon className={`w-5 h-5 transition-colors ${active ? 'text-white' : 'text-[#8c8f94] group-hover/item:text-white'}`} />
               <span className="font-medium">{label}</span>
             </Link>
@@ -122,6 +127,7 @@ const SidebarItem = ({ href, icon: Icon, label, active, submenu, isOpen = false,
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => avisarNavegacao(item.href)}
                 className={`block px-4 py-1.5 text-[13px] hover:text-[#047857] transition-colors border-l-[3px] border-transparent ml-[10px] ${
                   pathname === item.href ? 'text-[#047857] border-[#047857]' : 'text-[#f0f0f1] hover:border-[#047857]'
                 }`}
@@ -140,6 +146,7 @@ const SidebarItem = ({ href, icon: Icon, label, active, submenu, isOpen = false,
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => avisarNavegacao(item.href)}
               className={`block px-4 py-1.5 text-[13px] hover:text-[#047857] transition-colors border-l-[3px] border-transparent ml-[10px] ${
                 pathname === item.href ? 'text-[#047857] border-[#047857]' : 'text-[#f0f0f1] hover:border-[#047857]'
               }`}
@@ -290,6 +297,15 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Reparar Imagens', href: '/admin/noticias/reparar' },
           ]
         },
+        {
+          href: '/admin/opiniao',
+          icon: PenLine,
+          label: 'Artigos de Opinião',
+          submenu: [
+            { label: 'Pendentes', href: '/admin/opiniao/pendentes' },
+            { label: 'Todos os artigos', href: '/admin/opiniao' },
+          ]
+        },
         { href: '/admin/comentarios', icon: MessageSquare, label: 'Comentários' },
         { href: '/admin/radio', icon: Radio, label: 'Rádio' },
         {
@@ -319,7 +335,20 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           submenu: [
             { label: 'Todos os utilizadores', href: '/admin/utilizadores' },
             { label: 'Adicionar utilizador', href: '/admin/utilizadores/novo' },
+            { label: 'Colunistas', href: '/admin/colunistas' },
             { label: 'O seu perfil', href: '/admin/perfil' },
+          ]
+        },
+        {
+          href: '/admin/arquivo',
+          icon: FolderOpen,
+          label: 'Arquivo do site',
+          submenu: [
+            { label: 'Arquivo de fotos', href: '/admin/arquivo' },
+            { label: 'Arquivos partilhados', href: '/admin/partilhado' },
+            { label: 'PDF', href: '/admin/partilhado/pdf' },
+            { label: 'Arquivos ZIP', href: '/admin/partilhado/zip' },
+            { label: 'Documentos', href: '/admin/partilhado/documentos' },
           ]
         },
         { 
@@ -368,7 +397,28 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         { href: '/admin/subscricoes/exclusivas', icon: CreditCard, label: 'Notícias exclusivas' },
         { href: '/admin/noticias/revistas', icon: CheckSquare, label: 'Últimos Revistos' },
         { href: '/admin/noticias', icon: Newspaper, label: 'Todas as Notícias' },
+        {
+          href: '/admin/opiniao',
+          icon: PenLine,
+          label: 'Artigos de Opinião',
+          submenu: [
+            { label: 'Pendentes', href: '/admin/opiniao/pendentes' },
+            { label: 'Todos os artigos', href: '/admin/opiniao' },
+          ]
+        },
         { href: '/admin/media', icon: ImageIcon, label: 'Multimédia' },
+        {
+          href: '/admin/arquivo',
+          icon: FolderOpen,
+          label: 'Arquivo do site',
+          submenu: [
+            { label: 'Arquivo de fotos', href: '/admin/arquivo' },
+            { label: 'Arquivos partilhados', href: '/admin/partilhado' },
+            { label: 'PDF', href: '/admin/partilhado/pdf' },
+            { label: 'Arquivos ZIP', href: '/admin/partilhado/zip' },
+            { label: 'Documentos', href: '/admin/partilhado/documentos' },
+          ]
+        },
       );
     }
 
@@ -394,6 +444,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Limpeza de Media', href: '/admin/media/limpeza' },
           ]
         },
+        { href: '/admin/arquivo', icon: FolderOpen, label: 'Arquivo do site' },
       );
     }
 

@@ -13,6 +13,7 @@ interface UserItem {
   role: string;
   articles: number;
   avatar?: string;
+  colunista?: boolean;
   isAdmin?: boolean;
   displayNameType?: string;
   alcunha?: string;
@@ -22,7 +23,10 @@ interface UserItem {
   website?: string;
 }
 
-const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor'];
+const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor', 'Colunista'];
+
+/** Tem este nível? Colunista conta tanto o papel Colunista como o segundo nível somado a outro papel (ex.: Editor e colunista). */
+const hasLevel = (u: { role: string; colunista?: boolean }, level: string) => u.role === level || (level === 'Colunista' && u.colunista === true);
 
 export default function UsersAdminPage() {
   const [users, setUsers] = useState<UserItem[]>([]);
@@ -50,7 +54,7 @@ export default function UsersAdminPage() {
   }, []);
 
   const filteredUsers = users.filter(user => {
-    const matchesRole = filter === 'Todos' || user.role === filter;
+    const matchesRole = filter === 'Todos' || hasLevel(user, filter);
     const matchesSearch = user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           user.email.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesRole && matchesSearch;
@@ -58,7 +62,7 @@ export default function UsersAdminPage() {
 
   const getRoleCount = (role: string) => {
     if (role === 'Todos') return users.length;
-    return users.filter(u => u.role === role).length;
+    return users.filter(u => hasLevel(u, role)).length;
   };
 
   const handleDelete = async (user: UserItem) => {
@@ -233,7 +237,7 @@ export default function UsersAdminPage() {
                   <td className="p-3">
                     <a href={`mailto:${user.email}`} className="text-[#047857] hover:underline">{user.email}</a>
                   </td>
-                  <td className="p-3 text-[#50575e]">{user.role}</td>
+                  <td className="p-3 text-[#50575e]">{user.colunista && user.role !== 'Colunista' ? `${user.role} e Colunista` : user.role}</td>
                   <td className="p-3 text-center">
                     <Link href={`/admin/noticias?autor=${user.username}`} className="text-[#047857] font-bold hover:underline">
                       {user.articles}

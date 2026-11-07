@@ -36,6 +36,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       lastName: user.user_metadata?.last_name || '',
       email: user.email || '',
       role: siteAccess(user)!.role,
+      colunista: siteAccess(user)!.colunista === true,
       alcunha: user.user_metadata?.alcunha || '',
       displayNameType: user.user_metadata?.displayNameType || 'full_name',
       bio: user.user_metadata?.bio || '',
