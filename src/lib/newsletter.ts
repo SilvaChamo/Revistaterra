@@ -14,7 +14,7 @@ import { removeReads } from '@/lib/newsletter-reads';
 const SITE_URL = () => (process.env.NEXT_PUBLIC_SITE_URL || 'https://revistaterraonline.com').replace(/\/$/, '');
 const BUCKET = () => process.env.NEXT_PUBLIC_STORAGE_BUCKET || process.env.STORAGE_BUCKET || 'revistaterra-media';
 /** Remetente próprio da newsletter (os outros e-mails do site, como a recuperação de palavra-passe, mantêm o noreply). */
-const NEWSLETTER_FROM = () => process.env.NEWSLETTER_EMAIL_FROM || 'Revista Terra <noreply@visualdesignmoz.com>';
+const NEWSLETTER_FROM = () => process.env.NEWSLETTER_EMAIL_FROM || 'Revista Terra <info@revistaterraonline.com>';
 const STATE_FILE = 'partilhado/_config/newsletter.json';
 const MAX_NEWS = 20;
 
