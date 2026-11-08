@@ -248,6 +248,10 @@ body {
 .ec-admin button[class*="rounded-full"] {
   border-radius: 0 !important;
 }
+/* Interruptores (role="switch"): sempre redondos, com a bola por dentro. */
+.ec-admin button[role="switch"] {
+  border-radius: 9999px !important;
+}
 
 /* Filtros (selects): seta própria, afastada do canto do campo. */
 .ec-admin select:not([multiple]):not(.appearance-none) {
