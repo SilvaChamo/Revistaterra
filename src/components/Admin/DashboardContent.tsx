@@ -48,14 +48,12 @@ export default function DashboardContent({ forcedRole }: { forcedRole?: UserRole
   const fetchData = async () => {
     setLoading(true);
     try {
-      const { count: newsCount } = await supabase
-        .from('news')
-        .select('*', { count: 'exact', head: true })
-        .eq('site_id', SITE_ID);
-
-          const { data: mediaFiles } = await supabase.storage.from(BUCKET_NAME).list('', {
-        limit: 1000
-      });
+      // Os três pedidos seguem ao mesmo tempo: cada um demora ~2 s no Supabase e antes esperavam uns pelos outros.
+      const [{ count: newsCount }, { data: mediaFiles }, { data: latestNews }] = await Promise.all([
+        supabase.from('news').select('*', { count: 'exact', head: true }).eq('site_id', SITE_ID),
+        supabase.storage.from(BUCKET_NAME).list('', { limit: 1000 }),
+        supabase.from('news').select('id, title, date').eq('site_id', SITE_ID).order('date', { ascending: false }).limit(5),
+      ]);
 
       const videoExtensions = ['.mp4', '.mov', '.avi', '.mkv', '.webm'];
       const videoCount = mediaFiles?.filter((f: any) => 
@@ -70,13 +68,6 @@ export default function DashboardContent({ forcedRole }: { forcedRole?: UserRole
         reviewed: 12,
         contributions: 5
       });
-
-      const { data: latestNews } = await supabase
-        .from('news')
-        .select('id, title, date')
-        .eq('site_id', SITE_ID)
-        .order('date', { ascending: false })
-        .limit(5);
 
       const activities: ActivityItem[] = (latestNews || []).map((item: any) => ({
         id: item.id,
