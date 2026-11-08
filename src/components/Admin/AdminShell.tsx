@@ -36,7 +36,8 @@ import {
   Radio,
   Mail,
   FolderOpen,
-  PenLine
+  PenLine,
+  Share2
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 
@@ -319,6 +320,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           ]
         },
         { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
+        { href: '/admin/redes-sociais', icon: Share2, label: 'Redes sociais' },
         { 
           href: '/admin/media', 
           icon: ImageIcon, 

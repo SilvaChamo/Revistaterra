@@ -1,9 +1,10 @@
 import 'server-only';
 import { loadPlanos } from '@/lib/assinaturas';
+import { loadKeys } from '@/lib/social';
 
 /** Uma configuração em falta: o que é preciso definir (nomes das variáveis, nunca valores) e para quê. */
 export type ConfigItem = { vars?: string[]; text: string };
-export type ConfigArea = 'dashboard' | 'newsletter' | 'partilhado' | 'subscricoes' | 'planos' | 'utilizadores' | 'comentarios';
+export type ConfigArea = 'dashboard' | 'newsletter' | 'partilhado' | 'subscricoes' | 'planos' | 'utilizadores' | 'comentarios' | 'redes-sociais';
 
 const has = (...names: string[]) => names.every((n) => Boolean(process.env[n]));
 const hasAny = (...names: string[]) => names.some((n) => Boolean(process.env[n]));
@@ -11,7 +12,8 @@ const hasAny = (...names: string[]) => names.some((n) => Boolean(process.env[n])
 const smtp = (): ConfigItem[] =>
   has('SMTP_HOST', 'SMTP_USER', 'SMTP_PASS') ? [] : [{ vars: ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS'], text: 'Servidor de e-mail (SMTP) por ligar: sem ele não seguem e-mails.' }];
 const cron = (para: string): ConfigItem[] => (has('CRON_SECRET') ? [] : [{ vars: ['CRON_SECRET'], text: `Chave das tarefas automáticas em falta: ${para}.` }]);
-const siteUrl = (para: string): ConfigItem[] => (has('NEXT_PUBLIC_SITE_URL') ? [] : [{ vars: ['NEXT_PUBLIC_SITE_URL'], text: `Endereço público do site por definir: ${para}.` }]);
+// O endereço público já está definido em produção (Vercel); só interessa avisar lá, não no ambiente local de desenvolvimento.
+const siteUrl = (para: string): ConfigItem[] => (process.env.NODE_ENV !== 'production' || has('NEXT_PUBLIC_SITE_URL') ? [] : [{ vars: ['NEXT_PUBLIC_SITE_URL'], text: `Endereço público do site por definir: ${para}.` }]);
 
 /** O que falta configurar em cada área do painel. Lista vazia = tudo a funcionar. */
 export async function configMissing(area: ConfigArea): Promise<ConfigItem[]> {
@@ -58,6 +60,18 @@ export async function configMissing(area: ConfigArea): Promise<ConfigItem[]> {
         ...smtp().map((i) => ({ ...i, text: 'Servidor de e-mail (SMTP) por ligar: a recuperação de palavra-passe não envia e-mails.' })),
         ...(has('GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET') ? [] : [{ vars: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET'], text: 'Entrada com Google desligada: os utilizadores só entram com e-mail e palavra-passe.' }]),
       ];
+    case 'redes-sociais': {
+      // Só o que ainda falta e que só o responsável pode dar (dados de contas na Meta e no LinkedIn). O Instagram usa a ligação do Facebook.
+      const k = await loadKeys();
+      const itens: ConfigItem[] = [];
+      if (!k.metaPageId || !k.metaPageToken) {
+        itens.push({ text: 'Facebook (e Instagram, Reels) por ligar: ligue o interruptor do Facebook e preencha o ID da Página e o token de acesso. O token cria-se numa app da Meta (developers.facebook.com) com as permissões pages_manage_posts, pages_read_engagement, pages_show_list e instagram_content_publish.' });
+      }
+      if (!k.linkedinOrgId || !k.linkedinToken) {
+        itens.push({ text: 'LinkedIn por ligar: ligue o interruptor do LinkedIn e preencha o ID da Página e o token de acesso (app em developer.linkedin.com com a Community Management API, permissão w_organization_social).' });
+      }
+      return itens;
+    }
     case 'comentarios':
       return has('TURNSTILE_SECRET_KEY', 'NEXT_PUBLIC_TURNSTILE_SITE_KEY')
         ? []
@@ -65,4 +79,4 @@ export async function configMissing(area: ConfigArea): Promise<ConfigItem[]> {
   }
 }
 
-export const CONFIG_AREAS: ConfigArea[] = ['dashboard', 'newsletter', 'partilhado', 'subscricoes', 'planos', 'utilizadores', 'comentarios'];
+export const CONFIG_AREAS: ConfigArea[] = ['dashboard', 'newsletter', 'partilhado', 'subscricoes', 'planos', 'utilizadores', 'comentarios', 'redes-sociais'];

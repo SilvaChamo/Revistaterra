@@ -6,7 +6,7 @@ import { Settings2 } from 'lucide-react';
 type Item = { vars?: string[]; text: string };
 
 /** Nota no topo de uma página do painel com o que falta configurar para ela funcionar. Não aparece se estiver tudo configurado. */
-export default function ConfigNote({ area }: { area: 'dashboard' | 'newsletter' | 'partilhado' | 'subscricoes' | 'planos' | 'utilizadores' | 'comentarios' }) {
+export default function ConfigNote({ area }: { area: 'dashboard' | 'newsletter' | 'partilhado' | 'subscricoes' | 'planos' | 'utilizadores' | 'comentarios' | 'redes-sociais' }) {
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
