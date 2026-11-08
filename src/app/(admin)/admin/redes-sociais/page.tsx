@@ -192,9 +192,7 @@ export default function RedesSociaisPage() {
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold text-[#1d2327]">Redes sociais</h1>
-          <p className="mt-1 max-w-xl text-[13px] text-[#50575e]">
-            Ligue as redes que a Revista Terra usa. Ao ligar uma rede aparecem o link e os dados de ligação; os links guardados passam a ser as redes do cabeçalho do site. Um só clique em Publicar põe a notícia no site e nas redes ligadas; se uma rede falhar, a notícia fica sempre publicada no site e o editor vê o resultado de cada rede.
-          </p>
+          <p className="mt-1 max-w-xl text-[13px] text-[#50575e]">Ligue as redes sociais da Revista Terra com o sistema de partilha de publicações</p>
         </div>
         <button onClick={() => load(true)} disabled={checking} className="flex h-9 items-center gap-1.5 border border-[#047857] px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">
           <RefreshCw className={`h-4 w-4 ${checking ? 'animate-spin' : ''}`} /> Verificar ligação
