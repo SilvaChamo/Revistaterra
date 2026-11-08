@@ -91,17 +91,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error(data.error || 'Credenciais inválidas');
     }
 
-    // Sessão do Supabase no browser (para leituras com a chave pública); opcional.
+    // Sessão do Supabase no browser (para leituras com a chave pública): abre em segundo plano, sem atrasar a entrada
+    // (o Supabase deste site demora ~2 s por pedido; a sessão do servidor já está aberta e esta é só um extra).
     if (email.includes('@')) {
-      // Espera no máximo 4 s: a sessão do servidor já está aberta e esta é só um extra.
-      try {
-        await Promise.race([
-          (await getSupabase()).auth.signInWithPassword({ email: email.trim(), password }),
-          new Promise((resolve) => setTimeout(resolve, 4000)),
-        ]);
-      } catch {
-        /* sem Supabase no browser: a sessão do servidor chega */
-      }
+      void getSupabase()
+        .then((sb) => sb.auth.signInWithPassword({ email: email.trim(), password }))
+        .catch(() => { /* sem Supabase no browser: a sessão do servidor chega */ });
     }
 
     applyUser(data.user);

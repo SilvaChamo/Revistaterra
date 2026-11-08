@@ -28,7 +28,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!authLoading && user) {
-      router.replace(destinoDepoisDeEntrar(user.role, proximoDoEndereco()));
+      router.replace(destinoDepoisDeEntrar(user.role, proximoDoEndereco(), user.colunista === true));
     }
   }, [authLoading, user, router]);
 

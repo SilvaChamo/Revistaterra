@@ -80,10 +80,17 @@ export function translateAuthError(message: string): string {
  * Para onde vai quem acabou de entrar: o endereço pedido (`next`, só se for desta página) ou o espaço do seu papel.
  * Leitores/subscritores vão para a área de assinantes; a redacção, para o painel.
  */
-export function destinoDepoisDeEntrar(role: UserRole, next?: string | null): string {
+export function destinoDepoisDeEntrar(role: UserRole, next?: string | null, colunista = false): string {
   const seguro = caminhoInterno(next);
   if (seguro) return seguro;
-  return role === 'guest' ? '/assinante' : '/admin';
+  // Vai direto à página de cada papel (sem passar por /admin, que só reencaminhava e custava mais um carregamento).
+  if (colunista) return '/admin/colunista';
+  switch (role) {
+    case 'guest': return '/assinante';
+    case 'editor': return '/admin/editor';
+    case 'contribuidor': return '/admin/contribuidor';
+    default: return '/admin/dashboard';
+  }
 }
 
 /** Só aceita caminhos desta mesma página (nunca outro site): sem caracteres de controlo, espaços ou barras invertidas, e que o URL resolva para a mesma origem. */
