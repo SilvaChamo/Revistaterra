@@ -236,7 +236,7 @@ export default function RedesSociaisPage() {
         <div className={`mb-4 rounded-md border px-4 py-2 text-[13px] ${msg.tipo === 'ok' ? 'border-green-200 bg-green-50 text-green-800' : 'border-red-200 bg-red-50 text-red-700'}`}>{msg.texto}</div>
       )}
 
-      <div className="max-w-3xl divide-y divide-[#ccd0d4] overflow-hidden rounded-[8px] border border-[#ccd0d4] bg-white">
+      <div className="divide-y divide-[#ccd0d4] overflow-hidden rounded-[8px] border border-[#ccd0d4] bg-white">
         {CARTOES.map((c) => {
           const on = ligado(c);
           return (
@@ -316,7 +316,7 @@ export default function RedesSociaisPage() {
         })}
       </div>
       {/* Redes acrescentadas à mão: aparecem no cabeçalho do site junto com as outras */}
-      <div className="mt-4 max-w-3xl rounded-[8px] border border-[#ccd0d4] bg-white p-4">
+      <div className="mt-4 rounded-[8px] border border-[#ccd0d4] bg-white p-4">
         <p className="text-[14px] font-semibold text-[#1d2327]">Outras redes</p>
         <p className="mt-0.5 text-[13px] leading-5 text-[#50575e]">Acrescente qualquer outra rede ou página que a Revista Terra use (Telegram, Pinterest, Threads…). Aparece no cabeçalho do site com a inicial do nome.</p>
         <div className="mt-3 space-y-2">
@@ -339,7 +339,7 @@ export default function RedesSociaisPage() {
           </button>
         </div>
       </div>
-      <p className="mt-3 max-w-3xl text-[12px] text-[#646970]">Os tokens e IDs ficam cifrados no servidor e nunca voltam ao navegador.</p>
+      <p className="mt-3 text-[12px] text-[#646970]">Os tokens e IDs ficam cifrados no servidor e nunca voltam ao navegador.</p>
     </div>
   );
 }
