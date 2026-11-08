@@ -276,7 +276,11 @@ async function fromSupabase(): Promise<{ published: Post[]; known: Set<string>; 
   const known = new Set(rows.flatMap((r) => [String(r.slug || ''), `t:${normTitle(String(r.title || ''))}`]).filter((k) => k && k !== 't:'));
   const published = rows
     // O estado vem ora "published" ora "Published".
-    .filter((r) => String(r.status || '').toLowerCase() === 'published')
+    // Agendada: aparece sozinha quando chega a hora (as redes sociais seguem quando a tarefa a marcar como publicada).
+    .filter((r) => {
+      const s = String(r.status || '').toLowerCase();
+      return s === 'published' || (s === 'scheduled' && Date.parse(String(r.date)) <= Date.now());
+    })
     .map((r) =>
       toPost({
         slug: r.slug as string,

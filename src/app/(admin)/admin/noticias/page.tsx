@@ -508,7 +508,7 @@ export default function NewsAdminPage() {
                     </td>
                     <td className="p-3 align-top text-[#50575e]">
                       <div className="flex flex-col leading-tight">
-                        <span data-label="Estado" className={LBL}>{item.status === 'Draft' ? 'Rascunho' : item.status === 'Archived' ? 'Arquivado' : 'Publicado'}</span>
+                        <span data-label="Estado" className={LBL}>{item.status === 'Draft' ? 'Rascunho' : item.status === 'Archived' ? 'Arquivado' : String(item.status).toLowerCase() === 'scheduled' ? 'Agendada' : 'Publicado'}</span>
                         <span data-label="Data" className={` ${LBL}`}>{new Date(item.date).toLocaleDateString('pt-PT')}<span className=""> às {new Date(item.date).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span></span>
                       </div>
                     </td>

@@ -78,6 +78,7 @@ export function hasPermission(role: string, permission: string, customPermission
 // Verifica se uma role pode acessar uma rota
 export function canAccessRoute(role: string, route: string): boolean {
   const routePermissions: Record<string, string[]> = {
+    '/admin/noticias-email': ['editar_definicoes', 'acesso_total'],
     '/admin/noticias': ['ler_artigos', 'acesso_total'],
     '/admin/noticias/nova': ['criar_artigos', 'acesso_total'],
     '/admin/noticias/editar': ['editar_artigos', 'acesso_total'],

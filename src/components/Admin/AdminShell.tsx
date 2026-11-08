@@ -293,6 +293,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Todas as Notícias', href: '/admin/noticias' },
             { label: 'Adicionar Nova', href: '/admin/noticias/nova' },
             { label: 'Notícias Pendentes', href: '/admin/noticias/pendentes' },
+            { label: 'Notícias por e-mail', href: '/admin/noticias-email' },
             { label: 'Categorias', href: '/admin/noticias/categorias' },
             { label: 'Etiquetas', href: '/admin/noticias/etiquetas' },
             { label: 'Reparar Imagens', href: '/admin/noticias/reparar' },

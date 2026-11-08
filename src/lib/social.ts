@@ -144,7 +144,7 @@ export async function configured(): Promise<Record<Network, boolean>> {
 
 /* ---------- Definições (escolha das redes) e registo de partilhas, em site_content ---------- */
 
-async function readRow<T>(slug: string): Promise<T | null> {
+export async function readRow<T>(slug: string): Promise<T | null> {
   try {
     const { data, error } = await db().from('site_content').select('news').eq('site_slug', slug).maybeSingle();
     if (error) throw error;
@@ -154,7 +154,7 @@ async function readRow<T>(slug: string): Promise<T | null> {
   }
 }
 
-async function writeRow(slug: string, news: unknown) {
+export async function writeRow(slug: string, news: unknown) {
   const { error } = await db()
     .from('site_content')
     .upsert({ site_slug: slug, news, categories: [], documents: [], updated_at: new Date().toISOString() }, { onConflict: 'site_slug' });
