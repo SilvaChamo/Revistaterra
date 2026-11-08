@@ -36,7 +36,8 @@ import {
   Radio,
   Mail,
   FolderOpen,
-  Share2
+  Share2,
+  LayoutTemplate
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 
@@ -357,6 +358,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Visitantes por país', href: '/admin/trafego/paises' },
           ]
         },
+        { href: '/admin/pagina-inicial', icon: LayoutTemplate, label: 'Página inicial' },
         { href: '/admin/redes-sociais', icon: Share2, label: 'Redes sociais' },
         { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
         { href: '/admin/radio', icon: Radio, label: 'Rádio' },
