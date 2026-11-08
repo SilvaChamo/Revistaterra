@@ -70,16 +70,16 @@ export default function NoticiasEmailPage() {
 
   return (
     <div className="p-4 text-[#2c3338] sm:p-6">
-      <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-        <div>
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
           <h1 className="text-xl font-bold text-[#1d2327]">Notícias por e-mail</h1>
           <p className="mt-1 max-w-xl text-[13px] text-[#50575e]">Envie um Word com notícias para o e-mail da redacção: o sistema lê de 3 em 3 horas e cria cada notícia</p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <a href="/api/admin/noticias-email/modelo" className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
+        <div className="flex shrink-0 gap-2">
+          <a href="/api/admin/noticias-email/modelo" className="flex h-9 items-center gap-1.5 border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
             <Download className="h-4 w-4" /> Modelo de Word
           </a>
-          <button onClick={verificar} disabled={busy !== '' || !data.configured} className="flex h-9 items-center gap-1.5 rounded-full bg-[#047857] px-4 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
+          <button onClick={verificar} disabled={busy !== '' || !data.configured} className="flex h-9 items-center gap-1.5 bg-[#047857] px-4 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
             <RefreshCw className={`h-4 w-4 ${busy === 'verificar' ? 'animate-spin' : ''}`} /> Verificar agora
           </button>
         </div>
@@ -96,7 +96,7 @@ export default function NoticiasEmailPage() {
           <p className="mt-0.5 text-[13px] leading-5 text-[#50575e]">
             Só os e-mails destes endereços são lidos{data.address ? <> (caixa lida: <strong>{data.address}</strong>)</> : null}. Um por linha: um endereço completo ou todo um domínio, como @revistaterra.com.
           </p>
-          <textarea value={senders} onChange={(e) => setSenders(e.target.value)} rows={4} placeholder="redaccao@exemplo.com" className="mt-3 w-full rounded-[8px] border border-[#8c8f94] p-3 text-[13px] focus:border-[#047857] focus:outline-none" />
+          <textarea value={senders} onChange={(e) => setSenders(e.target.value)} rows={4} placeholder="redaccao@exemplo.com" className="mt-3 w-full border border-[#8c8f94] p-3 text-[13px] focus:border-[#047857] focus:outline-none" />
         </div>
         <div className="flex items-start gap-3 p-4">
           <Interruptor on={verified} onClick={() => setVerified(!verified)} label="Exigir confirmação do remetente" />
@@ -119,7 +119,7 @@ export default function NoticiasEmailPage() {
         </div>
       </div>
 
-      <button onClick={guardar} disabled={busy !== ''} className="mt-4 flex h-9 items-center gap-1.5 rounded-full bg-[#047857] px-5 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
+      <button onClick={guardar} disabled={busy !== ''} className="mt-4 flex h-9 items-center gap-1.5 bg-[#047857] px-5 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
         <Save className="h-4 w-4" /> Guardar
       </button>
 

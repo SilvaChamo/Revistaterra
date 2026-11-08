@@ -521,9 +521,9 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addCategory(); } }}
                       maxLength={40}
                       placeholder="Nova categoria"
-                      className="h-8 min-w-0 flex-1 rounded-full border border-[#8c8f94] px-3 text-[13px] focus:border-[#047857] focus:outline-none"
+                      className="h-8 min-w-0 flex-1 border border-[#8c8f94] px-3 text-[13px] focus:border-[#047857] focus:outline-none"
                     />
-                    <button type="button" onClick={addCategory} disabled={!newCategory.trim()} className="h-8 shrink-0 rounded-full border border-[#047857] px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">+ Adicionar</button>
+                    <button type="button" onClick={addCategory} disabled={!newCategory.trim()} className="h-8 shrink-0 border border-[#047857] px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">+ Adicionar</button>
                   </div>
                   {categoryNote && <p className="mt-1.5 text-[12px] text-[#646970]">{categoryNote}</p>}
                 </div>
