@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Check, ExternalLink, MessageSquare, RefreshCw, RotateCcw, ShieldAlert, Trash2, X } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
+import ConfigNote from '@/components/Admin/ConfigNote';
 
 type Status = 'pending' | 'approved' | 'spam' | 'trash';
 interface Comment {
@@ -85,6 +86,8 @@ export default function ComentariosPage() {
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} /> Atualizar
         </button>
       </div>
+
+      <ConfigNote area="comentarios" />
 
       <ul className="flex flex-wrap gap-1 border-b border-[#ccd0d4] text-[13px]">
         {TABS.map((t) => (

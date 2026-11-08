@@ -33,18 +33,18 @@ export const revalidate = 60; // o que se edita no painel aparece em ~1 minuto
 export default async function Home() {
   const allCards = (await loadCards()).map((c) => ({ ...c, category: c.category || 'Fora de Campo' }));
   const hero = await loadHero();
-  // Colunistas: o card mostra o artigo de Opinião fixado ou, sem fixado, o mais recente do autor; sem artigos, o colunista não aparece.
+  // Colunistas = contas com o nível Colunista; o card mostra o artigo de Opinião mais recente do autor; sem artigos, o colunista não aparece.
   const [columnists, { posts: allPosts }] = await Promise.all([getColumnists(), getAllPosts().catch(() => ({ posts: [] as Awaited<ReturnType<typeof getAllPosts>>['posts'] }))]);
   const opinion = opinionPosts(allPosts);
   const columnistItems = columnists.flatMap((columnist) => {
     const mine = opinion.filter((p) => sameAuthor(p.author, columnist.autor));
-    const p = mine.find((x) => x.slug === columnist.artigo) ?? mine[0];
+    const p = mine[0];
     return p ? [{ columnist, post: { slug: p.slug, title: p.title } }] : [];
   });
   const cards = columnistItems.length > 0
     ? columnistItems
     : terra.authors.map((a) => ({
-        columnist: { id: a.author, nome: a.author, handle: '', foto: a.image || '', autor: a.author, artigo: '', facebook: '', instagram: '', linkedin: '', x: '' },
+        columnist: { id: a.author, nome: a.author, handle: '', foto: a.image || '', autor: a.author, facebook: '', instagram: '', linkedin: '', x: '' },
         post: { slug: '', title: a.title, href: a.url },
       }));
   const take = makePicker(allCards);

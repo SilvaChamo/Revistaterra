@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, Plus, Save, Trash2 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 import type { Plano } from '@/lib/assinaturas-types';
+import ConfigNote from '@/components/Admin/ConfigNote';
 
 const input = 'h-9 w-full border border-[#8c8f94] bg-white px-2 text-[13px] focus:border-[#047857] focus:outline-none';
 const novoId = () => Math.random().toString(36).slice(2, 10);
@@ -65,6 +66,7 @@ export default function PlanosAdminPage() {
         </div>
         <button onClick={guardar} disabled={busy || !dirty} className="flex h-9 items-center gap-1.5 bg-[#047857] px-4 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50"><Save className="h-4 w-4" /> {busy ? 'A guardar…' : 'Guardar'}</button>
       </div>
+      <ConfigNote area="planos" />
       {msg && <p role="status" className={`mb-4 border-l-4 px-3 py-2 text-[13px] ${msg.tipo === 'ok' ? 'border-[#047857] bg-[#f0f7f4]' : 'border-[#d63638] bg-[#fcf0f1]'}`}>{msg.texto}</p>}
 
       <ul className="space-y-3">

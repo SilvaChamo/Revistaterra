@@ -16,3 +16,13 @@ export function refreshSite() {
     /* fora de um pedido (ex.: scripts): o revalidatePath acima já chega */
   }
 }
+
+/** Criar, editar ou apagar uma conta pode mudar os colunistas da home: refaz só esse bloco (a home e a etiqueta `columnists`). */
+export function refreshColumnists() {
+  try {
+    revalidateTag('columnists', { expire: 0 });
+    revalidatePath('/');
+  } catch {
+    /* fora de um pedido */
+  }
+}

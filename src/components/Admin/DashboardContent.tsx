@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useAuth, UserRole } from '@/context/AuthContext';
 import Spinner from '@/components/Common/Spinner';
+import ConfigNote from '@/components/Admin/ConfigNote';
 
 interface Stats {
   news: number;
@@ -101,6 +102,7 @@ export default function DashboardContent({ forcedRole }: { forcedRole?: UserRole
 
   return (
     <div className="min-h-screen text-[#2c3338] font-sans pb-8 p-4">
+      <ConfigNote area="dashboard" />
       <section className="bg-white border border-[#ccd0d4] p-4 mb-4 shadow-sm rounded-none">
         <div className="w-full">
           <h1 className="text-[23px] font-[800] text-[#1d2327] mb-2">

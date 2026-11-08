@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Shield } from 'lucide-react';
 import { SkeletonTableRow, SkeletonHeader } from '@/components/Admin/Skeleton';
+import Avatar from '@/components/Avatar';
+import ConfigNote from '@/components/Admin/ConfigNote';
 
 interface UserItem {
   id: string;
@@ -14,6 +16,7 @@ interface UserItem {
   articles: number;
   avatar?: string;
   colunista?: boolean;
+  editor?: boolean;
   isAdmin?: boolean;
   displayNameType?: string;
   alcunha?: string;
@@ -26,7 +29,8 @@ interface UserItem {
 const ROLES = ['Administrador', 'Editor', 'Actor', 'Subscritor', 'Contribuidor', 'Colunista'];
 
 /** Tem este nível? Colunista conta tanto o papel Colunista como o segundo nível somado a outro papel (ex.: Editor e colunista). */
-const hasLevel = (u: { role: string; colunista?: boolean }, level: string) => u.role === level || (level === 'Colunista' && u.colunista === true);
+const hasLevel = (u: { role: string; colunista?: boolean; editor?: boolean }, level: string) =>
+  u.role === level || (level === 'Colunista' && u.colunista === true) || (level === 'Editor' && u.editor === true);
 
 export default function UsersAdminPage() {
   const [users, setUsers] = useState<UserItem[]>([]);
@@ -114,6 +118,8 @@ export default function UsersAdminPage() {
         </Link>
       </div>
 
+      <ConfigNote area="utilizadores" />
+
       {/* Tabs / Filtros */}
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-4 text-[13px]">
         {['Todos', ...ROLES].map((role) => {
@@ -185,21 +191,12 @@ export default function UsersAdminPage() {
                   <td className="p-3 text-center"><input type="checkbox" /></td>
                   <td className="p-3">
                     <div className="flex items-center gap-3">
-                      {user.avatar ? (
-                        <img src={user.avatar} className="w-10 h-10 rounded-full shadow-sm border border-gray-100 object-cover" alt="" />
-                      ) : user.isAdmin ? (
-                        <div className="w-10 h-10 rounded-full shadow-sm border border-gray-200 flex items-center justify-center bg-[#1d2327] flex-shrink-0">
-                          <span className="text-[12px] font-black leading-none">
-                            <span className="text-[#047857]">R</span>
-                          </span>
-                        </div>
-                      ) : (
-                        <img 
-                          src="https://secure.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=150&d=mm&r=g" 
-                          className="w-10 h-10 rounded-full shadow-sm border border-gray-200 object-cover" 
-                          alt="default" 
-                        />
-                      )}
+                      <Avatar
+                        src={user.avatar}
+                        name={[user.firstName, user.lastName].filter(Boolean).join(' ') || user.name || user.username}
+                        className="w-10 h-10 shrink-0 rounded-full shadow-sm border border-gray-100 object-cover"
+                        initialsClassName="bg-[#f0f0f1] text-[13px] text-[#50575e]"
+                      />
                       <div className="flex flex-col">
                         <Link href={`/admin/utilizadores/editar/${user.id}`} className="text-[#047857] font-bold text-[14px] hover:text-[#065f46]">
                           {user.username}
@@ -237,7 +234,7 @@ export default function UsersAdminPage() {
                   <td className="p-3">
                     <a href={`mailto:${user.email}`} className="text-[#047857] hover:underline">{user.email}</a>
                   </td>
-                  <td className="p-3 text-[#50575e]">{user.colunista && user.role !== 'Colunista' ? `${user.role} e Colunista` : user.role}</td>
+                  <td className="p-3 text-[#50575e]">{user.role === 'Colunista' && user.editor ? 'Colunista e Editor' : user.colunista && user.role !== 'Colunista' ? `${user.role} e Colunista` : user.role}</td>
                   <td className="p-3 text-center">
                     <Link href={`/admin/noticias?autor=${user.username}`} className="text-[#047857] font-bold hover:underline">
                       {user.articles}

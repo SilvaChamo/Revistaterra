@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import Spinner from '@/components/Common/Spinner';
 import ArquivoTabs from '@/components/Admin/ArquivoTabs';
 import PartilhadoPasta from '@/components/Admin/PartilhadoPasta';
+import ConfigNote from '@/components/Admin/ConfigNote';
 
 const FOLDERS = [
   { id: 'imagens', label: 'Imagens', hint: 'Fotografias e gráficos', Icon: ImageIcon },
@@ -102,18 +103,7 @@ export default function PartilhadoPage() {
 
       {notice && <div className="mb-4 rounded border border-[#047857] bg-white p-3 text-sm">{notice}</div>}
       {error && <div className="mb-4 rounded border border-[#d63638] bg-white p-3 text-sm text-[#d63638]">{error}</div>}
-      {data && !data.configured && (
-        <div className="mb-4 rounded border border-[#dba617] bg-white p-4 text-sm leading-6">
-          <Mail className="mb-1 h-5 w-5 text-[#50575e]" />
-          Ligação ao e-mail por configurar. Defina no servidor <code>IMAP_HOST</code>, <code>IMAP_PORT</code> (993), <code>IMAP_USER</code> e <code>IMAP_PASS</code>.
-        </div>
-      )}
-
-      {data?.configured && !data.antivirus && (
-        <div className="mb-4 rounded border border-[#dba617] bg-white p-4 text-sm leading-6">
-          Antivírus por ligar: por segurança, só as <strong>imagens</strong> (que são recodificadas) são importadas. PDF, ZIP e documentos ficam retidos até definir <code>CLAMD_HOST</code> e <code>CLAMD_PORT</code> (ClamAV).
-        </div>
-      )}
+      <ConfigNote area="partilhado" />
 
       {aberta ? null : !data && !error ? (
         <div className="flex justify-center py-20"><Spinner /></div>

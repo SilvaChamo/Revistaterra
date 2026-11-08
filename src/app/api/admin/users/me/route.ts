@@ -32,6 +32,7 @@ export async function GET() {
           website: '',
           avatar: null,
           isAdmin: true,
+          colunista: session.colunista === true,
           articles: 0,
           telefone: '',
           profissao: '',

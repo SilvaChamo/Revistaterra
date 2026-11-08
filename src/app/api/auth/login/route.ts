@@ -3,7 +3,7 @@ import { cookieOptions, SESSION_COOKIE, signSession } from '@/lib/local-session'
 import { mapRole, translateAuthError } from '@/lib/auth';
 import { verifyBootstrapAdmin } from '@/lib/bootstrap-admin';
 import { clearAttempts, tooManyAttempts } from '@/lib/rate-limit';
-import { findSiteEmailByUsername, siteAccess } from '@/lib/site-accounts';
+import { effectiveRole, findSiteEmailByUsername, siteAccess } from '@/lib/site-accounts';
 import { serverDb } from '@/lib/antispam';
 
 function startSession(user: { id: string; email: string; name: string; role: 'admin' | 'editor' | 'contribuidor' | 'guest'; colunista?: boolean }, extra: object = {}) {
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const role = mapRole(access.role);
+    const role = mapRole(effectiveRole(access));
     const name =
       meta.full_name ||
       [meta.first_name, meta.last_name].filter(Boolean).join(' ').trim() ||
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
 
     clearAttempts(throttleKey);
     return startSession(
-      { id: data.user.id, email: data.user.email || login, name, role, colunista: access.colunista === true || /^colunista$/i.test(access.role) },
+      { id: data.user.id, email: data.user.email || login, name, role, colunista: /^colunista$/i.test(access.role) },
       { access_token: data.session?.access_token }
     );
   } catch (err: unknown) {

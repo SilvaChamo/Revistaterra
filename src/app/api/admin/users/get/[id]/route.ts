@@ -37,6 +37,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       email: user.email || '',
       role: siteAccess(user)!.role,
       colunista: siteAccess(user)!.colunista === true,
+      editor: siteAccess(user)!.editor === true,
       alcunha: user.user_metadata?.alcunha || '',
       displayNameType: user.user_metadata?.displayNameType || 'full_name',
       bio: user.user_metadata?.bio || '',
@@ -45,7 +46,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       isAdmin: siteAccess(user)!.role === 'Administrador',
       telefone: user.user_metadata?.telefone || '',
       profissao: user.user_metadata?.profissao || '',
-      cargo: user.user_metadata?.cargo || ''
+      cargo: user.user_metadata?.cargo || '',
+      facebook: user.user_metadata?.facebook || '',
+      instagram: user.user_metadata?.instagram || '',
+      linkedin: user.user_metadata?.linkedin || '',
+      x: user.user_metadata?.x || ''
     };
 
     return NextResponse.json({ user: mappedUser });

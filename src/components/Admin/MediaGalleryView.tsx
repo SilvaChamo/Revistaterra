@@ -24,7 +24,7 @@ import {
   FileArchive
 } from 'lucide-react';
 import { SkeletonMediaGrid } from '@/components/Admin/Skeleton';
-import { prepareImage } from '@/lib/client-image';
+import { prepareImage, prepareWebp } from '@/lib/client-image';
 import ArquivoFolders, { type FolderInfo } from '@/components/Admin/ArquivoFolders';
 import AdminSelect from '@/components/Admin/AdminSelect';
 
@@ -523,8 +523,10 @@ export default function MediaGalleryView({ source = 'galeria', pasta = '', title
                   let successCount = 0;
                   let lastError = '';
 
-                  for (const original of filesToUpload) {
+                  for (const chosen of filesToUpload) {
                     setBusyMsg(`A carregar ${successCount + 1} de ${filesToUpload.length}…`);
+                    // Na galeria as imagens seguem já em WebP (até 150 KB); o resto vai como veio
+                    const original = source === 'galeria' ? await prepareWebp(chosen) : chosen;
                     if (source !== 'galeria') {
                       const file = await prepareImage(original);
                       const form = new FormData();

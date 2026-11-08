@@ -7,6 +7,7 @@ import { adminCacheGet, adminCacheSet } from '@/lib/admin-cache';
 import AdminSelect from '@/components/Admin/AdminSelect';
 import NewsletterAgenda, { EmailPreview, NewsletterPreviews, type AgendaItem } from '@/components/Admin/NewsletterAgenda';
 import NewsletterAds from '@/components/Admin/NewsletterAds';
+import ConfigNote from '@/components/Admin/ConfigNote';
 
 type Subscriber = { id: string; email: string; created_at: string };
 type QueueItem = { slug: string; title: string; category: string; date: string; image: string | null; excerpt: string };
@@ -176,11 +177,7 @@ export default function NewsletterPage() {
 
       {error && <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-2 text-[13px] text-red-700">{error}</div>}
       {notice && <div className="mb-4 rounded-md border border-green-200 bg-green-50 px-4 py-2 text-[13px] text-green-800">{notice}</div>}
-      {data && !data.smtp && (
-        <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-2 text-[13px] text-amber-800">
-          O e-mail (SMTP) não está configurado neste servidor: a lista e a fila funcionam, mas o envio não.
-        </div>
-      )}
+      <ConfigNote area="newsletter" />
 
       {data && (
         <>

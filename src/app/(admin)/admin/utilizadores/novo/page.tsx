@@ -23,7 +23,12 @@ export default function AddUserPage() {
     profissao: '',
     cargo: '',
     role: 'Subscritor',
-    colunista: false
+    colunista: false,
+    editor: false,
+    facebook: '',
+    instagram: '',
+    linkedin: '',
+    x: ''
   });
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
@@ -121,6 +126,9 @@ export default function AddUserPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
+          // Segundos níveis: Colunista pode também ser editor; Editor e Administrador podem também ser colunista.
+          colunista: ['Editor', 'Administrador'].includes(form.role) && form.colunista,
+          editor: form.role === 'Colunista' && form.editor,
           password,
           avatarUrl
         }),
@@ -316,14 +324,34 @@ export default function AddUserPage() {
                   className="h-8 px-2 border border-[#ccd0d4] rounded-md text-[13px] bg-white outline-none focus:border-[#047857]">
                   {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
                 </select>
-                {form.role !== 'Colunista' && (
+                {['Editor', 'Administrador'].includes(form.role) && (
                   <label className="mt-2 flex items-center gap-2 text-[13px] text-[#1d2327]">
                     <input type="checkbox" checked={form.colunista === true} onChange={e => setForm({...form, colunista: e.target.checked})} className="h-4 w-4" />
-                    Também é colunista (segundo nível, somado ao papel)
+                    <span>Também é colunista</span>
+                  </label>
+                )}
+                {form.role === 'Colunista' && (
+                  <label className="mt-2 flex items-center gap-2 text-[13px] text-[#1d2327]">
+                    <input type="checkbox" checked={form.editor === true} onChange={e => setForm({...form, editor: e.target.checked})} className="h-4 w-4" />
+                    <span>Também é editor</span>
                   </label>
                 )}
               </td>
             </tr>
+
+            {/* Redes sociais: sempre visíveis; aparecem no card da home quando a conta é de colunista. */}
+            <tr><td colSpan={2} className="pt-8 pb-2 border-b border-[#ccd0d4]">
+              <h2 className="text-[15px] font-bold text-[#1d2327]">Redes sociais</h2>
+            </td></tr>
+            {([['facebook', 'Facebook', 'https://facebook.com/...'], ['instagram', 'Instagram', 'https://instagram.com/...'], ['linkedin', 'LinkedIn', 'https://linkedin.com/in/...'], ['x', 'X (Twitter)', 'https://x.com/...']] as const).map(([key, label, ph]) => (
+              <tr key={key} className="border-b border-[#f0f0f1]">
+                <th className="p-3 text-left text-[13px] font-semibold text-[#1d2327] align-top pt-4">{label}</th>
+                <td className="p-3">
+                  <input type="url" value={form[key] || ''} onChange={e => setForm({...form, [key]: e.target.value})} placeholder={ph}
+                    className="h-8 px-2 border border-[#ccd0d4] rounded-md text-[13px] w-full max-w-[300px] outline-none focus:border-[#047857]" />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
 

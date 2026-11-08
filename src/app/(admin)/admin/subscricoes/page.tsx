@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Check, X } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 import { dataEmTexto, precoEmTexto, subscricaoActiva, type Pedido, type Subscricao } from '@/lib/assinaturas-types';
+import ConfigNote from '@/components/Admin/ConfigNote';
 
 type Assinante = { id: string; name: string; email: string; sub: Subscricao; active: boolean };
 type Aba = 'pendente' | 'tratados' | 'assinantes';
@@ -73,6 +74,7 @@ export default function SubscricoesPage() {
           <Link href="/admin/subscricoes/exclusivas" className="flex h-9 items-center border border-[#047857] px-3 font-medium text-[#047857] hover:bg-[#f0f7f4]">Notícias exclusivas</Link>
         </div>
       </div>
+      <ConfigNote area="subscricoes" />
       {erro && <p role="alert" className="mb-4 border-l-4 border-[#d63638] bg-[#fcf0f1] px-3 py-2 text-[13px]">{erro}</p>}
       <div className="mb-3 flex gap-1.5">
         {abas.map((a) => (

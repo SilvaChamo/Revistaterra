@@ -335,7 +335,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           submenu: [
             { label: 'Todos os utilizadores', href: '/admin/utilizadores' },
             { label: 'Adicionar utilizador', href: '/admin/utilizadores/novo' },
-            { label: 'Colunistas', href: '/admin/colunistas' },
             { label: 'O seu perfil', href: '/admin/perfil' },
           ]
         },
@@ -354,7 +353,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         { 
           href: '/admin/trafego', 
           icon: BarChart3, 
-          label: 'Visitor Traffic',
+          label: 'Estatísticas',
           submenu: [
             { label: 'Estatísticas em tempo real', href: '/admin/trafego' },
             { label: 'Relatórios detalhados', href: '/admin/trafego/relatorios' },

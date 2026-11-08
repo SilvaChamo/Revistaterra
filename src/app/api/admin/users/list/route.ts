@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient, type User } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
 import { siteAccess } from '@/lib/site-accounts';
+import { gravatarUrl } from '@/lib/gravatar';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -34,10 +35,11 @@ export async function GET() {
         role: siteAccess(u)!.role,
         approved: siteAccess(u)!.approved,
         colunista: siteAccess(u)!.colunista === true,
+        editor: siteAccess(u)!.editor === true,
         alcunha: u.user_metadata?.alcunha || '',
         displayNameType: u.user_metadata?.displayNameType || 'full_name',
         articles: 0,
-        avatar: u.user_metadata?.avatar_url || null,
+        avatar: u.user_metadata?.avatar_url || gravatarUrl(u.email) || null,
         isAdmin: siteAccess(u)!.role === 'Administrador'
       }));
 
