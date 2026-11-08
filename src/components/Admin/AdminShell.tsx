@@ -36,7 +36,6 @@ import {
   Radio,
   Mail,
   FolderOpen,
-  PenLine,
   Share2
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
@@ -300,15 +299,13 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         },
         {
           href: '/admin/opiniao',
-          icon: PenLine,
+          icon: FileText,
           label: 'Artigos de Opinião',
           submenu: [
             { label: 'Pendentes', href: '/admin/opiniao/pendentes' },
             { label: 'Todos os artigos', href: '/admin/opiniao' },
           ]
         },
-        { href: '/admin/comentarios', icon: MessageSquare, label: 'Comentários' },
-        { href: '/admin/radio', icon: Radio, label: 'Rádio' },
         {
           href: '/admin/subscricoes',
           icon: CreditCard,
@@ -319,8 +316,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Notícias exclusivas', href: '/admin/subscricoes/exclusivas' },
           ]
         },
-        { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
-        { href: '/admin/redes-sociais', icon: Share2, label: 'Redes sociais' },
         { 
           href: '/admin/media', 
           icon: ImageIcon, 
@@ -362,6 +357,10 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Visitantes por país', href: '/admin/trafego/paises' },
           ]
         },
+        { href: '/admin/redes-sociais', icon: Share2, label: 'Redes sociais' },
+        { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
+        { href: '/admin/radio', icon: Radio, label: 'Rádio' },
+        { href: '/admin/comentarios', icon: MessageSquare, label: 'Comentários' },
       );
     }
 
@@ -376,7 +375,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         { href: '/admin/noticias', icon: Newspaper, label: 'Todas as Notícias' },
         {
           href: '/admin/opiniao',
-          icon: PenLine,
+          icon: FileText,
           label: 'Artigos de Opinião',
           submenu: [
             { label: 'Pendentes', href: '/admin/opiniao/pendentes' },

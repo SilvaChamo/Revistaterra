@@ -104,7 +104,7 @@ const CARTOES: Cartao[] = [
 ];
 
 const EXTRAS = ['youtube', 'x', 'tiktok', 'whatsapp'];
-const inputCls = 'h-9 w-full border border-[#8c8f94] bg-white px-2 text-[13px] focus:border-[#047857] focus:outline-none';
+const inputCls = 'h-9 w-full rounded-full border border-[#8c8f94] bg-white px-4 text-[13px] focus:border-[#047857] focus:outline-none';
 
 /** Redes sociais da Revista Terra: em cada cartão, o interruptor liga a rede e mostra o link e os dados de ligação. Os segredos ficam cifrados no servidor. */
 export default function RedesSociaisPage() {
@@ -226,7 +226,7 @@ export default function RedesSociaisPage() {
           <h1 className="text-xl font-bold text-[#1d2327]">Redes sociais</h1>
           <p className="mt-1 max-w-xl text-[13px] text-[#50575e]">Ligue as redes sociais da Revista Terra com o sistema de partilha de publicações</p>
         </div>
-        <button onClick={() => load(true)} disabled={checking} className="flex h-9 items-center gap-1.5 border border-[#047857] px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">
+        <button onClick={() => load(true)} disabled={checking} className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">
           <RefreshCw className={`h-4 w-4 ${checking ? 'animate-spin' : ''}`} /> Verificar ligação
         </button>
       </div>
@@ -236,7 +236,7 @@ export default function RedesSociaisPage() {
         <div className={`mb-4 rounded-md border px-4 py-2 text-[13px] ${msg.tipo === 'ok' ? 'border-green-200 bg-green-50 text-green-800' : 'border-red-200 bg-red-50 text-red-700'}`}>{msg.texto}</div>
       )}
 
-      <div className="max-w-3xl divide-y divide-[#ccd0d4] border border-[#ccd0d4] bg-white">
+      <div className="max-w-3xl divide-y divide-[#ccd0d4] overflow-hidden rounded-[8px] border border-[#ccd0d4] bg-white">
         {CARTOES.map((c) => {
           const on = ligado(c);
           return (
@@ -264,11 +264,11 @@ export default function RedesSociaisPage() {
                 <div className="mt-3 space-y-3 border-t border-[#f0f0f1] pt-3 sm:ml-14">
                   {c.nota && <p className="text-[12px] leading-5 text-[#646970]">{c.nota}</p>}
                   {c.guia && (
-                    <details open={c.partilha ? !data.configured[c.partilha] : false} className="border border-[#ccd0d4] bg-[#f6f7f7] p-3 text-[13px] leading-6 text-[#2c3338]">
+                    <details open={c.partilha ? !data.configured[c.partilha] : false} className="rounded-[8px] border border-[#ccd0d4] bg-[#f6f7f7] p-3 text-[13px] leading-6 text-[#2c3338]">
                       <summary className="cursor-pointer font-medium text-[#1d2327]">{c.guia.titulo}</summary>
                       <div className="mt-3 flex flex-wrap gap-2">
                         {c.guia.links.map((l) => (
-                          <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="flex h-9 items-center gap-1.5 border border-[#047857] bg-white px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
+                          <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] bg-white px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
                             <ExternalLink className="h-4 w-4" /> {l.texto}
                           </a>
                         ))}
@@ -294,7 +294,7 @@ export default function RedesSociaisPage() {
                           className={inputCls}
                         />
                         {f.tipo === 'perfil' && perfis[f.id] && (
-                          <a href={perfis[f.id]} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${c.nome}`} className="flex h-9 w-9 shrink-0 items-center justify-center border border-[#047857] text-[#047857] hover:bg-[#f0f7f4]">
+                          <a href={perfis[f.id]} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${c.nome}`} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#047857] text-[#047857] hover:bg-[#f0f7f4]">
                             <ExternalLink className="h-4 w-4" />
                           </a>
                         )}
@@ -304,7 +304,7 @@ export default function RedesSociaisPage() {
                   ))}
                   {c.campos.length > 0 && (
                     <div className="flex justify-end">
-                      <button onClick={() => guardar(c)} disabled={busy === c.id} className="flex h-9 items-center gap-1.5 bg-[#047857] px-4 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
+                      <button onClick={() => guardar(c)} disabled={busy === c.id} className="flex h-9 items-center gap-1.5 rounded-full bg-[#047857] px-5 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
                         <Save className="h-4 w-4" /> {busy === c.id ? 'A guardar…' : 'Guardar'}
                       </button>
                     </div>
@@ -316,7 +316,7 @@ export default function RedesSociaisPage() {
         })}
       </div>
       {/* Redes acrescentadas à mão: aparecem no cabeçalho do site junto com as outras */}
-      <div className="mt-4 max-w-3xl border border-[#ccd0d4] bg-white p-4">
+      <div className="mt-4 max-w-3xl rounded-[8px] border border-[#ccd0d4] bg-white p-4">
         <p className="text-[14px] font-semibold text-[#1d2327]">Outras redes</p>
         <p className="mt-0.5 text-[13px] leading-5 text-[#50575e]">Acrescente qualquer outra rede ou página que a Revista Terra use (Telegram, Pinterest, Threads…). Aparece no cabeçalho do site com a inicial do nome.</p>
         <div className="mt-3 space-y-2">
@@ -324,17 +324,17 @@ export default function RedesSociaisPage() {
             <div key={c.id} className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <input value={c.name} placeholder="Nome (ex.: Telegram)" maxLength={40} onChange={(e) => setCustom(custom.map((x, k) => (k === i ? { ...x, name: e.target.value } : x)))} className={`${inputCls} sm:w-44 sm:shrink-0`} />
               <input type="url" value={c.url} placeholder="https://…" onChange={(e) => setCustom(custom.map((x, k) => (k === i ? { ...x, url: e.target.value } : x)))} className={inputCls} />
-              <button type="button" aria-label={`Remover ${c.name || 'rede'}`} onClick={() => setCustom(custom.filter((_, k) => k !== i))} className="flex h-9 w-9 shrink-0 items-center justify-center border border-[#ccd0d4] text-[#d63638] hover:bg-[#f6f7f7]">
+              <button type="button" aria-label={`Remover ${c.name || 'rede'}`} onClick={() => setCustom(custom.filter((_, k) => k !== i))} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#ccd0d4] text-[#d63638] hover:bg-[#f6f7f7]">
                 <Trash2 className="h-4 w-4" />
               </button>
             </div>
           ))}
         </div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <button type="button" onClick={() => setCustom([...custom, { id: Math.random().toString(36).slice(2, 10), name: '', url: '' }])} className="flex h-9 items-center gap-1.5 border border-[#047857] px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
+          <button type="button" onClick={() => setCustom([...custom, { id: Math.random().toString(36).slice(2, 10), name: '', url: '' }])} className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
             <Plus className="h-4 w-4" /> Adicionar rede
           </button>
-          <button onClick={guardarOutras} disabled={busy === 'custom'} className="flex h-9 items-center gap-1.5 bg-[#047857] px-4 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
+          <button onClick={guardarOutras} disabled={busy === 'custom'} className="flex h-9 items-center gap-1.5 rounded-full bg-[#047857] px-5 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
             <Save className="h-4 w-4" /> {busy === 'custom' ? 'A guardar…' : 'Guardar'}
           </button>
         </div>
