@@ -12,7 +12,6 @@ const input = 'h-9 w-full border border-[#8c8f94] bg-white px-2 text-[13px] focu
 /** Gestão manual da programação da rádio: o que está aqui é o que aparece em /radio e na barra lateral do site. */
 export default function RadioAdminPage() {
   const [slots, setSlots] = useState<RadioSlot[]>([]);
-  const [custom, setCustom] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -26,7 +25,6 @@ export default function RadioAdminPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro ao carregar a programação.');
       setSlots(data.slots);
-      setCustom(data.custom);
       setDirty(false);
     } catch (err) {
       setMsg({ tipo: 'erro', texto: err instanceof Error ? err.message : 'Erro ao carregar a programação.' });
@@ -126,11 +124,6 @@ export default function RadioAdminPage() {
         </div>
       </div>
 
-      {!custom && !dirty && (
-        <p className="mb-4 border-l-4 border-[#dba617] bg-[#fcf9e8] px-3 py-2 text-[13px]">
-          Esta é a programação que já estava no site. Altere o que for preciso e carregue em <b>Guardar</b> para passar a geri-la a partir daqui.
-        </p>
-      )}
       {msg && (
         <p role="status" className={`mb-4 border-l-4 px-3 py-2 text-[13px] ${msg.tipo === 'ok' ? 'border-[#047857] bg-[#f0f7f4]' : 'border-[#d63638] bg-[#fcf0f1]'}`}>
           {msg.texto}
