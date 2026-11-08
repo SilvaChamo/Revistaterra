@@ -159,6 +159,35 @@ const senderAllowed = (address: string, allowed: string[]) => {
   return allowed.some((s) => (s.startsWith('@') ? a.endsWith(s) : a === s));
 };
 
+const sameDomain = (a: string, b: string) => a === b || a.endsWith(`.${b}`) || b.endsWith(`.${a}`);
+
+/**
+ * O servidor de e-mail confirmou o remetente? Lê o cabeçalho Authentication-Results do nosso servidor (o mais acima; se
+ * IMAP_AUTHSERV_ID estiver definido, tem de ser dele) e exige uma aprovação alinhada com o domínio do remetente:
+ * DMARC aprovado, ou DKIM/SPF aprovados para o mesmo domínio. Qualquer outro resultado conta como não confirmado.
+ */
+export function senderVerified(line: string, fromAddress: string): boolean {
+  const domain = fromAddress.split('@')[1]?.toLowerCase();
+  if (!line || !domain) return false;
+  const parts = line.replace(/^authentication-results:\s*/i, '').replace(/\([^)]*\)/g, ' ').split(';').map((p) => p.trim()).filter(Boolean);
+  const id = (parts.shift() || '').split(/\s+/)[0].toLowerCase();
+  const wanted = (process.env.IMAP_AUTHSERV_ID || '').trim().toLowerCase();
+  if (wanted && id !== wanted) return false;
+  const prop = (seg: string, name: string) => new RegExp(`${name}=("?)([^\\s";]+)\\1`, 'i').exec(seg)?.[2]?.toLowerCase().replace(/^.*@/, '');
+  let ok = false;
+  for (const seg of parts) {
+    const method = /^(dkim|dmarc|spf)=(\w+)/i.exec(seg);
+    if (!method) continue;
+    const [, name, result] = [method[0], method[1].toLowerCase(), method[2].toLowerCase()];
+    if (/^(fail|softfail|permerror|temperror)$/.test(result)) return false;
+    if (result !== 'pass') continue;
+    if (name === 'dmarc') { const hf = prop(seg, 'header\\.from'); if (!hf || sameDomain(hf, domain)) ok = true; }
+    else if (name === 'dkim') { const d = prop(seg, 'header\\.d'); if (d && sameDomain(d, domain)) ok = true; }
+    else { const mf = prop(seg, 'smtp\\.mailfrom'); if (mf && sameDomain(mf, domain)) ok = true; }
+  }
+  return ok;
+}
+
 /**
  * Procura, nos últimos e-mails, os dos remetentes autorizados com um Word (.docx) anexado que ainda não foram tratados.
  * Só lê (a caixa abre em modo só de leitura). Devolve no máximo `max` e-mails, dos mais antigos para os mais recentes.
@@ -185,14 +214,14 @@ export async function fetchNewsMails(allowed: string[], done: Set<string>, max =
       if (done.has(key)) continue;
       const address = parsed.from?.value?.[0]?.address || '';
       if (!senderAllowed(address, allowed)) continue;
-      const auth = parsed.headers.get('authentication-results');
-      const authText = (Array.isArray(auth) ? auth.map(String) : [typeof auth === 'string' ? auth : auth ? JSON.stringify(auth) : '']).join(' ');
+      // Só vale o cabeçalho do nosso servidor de entrada (o mais acima; quem envia pode juntar os seus, mas ficam por baixo).
+      const authLine = parsed.headerLines.find((h) => h.key === 'authentication-results')?.line || '';
       const files = parsed.attachments.filter((a) => a.content && a.content.length <= MAX_FILE_BYTES);
       out.push({
         key,
         from: address,
         subject: parsed.subject || '(sem assunto)',
-        verified: /\b(dkim|dmarc|spf)=pass\b/i.test(authText) && !/\b(dkim|dmarc|spf)=(fail|softfail|permerror)\b/i.test(authText),
+        verified: senderVerified(authLine, address),
         docs: files.filter((a) => /\.docx$/i.test(a.filename || '')).map((a) => ({ filename: a.filename || 'noticias.docx', buffer: a.content })),
         images: files.filter((a) => a.contentType.startsWith('image/')).map((a) => ({ filename: a.filename || `imagem-${a.checksum}`, contentType: a.contentType.toLowerCase(), buffer: a.content })),
       });
