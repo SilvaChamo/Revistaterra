@@ -209,7 +209,27 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
       .catch(() => {});
   }, []);
 
-  const categoryLabels = CATEGORIES;
+  // Categorias de base + as que já existem no site + as acrescentadas aqui (ficam a existir quando a notícia é guardada).
+  const [extraCategories, setExtraCategories] = useState<string[]>([]);
+  const [newCategory, setNewCategory] = useState('');
+  const [categoryNote, setCategoryNote] = useState('');
+  useEffect(() => {
+    fetch('/api/admin/news/categories', { credentials: 'include' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => { if (Array.isArray(data?.categories)) setExtraCategories((prev) => [...new Set([...prev, ...(data.categories as string[])])]); })
+      .catch(() => {});
+  }, []);
+  const categoryLabels = [...CATEGORIES, ...extraCategories.filter((c) => !CATEGORIES.some((k) => catKey(k) === catKey(c)))];
+  const addCategory = () => {
+    const name = newCategory.trim().replace(/\s+/g, ' ').slice(0, 40);
+    if (!name) return;
+    if (catKey(name) === 'opiniao') { setCategoryNote('Opinião é só para colunistas.'); return; }
+    const existing = categoryLabels.find((k) => catKey(k) === catKey(name));
+    if (!existing) setExtraCategories((prev) => [...prev, name]);
+    if (!formData.categories.some((c) => catKey(c) === catKey(name))) toggleCategory(existing ?? name);
+    setCategoryNote(existing ? `«${existing}» já existia: foi marcada.` : `«${name}» acrescentada e marcada. Fica a existir quando guardar a notícia.`);
+    setNewCategory('');
+  };
 
   // Redes sociais: só quem pode publicar as vê. Por defeito vão marcadas as redes activas que ainda não receberam esta notícia.
   const [social, setSocial] = useState<SocialInfo[] | null>(null);
@@ -491,6 +511,21 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                       <span className="text-[#2c3338]">{cat}</span>
                     </label>
                   ))}
+                </div>
+                <div className="mt-3 border-t border-[#f0f0f1] pt-3">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newCategory}
+                      onChange={(e) => { setNewCategory(e.target.value); setCategoryNote(''); }}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addCategory(); } }}
+                      maxLength={40}
+                      placeholder="Nova categoria"
+                      className="h-8 min-w-0 flex-1 rounded-full border border-[#8c8f94] px-3 text-[13px] focus:border-[#047857] focus:outline-none"
+                    />
+                    <button type="button" onClick={addCategory} disabled={!newCategory.trim()} className="h-8 shrink-0 rounded-full border border-[#047857] px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">+ Adicionar</button>
+                  </div>
+                  {categoryNote && <p className="mt-1.5 text-[12px] text-[#646970]">{categoryNote}</p>}
                 </div>
               </div>
             </div>
