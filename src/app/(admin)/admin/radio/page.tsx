@@ -82,7 +82,6 @@ export default function RadioAdminPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro ao guardar.');
       setSlots(data.slots);
-      setCustom(true);
       setDirty(false);
       setMsg({ tipo: 'ok', texto: ok });
     } catch (err) {
