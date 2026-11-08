@@ -1,10 +1,20 @@
 import sharp from 'sharp';
 import { isUuid } from '@/lib/api-guard';
-import { db } from '@/lib/social';
+import { db, siteOrigin } from '@/lib/social';
 
 export const dynamic = 'force-dynamic';
 
 const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
+const MAX_BYTES = 15 * 1024 * 1024;
+
+/** Só se vão buscar imagens ao próprio site e ao armazenamento (Supabase) ou domínios do site: nunca a um endereço qualquer. */
+function allowedHosts() {
+  const hosts = new Set(['revistaterra.co.mz', 'revistaterraonline.com', 'www.revistaterraonline.com']);
+  for (const u of [siteOrigin(), process.env.NEXT_PUBLIC_SUPABASE_URL]) {
+    try { if (u) hosts.add(new URL(u).hostname); } catch { /* ignora */ }
+  }
+  return hosts;
+}
 
 /**
  * Imagem da notícia em JPEG, para a Meta a ir buscar (o Instagram não aceita WebP, que é o formato das fotos da galeria,
@@ -17,11 +27,13 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
     const { data } = await db().from('news').select('image_url,status').eq('id', id).eq('site_id', SITE_ID).maybeSingle();
     const src = String(data?.image_url || '');
     if (!src || String(data?.status).toLowerCase() !== 'published') return new Response('Não encontrada', { status: 404 });
-    // Fotos do próprio site vêm com caminho relativo (/terra/...): buscam-se a este mesmo servidor.
-    const url = src.startsWith('http') ? src : new URL(src.startsWith('/') ? src : `/${src}`, req.url).toString();
-    if (!/^https?:\/\//i.test(url)) return new Response('Não encontrada', { status: 404 });
-    const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });
+    // Fotos do próprio site vêm com caminho relativo (/terra/...): resolvem-se contra o endereço do site, não contra o pedido.
+    const base = process.env.NODE_ENV === 'production' ? siteOrigin() : new URL(req.url).origin;
+    const target = new URL(src.startsWith('http') ? src : src.startsWith('/') ? src : `/${src}`, base);
+    if (!/^https?:$/.test(target.protocol) || (!allowedHosts().has(target.hostname) && target.origin !== base)) return new Response('Não encontrada', { status: 404 });
+    const res = await fetch(target, { redirect: 'manual', signal: AbortSignal.timeout(15_000) });
     if (!res.ok) return new Response('Imagem indisponível', { status: 502 });
+    if (!(res.headers.get('content-type') || '').startsWith('image/') || Number(res.headers.get('content-length') || 0) > MAX_BYTES) return new Response('Imagem indisponível', { status: 502 });
 
     const rotated = await sharp(Buffer.from(await res.arrayBuffer())).rotate().toBuffer({ resolveWithObject: true });
     let img = sharp(rotated.data);
