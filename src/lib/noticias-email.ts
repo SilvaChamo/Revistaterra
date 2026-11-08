@@ -7,7 +7,7 @@ import { NETWORKS, loadSettings, readRow, shareNews, writeRow } from '@/lib/soci
 import { refreshSite } from '@/lib/refresh-site';
 
 /**
- * Notícias por e-mail: a redacção envia um Word no modelo fixo; cada notícia é criada no site.
+ * Notícias por e-mail: a redacção envia um Word para o e-mail info@ no modelo fixo; cada notícia é criada no site.
  *  - com foto, verificada e sem dúvidas → publicada já, ou agendada se tiver data futura;
  *  - sem foto, ou com qualquer dúvida → fica nos pendentes, para pôr a foto e publicar;
  *  - ao publicar (já ou na hora agendada), segue para as redes sociais ligadas.
@@ -26,7 +26,7 @@ export type EmailSettings = {
   /** Partilha nas redes sociais ligadas ao publicar. */
   share: boolean;
 };
-export type LogItem = { title: string; status: 'published' | 'scheduled' | 'pending' | 'erro'; note: string };
+export type LogItem = { title: string; status: 'published' | 'scheduled' | 'pending' | 'erro'; note: string; /** Notícia criada (para abrir no painel). */ id?: string };
 export type LogEntry = { at: string; from: string; subject: string; items: LogItem[]; note?: string };
 type Log = { done: string[]; entries: LogEntry[] };
 
@@ -154,9 +154,10 @@ async function createOne(n: ParsedNews, mail: NewsMail, settings: EmailSettings)
     if (error || !data) return { title, status: 'erro', note: `Não gravada: ${error?.message ?? 'erro'}` };
 
     refreshSite();
-    if (status === 'published') return { title, status, note: `Publicada.${settings.share ? await shareEverywhere(String((data as { id: string }).id)) : ''}` };
-    if (status === 'scheduled') return { title, status, note: `Agendada (${new Date(later!).toLocaleString('pt-PT', { timeZone: 'Africa/Maputo' })}); segue para as redes quando for publicada.` };
-    return { title, status, note: `Nos pendentes: ${problems.join('; ')}.${n.when ? ` Data pedida: ${new Date(n.when).toLocaleString('pt-PT', { timeZone: 'Africa/Maputo' })}.` : ''}` };
+    const id = String((data as { id: string }).id);
+    if (status === 'published') return { title, status, id, note: `Publicada.${settings.share ? await shareEverywhere(id) : ''}` };
+    if (status === 'scheduled') return { title, status, id, note: `Agendada (${new Date(later!).toLocaleString('pt-PT', { timeZone: 'Africa/Maputo' })}); segue para as redes quando for publicada.` };
+    return { title, status, id, note: `Nos pendentes: ${problems.join('; ')}.${n.when ? ` Data pedida: ${new Date(n.when).toLocaleString('pt-PT', { timeZone: 'Africa/Maputo' })}.` : ''}` };
   } catch (e) {
     return { title, status: 'erro', note: e instanceof Error ? e.message : 'Erro' };
   }

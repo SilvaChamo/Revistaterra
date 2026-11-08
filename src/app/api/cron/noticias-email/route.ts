@@ -5,7 +5,7 @@ import { processMailbox, publishDue } from '@/lib/noticias-email';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
-/** De 3 em 3 horas: lê o e-mail da redacção (Word com notícias) e publica as agendadas cuja hora chegou. `Authorization: Bearer <CRON_SECRET>`. */
+/** De 3 em 3 horas: lê o e-mail info@ (Word com notícias) e publica as agendadas cuja hora chegou. `Authorization: Bearer <CRON_SECRET>`. */
 export async function GET(req: NextRequest) {
   const secret = process.env.CRON_SECRET;
   const sent = (req.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');

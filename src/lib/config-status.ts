@@ -37,7 +37,7 @@ export async function configMissing(area: ConfigArea): Promise<ConfigItem[]> {
       return [
         ...(has('IMAP_HOST', 'IMAP_USER', 'IMAP_PASS')
           ? []
-          : [{ vars: ['IMAP_HOST', 'IMAP_PORT', 'IMAP_USER', 'IMAP_PASS'], text: 'Caixa de e-mail da redacção por ligar: sem ela não chegam ficheiros novos a esta página.' }]),
+          : [{ vars: ['IMAP_HOST', 'IMAP_PORT', 'IMAP_USER', 'IMAP_PASS'], text: 'Caixa de e-mail info@ por ligar: sem ela não chegam ficheiros novos a esta página.' }]),
         ...(hasAny('CLAMD_URL', 'CLAMD_HOST', 'CLAMD_SOCKET', 'ANTIVIRUS_OPCIONAL')
           ? []
           : [{ vars: ['CLAMD_URL', 'CLAMD_TOKEN'], text: 'Antivírus por ligar (ClamAV, em alternativa CLAMD_HOST ou CLAMD_SOCKET): só as imagens são importadas, os PDF, ZIP e documentos ficam retidos.' }]),

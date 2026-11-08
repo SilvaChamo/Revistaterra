@@ -34,6 +34,6 @@ export async function POST() {
     return NextResponse.json(await syncMailbox());
   } catch (err) {
     console.error('Partilhado (sincronizar):', err instanceof Error ? err.message : err);
-    return NextResponse.json({ error: 'Não foi possível ler o e-mail da redacção. Verifique as definições IMAP.' }, { status: 502 });
+    return NextResponse.json({ error: 'Não foi possível ler o e-mail info@. Verifique as definições IMAP.' }, { status: 502 });
   }
 }

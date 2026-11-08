@@ -1,10 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Download, Mail, RefreshCw, Save } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 
-type Item = { title: string; status: 'published' | 'scheduled' | 'pending' | 'erro'; note: string };
+type Item = { title: string; status: 'published' | 'scheduled' | 'pending' | 'erro'; note: string; id?: string };
 type Entry = { at: string; from: string; subject: string; items: Item[]; note?: string };
 type Data = { configured: boolean; address: string; settings: { senders: string[]; requireVerified: boolean; share: boolean }; entries: Entry[] };
 
@@ -30,6 +31,7 @@ export default function NoticiasEmailPage() {
   const [share, setShare] = useState(true);
   const [busy, setBusy] = useState<'guardar' | 'verificar' | ''>('');
   const [msg, setMsg] = useState<{ tipo: 'ok' | 'erro'; texto: string } | null>(null);
+  const [aba, setAba] = useState<'info' | 'noticias'>('info');
 
   const load = useCallback(async () => {
     const res = await fetch('/api/admin/noticias-email', { credentials: 'include' });
@@ -64,7 +66,10 @@ export default function NoticiasEmailPage() {
     const r = b.result;
     setMsg({ tipo: 'ok', texto: r.mails === 0 ? 'Sem e-mails novos.' : `${r.mails} e-mail(s) lido(s): ${r.created} notícia(s) criada(s), ${r.pending} nos pendentes, ${r.failed} com erro.` });
     load();
+    setAba('noticias'); // as notícias lidas caem no separador da lista
   };
+
+  const itens = data ? data.entries.flatMap((e) => e.items.map((it) => ({ ...it, from: e.from, at: e.at }))) : [];
 
   if (!data) return <div className="flex min-h-[50vh] items-center justify-center"><Spinner /></div>;
 
@@ -73,7 +78,7 @@ export default function NoticiasEmailPage() {
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <h1 className="text-xl font-bold text-[#1d2327]">Notícias por e-mail</h1>
-          <p className="mt-1 max-w-xl text-[13px] text-[#50575e]">Envie um Word com notícias para o e-mail da redacção: o sistema lê de 3 em 3 horas e cria cada notícia</p>
+          <p className="mt-1 max-w-xl text-[13px] text-[#50575e]">Envie um Word com notícias para o e-mail info@: o sistema lê o e-mail e cria cada notícia</p>
         </div>
         <div className="flex shrink-0 gap-2">
           <a href="/api/admin/noticias-email/modelo" className="flex h-9 items-center gap-1.5 border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
@@ -86,17 +91,24 @@ export default function NoticiasEmailPage() {
       </div>
 
       {!data.configured && (
-        <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-2 text-[13px] text-amber-800">O e-mail da redacção ainda não está ligado ao servidor (faltam IMAP_HOST, IMAP_USER e IMAP_PASS). Enquanto isso, nada é lido.</div>
+        <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-2 text-[13px] text-amber-800">O e-mail info@ ainda não está ligado ao servidor (faltam IMAP_HOST, IMAP_USER e IMAP_PASS). Enquanto isso, nada é lido.</div>
       )}
       {msg && <div className={`mb-4 rounded-md border px-4 py-2 text-[13px] ${msg.tipo === 'ok' ? 'border-green-200 bg-green-50 text-green-800' : 'border-red-200 bg-red-50 text-red-700'}`}>{msg.texto}</div>}
 
+      <div className="mb-4 flex border-b border-[#ccd0d4]">
+        {([['info', 'Explicação e definições'], ['noticias', `Notícias recebidas${itens.length ? ` (${itens.length})` : ''}`]] as const).map(([id, nome]) => (
+          <button key={id} type="button" onClick={() => setAba(id)} className={`-mb-px px-5 py-2.5 text-[13px] font-medium ${aba === id ? 'border-b-2 border-[#047857] text-[#065f46]' : 'text-[#50575e] hover:text-[#065f46]'}`}>{nome}</button>
+        ))}
+      </div>
+
+      {aba === 'info' && (<>
       <div className="divide-y divide-[#ccd0d4] overflow-hidden rounded-[8px] border border-[#ccd0d4] bg-white">
         <div className="p-4">
           <p className="flex items-center gap-2 text-[14px] font-semibold text-[#1d2327]"><Mail className="h-4 w-4 text-[#047857]" /> Remetentes autorizados</p>
           <p className="mt-0.5 text-[13px] leading-5 text-[#50575e]">
-            Só os e-mails destes endereços são lidos{data.address ? <> (caixa lida: <strong>{data.address}</strong>)</> : null}. Um por linha: um endereço completo ou todo um domínio, como @revistaterra.com.
+            Só os e-mails destes endereços são lidos{data.address ? <> (e-mail lido: <strong>{data.address}</strong>)</> : null}. Um por linha: um endereço completo ou todo um domínio, como @revistaterra.com.
           </p>
-          <textarea value={senders} onChange={(e) => setSenders(e.target.value)} rows={4} placeholder="redaccao@exemplo.com" className="mt-3 w-full border border-[#8c8f94] p-3 text-[13px] focus:border-[#047857] focus:outline-none" />
+          <textarea value={senders} onChange={(e) => setSenders(e.target.value)} rows={4} placeholder="jornalista@exemplo.com" className="mt-3 w-full border border-[#8c8f94] p-3 text-[13px] focus:border-[#047857] focus:outline-none" />
         </div>
         <div className="flex items-start gap-3 p-4">
           <Interruptor on={verified} onClick={() => setVerified(!verified)} label="Exigir confirmação do remetente" />
@@ -123,27 +135,28 @@ export default function NoticiasEmailPage() {
         <Save className="h-4 w-4" /> Guardar
       </button>
 
-      <h2 className="mb-2 mt-8 text-[15px] font-bold text-[#1d2327]">Últimos e-mails</h2>
-      {data.entries.length === 0 ? (
-        <p className="rounded-[8px] border border-[#ccd0d4] bg-white p-4 text-[13px] text-[#50575e]">Ainda não foi lido nenhum e-mail.</p>
-      ) : (
-        <div className="divide-y divide-[#ccd0d4] overflow-hidden rounded-[8px] border border-[#ccd0d4] bg-white">
-          {data.entries.map((e, i) => (
-            <div key={`${e.at}-${i}`} className="p-4">
-              <p className="text-[13px] font-semibold text-[#1d2327]">{e.subject}</p>
-              <p className="text-[12px] text-[#646970]">{e.from} · {new Date(e.at).toLocaleString('pt-PT')}</p>
-              {e.note && <p className="mt-1 text-[12px] text-red-700">{e.note}</p>}
-              <ul className="mt-2 space-y-1.5">
-                {e.items.map((it, j) => (
-                  <li key={j} className="flex flex-wrap items-start gap-2 text-[13px]">
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium ${ESTADO[it.status].cls}`}>{ESTADO[it.status].texto}</span>
-                    <span className="min-w-0 flex-1"><span className="font-medium">{it.title}</span> <span className="text-[#50575e]">{it.note}</span></span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+      </>)}
+
+      {aba === 'noticias' && (
+        itens.length === 0 ? (
+          <p className="rounded-[8px] border border-[#ccd0d4] bg-white p-4 text-[13px] text-[#50575e]">Ainda não chegou nenhuma notícia por e-mail. Quando o sistema ler um Word, as notícias aparecem aqui, com o estado de cada uma.</p>
+        ) : (
+          <div className="divide-y divide-[#ccd0d4] overflow-hidden rounded-[8px] border border-[#ccd0d4] bg-white">
+            {data.entries.filter((e) => e.note).map((e, i) => (
+              <p key={`n${i}`} className="p-4 text-[12px] text-red-700">{e.subject}: {e.note}</p>
+            ))}
+            {itens.map((it, j) => (
+              <div key={j} className="flex flex-wrap items-start gap-3 p-4 text-[13px]">
+                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium ${ESTADO[it.status].cls}`}>{ESTADO[it.status].texto}</span>
+                <div className="min-w-0 flex-1">
+                  {it.id ? <Link href={`/admin/noticias/editar/${it.id}`} className="font-medium text-[#047857] hover:underline">{it.title}</Link> : <span className="font-medium">{it.title}</span>}
+                  <p className="mt-0.5 text-[#50575e]">{it.note}</p>
+                  <p className="mt-0.5 text-[12px] text-[#646970]">{it.from} · {new Date(it.at).toLocaleString('pt-PT')}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )
       )}
     </div>
   );
