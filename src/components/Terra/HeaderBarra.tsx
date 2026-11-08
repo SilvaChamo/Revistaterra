@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Menu, Search, User, X } from 'lucide-react';
-import { DARK, DARKER, GREEN, LIME, nav, social } from '@/lib/terra';
+import { DARK, DARKER, GREEN, LIME, nav } from '@/lib/terra';
+import { SocialGlyph, useSocialLinks } from './SocialProvider';
 
 const icon = 'flex h-10 w-10 items-center justify-center text-white transition-colors hover:text-[#9BCB3C]';
 
 /** Cabeçalho em barra verde única: logo num bloco branco à esquerda; menu e ícones na própria barra. */
 export default function HeaderBarra() {
+  const social = useSocialLinks();
   const path = usePathname();
   const [menu, setMenu] = useState(false);
   const [search, setSearch] = useState(false);
@@ -41,8 +43,8 @@ export default function HeaderBarra() {
             {search ? <X size={18} /> : <Search size={18} />}
           </button>
           {social.map((s) => (
-            <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className={`${icon} hidden lg:flex`}>
-              <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden><path d={s.path} /></svg>
+            <a key={s.id} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className={`${icon} hidden lg:flex`}>
+              <SocialGlyph link={s} className="h-[18px] w-[18px]" />
             </a>
           ))}
           <a href="#" aria-label="Entrar" title="Entrar" className={icon}><User size={18} /></a>

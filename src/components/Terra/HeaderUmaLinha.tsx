@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { BookOpen, Facebook, Home, Mail, Menu, Mic, Radio, TrendingUp, User, Users } from 'lucide-react';
-import { DARKER, GREEN, LIME, nav, social } from '@/lib/terra';
+import { BookOpen, Home, Mail, Menu, Mic, Radio, TrendingUp, User, Users } from 'lucide-react';
+import { DARKER, GREEN, LIME, nav } from '@/lib/terra';
+import { SocialGlyph, useSocialLinks } from './SocialProvider';
 import TopThinBar, { THIN_BAR } from './TopThinBar';
 import HeaderConta from './HeaderConta';
 
@@ -16,6 +17,8 @@ const NAV_ICONS: Record<string, typeof Home> = { '/': Home, '/radio': Radio, '/r
  * Por cima fica a barra fina (rádio, temperatura, pesquisa e redes, com o separador em trapézio a espreitar sobre o menu): também fica fixa, por isso o efeito mantém-se com o menu fixo.
  */
 export default function HeaderUmaLinha() {
+  const links = useSocialLinks();
+  const principal = links.find((l) => l.id === 'facebook') ?? links[0];
   const path = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -103,9 +106,11 @@ export default function HeaderUmaLinha() {
           );
         })}
       </nav>
-      <div className="flex w-16 shrink-0 justify-center py-3 text-gray-400">
-        <a href={social[0].href} target="_blank" rel="noopener noreferrer" aria-label="Facebook" tabIndex={menu ? 0 : -1} className="hover:text-[#9BCB3C]"><Facebook className="h-5 w-5" /></a>
-      </div>
+      {principal && (
+        <div className="flex w-16 shrink-0 justify-center py-3 text-gray-400">
+          <a href={principal.href} target="_blank" rel="noopener noreferrer" aria-label={principal.name} title={principal.name} tabIndex={menu ? 0 : -1} className="hover:text-[#9BCB3C]"><SocialGlyph link={principal} className="h-5 w-5" /></a>
+        </div>
+      )}
     </aside>
     </>
   );

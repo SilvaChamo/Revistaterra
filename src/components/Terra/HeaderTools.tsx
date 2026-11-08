@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { DARK, DARKER, LIME, social } from '@/lib/terra';
+import { DARK, DARKER, LIME } from '@/lib/terra';
+import { SocialGlyph, useSocialLinks } from './SocialProvider';
 
 const circle = 'flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-800 transition-colors hover:border-[#9BCB3C] hover:bg-[#9BCB3C] hover:text-[#064E3B]';
 
 /** Redes sociais e pesquisa (à direita do logo). O campo de pesquisa desliza por baixo, na largura do conteúdo. */
 export default function HeaderTools() {
+  const social = useSocialLinks();
   const [open, setOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -20,8 +22,8 @@ export default function HeaderTools() {
   return (
     <div className="flex items-center justify-center gap-2 sm:justify-self-end">
       {social.map((s) => (
-        <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className={circle}>
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden><path d={s.path} /></svg>
+        <a key={s.id} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className={circle}>
+          <SocialGlyph link={s} className="h-4 w-4" />
         </a>
       ))}
       <button aria-label={open ? 'Fechar pesquisa' : 'Pesquisar'} aria-expanded={open} onClick={() => setOpen(!open)} className={circle} style={open ? { background: DARK, borderColor: DARK, color: LIME } : undefined}>

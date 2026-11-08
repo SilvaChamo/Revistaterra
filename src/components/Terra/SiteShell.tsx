@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { Home } from 'lucide-react';
 import HeaderSwitch from './HeaderSwitch';
 import WeatherProvider from './WeatherProvider';
+import SocialProvider from './SocialProvider';
+import { loadSocialLinks } from '@/lib/social-links';
 import { loadWeather } from '@/lib/weather';
 import { DARK, GREEN, terra } from '@/lib/terra';
 
@@ -11,7 +13,7 @@ export type Crumb = { label: string; href?: string };
 
 /** `trail`: caminho da página (páginas interiores). Sem `trail` (página inicial) a barra mostra as cotações do dia. */
 export default async function SiteShell({ children, trail }: { children: React.ReactNode; trail?: Crumb[] }) {
-  const weather = await loadWeather();
+  const [weather, socialLinks] = await Promise.all([loadWeather(), loadSocialLinks()]);
   const items = [
     ...ticker.map((r) => ({ k: 'm' + r.prov, label: `Milho · ${r.prov}`, value: `${r.milho} MT/kg`, change: '' })),
     ...terra.market.map((m) => ({ k: 'c' + m.pair, label: m.pair, value: m.price, change: m.change })),
@@ -25,6 +27,7 @@ export default async function SiteShell({ children, trail }: { children: React.R
   );
   return (
     <WeatherProvider initial={weather}>
+    <SocialProvider links={socialLinks}>
     <div className="min-h-screen bg-[#ececec] text-[#222]" style={{ fontFamily: 'Verdana, sans-serif' }}>
       <HeaderSwitch />
 
@@ -84,6 +87,7 @@ export default async function SiteShell({ children, trail }: { children: React.R
         <div className="border-t border-white/10 px-6 py-4 text-center text-[11px] text-white/60">© 2026 Revista Terra. Todos os direitos reservados. · Proposta de redesign</div>
       </footer>
     </div>
+    </SocialProvider>
     </WeatherProvider>
   );
 }

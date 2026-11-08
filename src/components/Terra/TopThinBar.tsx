@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
-import { DARK, DARKER, LIME, TOPBAR, social, terra } from '@/lib/terra';
+import { DARK, DARKER, LIME, TOPBAR, terra } from '@/lib/terra';
+import { SocialGlyph, useSocialLinks } from './SocialProvider';
 import { useWeather } from './WeatherProvider';
 import { useRadio } from './RadioProvider';
 
@@ -30,6 +31,7 @@ const ic = 'flex h-9 w-8 items-center justify-center transition-colors hover:tex
 
 /** Barra fina por cima do cabeçalho. Ao fazer scroll sobe e esconde todo o conteúdo (rádio, temperatura, redes), deixando só a parte saliente do separador em trapézio sobre o menu: rádio à esquerda, separador central com os contactos, temperatura, redes e pesquisa à direita. */
 export default function TopThinBar({ offset = 0 }: { offset?: number }) {
+  const social = useSocialLinks();
   const radio = useRadio();
   const [search, setSearch] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -81,8 +83,8 @@ export default function TopThinBar({ offset = 0 }: { offset?: number }) {
           <MiniTemp />
           <div className="flex items-center">
             {social.map((s) => (
-              <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className={ic}>
-                <svg viewBox="0 0 24 24" className="h-[15px] w-[15px]" fill="currentColor" aria-hidden><path d={s.path} /></svg>
+              <a key={s.id} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className={ic}>
+                <SocialGlyph link={s} className="h-[15px] w-[15px]" />
               </a>
             ))}
             <button aria-label={search ? 'Fechar pesquisa' : 'Pesquisar'} aria-expanded={search} onClick={() => setSearch(!search)} className={ic} style={search ? { color: LIME } : undefined}>{search ? <X size={15} /> : <Search size={15} />}</button>

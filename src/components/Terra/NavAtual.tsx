@@ -3,9 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { DARK, DARKER, GREEN, LIME, nav, social } from '@/lib/terra';
+import { DARK, DARKER, GREEN, LIME, nav } from '@/lib/terra';
+import { SocialGlyph, useSocialLinks } from './SocialProvider';
 
 export default function NavAtual() {
+  const social = useSocialLinks();
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState(false);
@@ -33,8 +35,8 @@ export default function NavAtual() {
       {/* redes sociais, em frente da lupa */}
       <div className="flex shrink-0 items-stretch">
         {social.map((s) => (
-          <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className="flex w-10 items-center justify-center text-white transition-colors hover:text-[#9BCB3C]">
-            <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden><path d={s.path} /></svg>
+          <a key={s.id} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.name} title={s.name} className="flex w-10 items-center justify-center text-white transition-colors hover:text-[#9BCB3C]">
+            <SocialGlyph link={s} className="h-[18px] w-[18px]" />
           </a>
         ))}
       </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { CheckCircle2, CircleAlert, CircleSlash, ExternalLink, RefreshCw, Save } from 'lucide-react';
+import { CheckCircle2, CircleAlert, CircleSlash, ExternalLink, Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 import ConfigNote from '@/components/Admin/ConfigNote';
 
@@ -9,9 +9,10 @@ type Share = 'facebook' | 'reels' | 'instagram' | 'linkedin';
 type KeyName = 'metaPageId' | 'metaPageToken' | 'metaIgId' | 'linkedinOrgId' | 'linkedinToken';
 type KeyState = 'painel' | 'servidor' | 'em-falta';
 type Conn = { network: 'facebook' | 'instagram' | 'linkedin'; state: 'ligado' | 'erro' | 'sem-chaves'; detail: string };
+type Custom = { id: string; name: string; url: string };
 type Data = {
   settings: Record<Share, boolean>;
-  profiles: Record<string, string>;
+  profiles: Record<string, string> & { custom?: Custom[] };
   configured: Record<Share, boolean>;
   keys: Record<KeyName, KeyState>;
   connection: Conn[] | null;
@@ -82,6 +83,8 @@ export default function RedesSociaisPage() {
   const [perfis, setPerfis] = useState<Record<string, string>>({});
   const [chaves, setChaves] = useState<Record<string, string>>({});
   const [extras, setExtras] = useState<Record<string, boolean>>({});
+  const [custom, setCustom] = useState<Custom[]>([]);
+  const [customLoaded, setCustomLoaded] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
 
   const load = useCallback(async (check: boolean) => {
@@ -92,12 +95,14 @@ export default function RedesSociaisPage() {
       if (!res.ok) throw new Error(d.error || 'Erro ao carregar as redes sociais.');
       setData((prev) => ({ ...d, connection: check ? d.connection : prev?.connection ?? null }));
       setPerfis((cur) => (Object.keys(cur).length ? cur : d.profiles || {}));
+      if (!customLoaded) { setCustom(Array.isArray(d.profiles?.custom) ? d.profiles.custom : []); setCustomLoaded(true); }
       setExtras((cur) => (Object.keys(cur).length ? cur : Object.fromEntries(EXTRAS.map((k) => [k, Boolean(d.profiles?.[k])]))));
     } catch (err) {
       setMsg({ tipo: 'erro', texto: err instanceof Error ? err.message : 'Erro ao carregar as redes sociais.' });
     } finally {
       setChecking(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => { load(true); }, [load]);
@@ -121,6 +126,22 @@ export default function RedesSociaisPage() {
       setChaves((cur) => Object.fromEntries(Object.entries(cur).filter(([k]) => !(k in keys))));
       setMsg({ tipo: 'ok', texto: `${c.nome}: guardado.` });
       await load(true);
+    } catch (err) {
+      setMsg({ tipo: 'erro', texto: err instanceof Error ? err.message : 'Erro ao guardar.' });
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const guardarOutras = async () => {
+    setBusy('custom');
+    setMsg(null);
+    try {
+      const res = await fetch('/api/admin/redes-sociais', { method: 'PUT', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profiles: { custom } }) });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.error || 'Erro ao guardar.');
+      setCustom(d.profiles.custom || []);
+      setMsg({ tipo: 'ok', texto: 'Outras redes: guardado.' });
     } catch (err) {
       setMsg({ tipo: 'erro', texto: err instanceof Error ? err.message : 'Erro ao guardar.' });
     } finally {
@@ -172,7 +193,7 @@ export default function RedesSociaisPage() {
         <div>
           <h1 className="text-xl font-bold text-[#1d2327]">Redes sociais</h1>
           <p className="mt-1 max-w-xl text-[13px] text-[#50575e]">
-            Ligue as redes que a Revista Terra usa. Ao ligar uma rede aparecem o link e os dados de ligação. Um só clique em Publicar põe a notícia no site e nas redes ligadas; se uma rede falhar, a notícia fica sempre publicada no site e o editor vê o resultado de cada rede.
+            Ligue as redes que a Revista Terra usa. Ao ligar uma rede aparecem o link e os dados de ligação; os links guardados passam a ser as redes do cabeçalho do site. Um só clique em Publicar põe a notícia no site e nas redes ligadas; se uma rede falhar, a notícia fica sempre publicada no site e o editor vê o resultado de cada rede.
           </p>
         </div>
         <button onClick={() => load(true)} disabled={checking} className="flex h-9 items-center gap-1.5 border border-[#047857] px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">
@@ -248,6 +269,30 @@ export default function RedesSociaisPage() {
             </div>
           );
         })}
+      </div>
+      {/* Redes acrescentadas à mão: aparecem no cabeçalho do site junto com as outras */}
+      <div className="mt-4 max-w-3xl border border-[#ccd0d4] bg-white p-4">
+        <p className="text-[14px] font-semibold text-[#1d2327]">Outras redes</p>
+        <p className="mt-0.5 text-[13px] leading-5 text-[#50575e]">Acrescente qualquer outra rede ou página que a Revista Terra use (Telegram, Pinterest, Threads…). Aparece no cabeçalho do site com a inicial do nome.</p>
+        <div className="mt-3 space-y-2">
+          {custom.map((c, i) => (
+            <div key={c.id} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <input value={c.name} placeholder="Nome (ex.: Telegram)" maxLength={40} onChange={(e) => setCustom(custom.map((x, k) => (k === i ? { ...x, name: e.target.value } : x)))} className={`${inputCls} sm:w-44 sm:shrink-0`} />
+              <input type="url" value={c.url} placeholder="https://…" onChange={(e) => setCustom(custom.map((x, k) => (k === i ? { ...x, url: e.target.value } : x)))} className={inputCls} />
+              <button type="button" aria-label={`Remover ${c.name || 'rede'}`} onClick={() => setCustom(custom.filter((_, k) => k !== i))} className="flex h-9 w-9 shrink-0 items-center justify-center border border-[#ccd0d4] text-[#d63638] hover:bg-[#f6f7f7]">
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <button type="button" onClick={() => setCustom([...custom, { id: Math.random().toString(36).slice(2, 10), name: '', url: '' }])} className="flex h-9 items-center gap-1.5 border border-[#047857] px-3 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
+            <Plus className="h-4 w-4" /> Adicionar rede
+          </button>
+          <button onClick={guardarOutras} disabled={busy === 'custom'} className="flex h-9 items-center gap-1.5 bg-[#047857] px-4 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
+            <Save className="h-4 w-4" /> {busy === 'custom' ? 'A guardar…' : 'Guardar'}
+          </button>
+        </div>
       </div>
       <p className="mt-3 max-w-3xl text-[12px] text-[#646970]">Os tokens e IDs ficam cifrados no servidor e nunca voltam ao navegador.</p>
     </div>

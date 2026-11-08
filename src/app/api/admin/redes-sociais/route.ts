@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { requireAuth } from '@/lib/api-guard';
 import { configured, connectionStatus, keysState, loadProfiles, loadSettings, saveKeys, saveProfiles, saveSettings, NETWORKS } from '@/lib/social';
 
@@ -24,6 +25,13 @@ export async function PUT(req: NextRequest) {
     for (const n of NETWORKS) if (typeof body[n] === 'boolean') patch[n] = body[n] as boolean;
     if (body.keys && typeof body.keys === 'object') await saveKeys(body.keys as Record<string, unknown>);
     const profiles = body.profiles && typeof body.profiles === 'object' ? await saveProfiles(body.profiles as Record<string, unknown>) : undefined;
+    if (profiles) {
+      // As redes do cabeçalho do site passam a ser estas.
+      try {
+        revalidateTag('social', { expire: 0 });
+        revalidatePath('/', 'layout');
+      } catch { /* o site actualiza-se na visita seguinte */ }
+    }
     return NextResponse.json({ ok: true, settings: await saveSettings(patch), ...(profiles ? { profiles } : {}) });
   } catch (err) {
     return NextResponse.json({ error: err instanceof Error ? err.message : 'Erro ao guardar as definições.' }, { status: 500 });

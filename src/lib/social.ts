@@ -176,13 +176,20 @@ export async function saveSettings(s: Partial<SocialSettings>) {
 /** Perfis (endereços públicos) das redes sociais que a Revista Terra usa: não são segredos, por isso ficam na base de dados. */
 export const PROFILE_NETWORKS = ['facebook', 'instagram', 'linkedin', 'youtube', 'x', 'tiktok', 'whatsapp'] as const;
 export type ProfileNetwork = (typeof PROFILE_NETWORKS)[number];
-export type Profiles = Record<ProfileNetwork, string>;
+export type CustomNetwork = { id: string; name: string; url: string };
+export type Profiles = Record<ProfileNetwork, string> & { custom: CustomNetwork[] };
 const PROFILES_SLUG = 'revistaterra_social_perfis';
+const HTTPS = /^https:\/\/[^\s]+$/i;
 
 export async function loadProfiles(): Promise<Profiles> {
   const row = (await readRow<Partial<Profiles>>(PROFILES_SLUG)) ?? {};
-  return Object.fromEntries(PROFILE_NETWORKS.map((n) => [n, typeof row[n] === 'string' ? row[n]! : ''])) as Profiles;
+  const base = Object.fromEntries(PROFILE_NETWORKS.map((n) => [n, typeof row[n] === 'string' ? (row[n] as string) : '']));
+  const custom = Array.isArray(row.custom) ? row.custom.filter((c) => c && typeof c.name === 'string' && typeof c.url === 'string') : [];
+  return { ...base, custom } as Profiles;
 }
+
+/** Há alguma rede definida no painel? (Se não, o site continua a mostrar as redes de origem.) */
+export const hasAnyProfile = (p: Profiles) => p.custom.length > 0 || PROFILE_NETWORKS.some((n) => p[n]);
 
 /** Valida (https, até 300 caracteres; vazio = rede não usada) e guarda os endereços recebidos. */
 export async function saveProfiles(input: Partial<Record<string, unknown>>): Promise<Profiles> {
@@ -190,8 +197,21 @@ export async function saveProfiles(input: Partial<Record<string, unknown>>): Pro
   for (const n of PROFILE_NETWORKS) {
     if (input[n] === undefined) continue;
     const v = String(input[n] ?? '').trim();
-    if (v && (v.length > 300 || !/^https:\/\/[^\s]+$/i.test(v))) throw new Error(`Endereço inválido em ${n}: tem de começar por https://`);
+    if (v && (v.length > 300 || !HTTPS.test(v))) throw new Error(`Endereço inválido em ${n}: tem de começar por https://`);
     next[n] = v;
+  }
+  // Redes acrescentadas à mão: nome e endereço https; a lista inteira substitui a anterior.
+  if (Array.isArray(input.custom)) {
+    const list: CustomNetwork[] = [];
+    for (const c of input.custom.slice(0, 20) as Partial<CustomNetwork>[]) {
+      const name = String(c?.name ?? '').trim().slice(0, 40);
+      const url = String(c?.url ?? '').trim();
+      if (!name && !url) continue;
+      if (!name) throw new Error('Falta o nome de uma das redes acrescentadas.');
+      if (url.length > 300 || !HTTPS.test(url)) throw new Error(`Endereço inválido em ${name}: tem de começar por https://`);
+      list.push({ id: String(c?.id || Math.random().toString(36).slice(2, 10)).slice(0, 16), name, url });
+    }
+    next.custom = list;
   }
   await writeRow(PROFILES_SLUG, next);
   return next;
