@@ -144,7 +144,7 @@ export function EmailPreview({ item, editable, onRemove, onMove, onlyAds }: { it
         {/* Linha vertical que separa o símbolo da morada; não toca em cima nem em baixo (só no computador). */}
         <div className="my-4 hidden w-px shrink-0 bg-[#d5d8db] sm:block" />
         <div className="flex min-w-0 flex-1 items-center px-[10px] pb-3 pt-0 text-left text-[9px] leading-relaxed text-[#50575e] sm:px-4 sm:py-2 sm:text-[12px]">
-          <div><div className="mb-1 whitespace-nowrap text-[12px] font-bold leading-tight text-[#1d2327]">{BRAND.headline}</div>{BRAND.address}<br />{BRAND.phones.join(' · ')}<br />{BRAND.emails.join(' · ')}</div>
+          <div><div className="mb-1 whitespace-nowrap text-[13px] font-bold leading-tight text-[#1d2327] sm:text-[14px]">{BRAND.headline}</div>{BRAND.address}<br />{BRAND.phones.join(' · ')}<br />{BRAND.emails.join(' · ')}</div>
         </div>
         {/* Sem anúncio, o espaço do cabeçalho mostra um cartão cinzento «Publicite aqui» */}
         {headerAd ? (
