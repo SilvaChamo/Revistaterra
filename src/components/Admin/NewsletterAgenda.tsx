@@ -139,10 +139,10 @@ export function EmailPreview({ item, editable, onRemove, onMove, onlyAds }: { it
       <div className="flex flex-col items-stretch overflow-hidden border-b-4 bg-white sm:flex-row" style={{ borderBottomColor: GREEN }}>
         {/* O símbolo tem 10px de espaço em cima, à esquerda e em baixo (à direita não). */}
         <div className="shrink-0 py-[10px] pl-[10px] sm:self-center">
-          <img src="/images/revista-terra-simbolo.png" alt={BRAND.name} className="block h-[108px] w-[108px] object-cover" />
+          <img src="/images/revista-terra-simbolo-quadrado.png" alt={BRAND.name} className="block h-[76px] w-[76px] object-cover" />
         </div>
         {/* Linha vertical que separa o símbolo da morada; não toca em cima nem em baixo (só no computador). */}
-        <div className="my-4 hidden w-px shrink-0 bg-[#d5d8db] sm:block" />
+        <div className="hidden h-[76px] w-px shrink-0 self-center bg-[#d5d8db] sm:block" />
         <div className="flex min-w-0 flex-1 items-center px-[10px] pb-3 pt-0 text-left text-[9px] leading-relaxed text-[#50575e] sm:px-4 sm:py-2 sm:text-[12px]">
           <div><div className="mb-1 whitespace-nowrap text-[13px] font-bold leading-tight text-[#1d2327] sm:text-[14px]">{BRAND.headline}</div>{BRAND.address}<br />{BRAND.phones.join(' · ')}<br />{BRAND.emails.join(' · ')}</div>
         </div>
