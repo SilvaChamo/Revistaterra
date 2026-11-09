@@ -117,7 +117,7 @@ const CARTOES: Cartao[] = [
 ];
 
 const EXTRAS = ['youtube', 'x', 'tiktok', 'whatsapp'];
-const inputCls = 'h-9 w-full rounded-full border border-[#8c8f94] bg-white px-4 text-[13px] focus:border-[#047857] focus:outline-none';
+const inputCls = 'h-9 w-full border border-[#8c8f94] bg-white px-4 text-[13px] focus:border-[#047857] focus:outline-none';
 
 /** Redes sociais da Revista Terra: em cada cartão, o interruptor liga a rede e mostra o link e os dados de ligação. Os segredos ficam cifrados no servidor. */
 export default function RedesSociaisPage() {
@@ -242,7 +242,7 @@ export default function RedesSociaisPage() {
           <h1 className="text-xl font-bold text-[#1d2327]">Redes sociais</h1>
           <p className="mt-1 max-w-xl text-[13px] text-[#50575e]">Ligue as redes sociais da Revista Terra com o sistema de partilha de publicações</p>
         </div>
-        <button onClick={() => load(true)} disabled={checking} className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">
+        <button onClick={() => load(true)} disabled={checking} className="flex h-9 items-center gap-1.5 border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4] disabled:opacity-50">
           <RefreshCw className={`h-4 w-4 ${checking ? 'animate-spin' : ''}`} /> Verificar ligação
         </button>
       </div>
@@ -290,7 +290,7 @@ export default function RedesSociaisPage() {
                         <div className="px-3 pb-3">
                           <div className="flex flex-wrap gap-2">
                             {c.guia.links.map((l) => (
-                              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] bg-white px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
+                              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="flex h-9 items-center gap-1.5 border border-[#047857] bg-white px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
                                 <ExternalLink className="h-4 w-4" /> {l.texto}
                               </a>
                             ))}
@@ -318,7 +318,7 @@ export default function RedesSociaisPage() {
                           className={inputCls}
                         />
                         {f.tipo === 'perfil' && perfis[f.id] && (
-                          <a href={perfis[f.id]} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${c.nome}`} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#047857] text-[#047857] hover:bg-[#f0f7f4]">
+                          <a href={perfis[f.id]} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${c.nome}`} className="flex h-9 w-9 shrink-0 items-center justify-center border border-[#047857] text-[#047857] hover:bg-[#f0f7f4]">
                             <ExternalLink className="h-4 w-4" />
                           </a>
                         )}
@@ -328,7 +328,7 @@ export default function RedesSociaisPage() {
                   ))}
                   {c.campos.length > 0 && (
                     <div className="flex justify-end">
-                      <button onClick={() => guardar(c)} disabled={busy === c.id} className="flex h-9 items-center gap-1.5 rounded-full bg-[#047857] px-5 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
+                      <button onClick={() => guardar(c)} disabled={busy === c.id} className="flex h-9 items-center gap-1.5 bg-[#047857] px-5 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
                         <Save className="h-4 w-4" /> {busy === c.id ? 'A guardar…' : 'Guardar'}
                       </button>
                     </div>
@@ -349,17 +349,17 @@ export default function RedesSociaisPage() {
             <div key={c.id} className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <input value={c.name} placeholder="Nome (ex.: Telegram)" maxLength={40} onChange={(e) => setCustom(custom.map((x, k) => (k === i ? { ...x, name: e.target.value } : x)))} className={`${inputCls} sm:w-44 sm:shrink-0`} />
               <input type="url" value={c.url} placeholder="https://…" onChange={(e) => setCustom(custom.map((x, k) => (k === i ? { ...x, url: e.target.value } : x)))} className={inputCls} />
-              <button type="button" aria-label={`Remover ${c.name || 'rede'}`} onClick={() => setCustom(custom.filter((_, k) => k !== i))} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#ccd0d4] text-[#d63638] hover:bg-[#f6f7f7]">
+              <button type="button" aria-label={`Remover ${c.name || 'rede'}`} onClick={() => setCustom(custom.filter((_, k) => k !== i))} className="flex h-9 w-9 shrink-0 items-center justify-center border border-[#ccd0d4] text-[#d63638] hover:bg-[#f6f7f7]">
                 <Trash2 className="h-4 w-4" />
               </button>
             </div>
           ))}
         </div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <button type="button" onClick={() => setCustom([...custom, { id: Math.random().toString(36).slice(2, 10), name: '', url: '' }])} className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
+          <button type="button" onClick={() => setCustom([...custom, { id: Math.random().toString(36).slice(2, 10), name: '', url: '' }])} className="flex h-9 items-center gap-1.5 border border-[#047857] px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
             <Plus className="h-4 w-4" /> Adicionar rede
           </button>
-          <button onClick={guardarOutras} disabled={busy === 'custom'} className="flex h-9 items-center gap-1.5 rounded-full bg-[#047857] px-5 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
+          <button onClick={guardarOutras} disabled={busy === 'custom'} className="flex h-9 items-center gap-1.5 bg-[#047857] px-5 text-[13px] font-medium text-white hover:bg-[#065f46] disabled:opacity-50">
             <Save className="h-4 w-4" /> {busy === 'custom' ? 'A guardar…' : 'Guardar'}
           </button>
         </div>
