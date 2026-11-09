@@ -3,7 +3,7 @@ export const BRAND = {
   name: 'Revista Terra',
   tagline: 'A Voz do Agro e Ambiente',
   /** Título do cabeçalho, por cima da morada. */
-  headline: 'Jornalismo ao serviço do agro e do ambiente',
+  headline: 'Revistaterra, ao serviço do agro',
   address: 'Rua da Resistência, Nº 1642, 3º Andar',
   phones: ['+258 82 123 3910'],
   emails: ['comercial@revistaterra.co.mz'],
