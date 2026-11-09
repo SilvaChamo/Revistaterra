@@ -302,7 +302,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         {
           href: '/admin/opiniao',
           icon: FileText,
-          label: 'Artigos de Opinião',
+          label: 'Opinião',
           submenu: [
             { label: 'Pendentes', href: '/admin/opiniao/pendentes' },
             { label: 'Todos os artigos', href: '/admin/opiniao' },
@@ -379,7 +379,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         {
           href: '/admin/opiniao',
           icon: FileText,
-          label: 'Artigos de Opinião',
+          label: 'Opinião',
           submenu: [
             { label: 'Pendentes', href: '/admin/opiniao/pendentes' },
             { label: 'Todos os artigos', href: '/admin/opiniao' },
