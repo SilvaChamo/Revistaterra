@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { CheckCircle2, CircleAlert, CircleSlash, ExternalLink, Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
+import { CheckCircle2, ChevronDown, CircleAlert, CircleSlash, ExternalLink, Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 import ConfigNote from '@/components/Admin/ConfigNote';
 
@@ -33,6 +33,19 @@ type Cartao = {
   campos: Campo[];
   exemplo: string;
 };
+
+/** Abre e fecha a deslizar (altura e transparência), sem piscar; fechado, o conteúdo não se pode focar nem ler. */
+function Desliza({ open, children }: { open: boolean; children: React.ReactNode }) {
+  return (
+    <div
+      aria-hidden={!open}
+      inert={!open}
+      className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out motion-reduce:transition-none ${open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+    >
+      <div className="min-h-0 overflow-hidden">{children}</div>
+    </div>
+  );
+}
 
 const CARTOES: Cartao[] = [
   {
@@ -139,6 +152,9 @@ export default function RedesSociaisPage() {
 
   useEffect(() => { load(true); }, [load]);
 
+  // Guia de activação: aberto por defeito enquanto a rede não está ligada; depois, o que o utilizador escolher.
+  const [guias, setGuias] = useState<Record<string, boolean>>({});
+  const guiaAberto = (c: Cartao) => guias[c.id] ?? (c.partilha ? !data?.configured[c.partilha] : false);
   const ligado = (c: Cartao) => (c.partilha ? !!data?.settings[c.partilha] : !!extras[c.id]);
 
   const guardar = async (c: Cartao, opts: { limpar?: boolean } = {}) => {
@@ -256,27 +272,35 @@ export default function RedesSociaisPage() {
                 <div className="min-w-0 flex-1">
                   <p className="text-[14px] font-semibold text-[#1d2327]">{c.nome}</p>
                   <p className="mt-0.5 text-[13px] leading-5 text-[#50575e]">{c.texto}</p>
-                  {on && c.partilha && <p className="mt-1.5 flex items-start gap-1.5 text-[12px]">{estadoLigacao(c)}</p>}
+                  {c.partilha && <Desliza open={on}><p className="mt-1.5 flex items-start gap-1.5 text-[12px]">{estadoLigacao(c)}</p></Desliza>}
                 </div>
               </div>
 
-              {on && (c.nota || c.guia || c.campos.length > 0) && (
+              {(c.nota || c.guia || c.campos.length > 0) && (
+                <Desliza open={on}>
                 <div className="mt-3 space-y-3 border-t border-[#f0f0f1] pt-3 sm:ml-14">
                   {c.nota && <p className="text-[12px] leading-5 text-[#646970]">{c.nota}</p>}
                   {c.guia && (
-                    <details open={c.partilha ? !data.configured[c.partilha] : false} className="rounded-[8px] border border-[#ccd0d4] bg-[#f6f7f7] p-3 text-[13px] leading-6 text-[#2c3338]">
-                      <summary className="cursor-pointer font-medium text-[#1d2327]">{c.guia.titulo}</summary>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {c.guia.links.map((l) => (
-                          <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] bg-white px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
-                            <ExternalLink className="h-4 w-4" /> {l.texto}
-                          </a>
-                        ))}
-                      </div>
-                      <ol className="mt-3 list-decimal space-y-2 pl-5">
-                        {c.guia.passos.map((p) => <li key={p}>{p}</li>)}
-                      </ol>
-                    </details>
+                    <div className="rounded-[8px] border border-[#ccd0d4] bg-[#f6f7f7] text-[13px] leading-6 text-[#2c3338]">
+                      <button type="button" aria-expanded={guiaAberto(c)} onClick={() => setGuias({ ...guias, [c.id]: !guiaAberto(c) })} className="flex w-full items-center justify-between gap-2 p-3 text-left font-medium text-[#1d2327]">
+                        {c.guia.titulo}
+                        <ChevronDown className={`h-4 w-4 shrink-0 transition-transform duration-300 motion-reduce:transition-none ${guiaAberto(c) ? 'rotate-180' : ''}`} />
+                      </button>
+                      <Desliza open={guiaAberto(c)}>
+                        <div className="px-3 pb-3">
+                          <div className="flex flex-wrap gap-2">
+                            {c.guia.links.map((l) => (
+                              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="flex h-9 items-center gap-1.5 rounded-full border border-[#047857] bg-white px-4 text-[13px] font-medium text-[#047857] hover:bg-[#f0f7f4]">
+                                <ExternalLink className="h-4 w-4" /> {l.texto}
+                              </a>
+                            ))}
+                          </div>
+                          <ol className="mt-3 list-decimal space-y-2 pl-5">
+                            {c.guia.passos.map((p) => <li key={p}>{p}</li>)}
+                          </ol>
+                        </div>
+                      </Desliza>
+                    </div>
                   )}
                   {c.campos.map((f) => (
                     <label key={f.id} className="block">
@@ -310,6 +334,7 @@ export default function RedesSociaisPage() {
                     </div>
                   )}
                 </div>
+                </Desliza>
               )}
             </div>
           );
