@@ -93,6 +93,9 @@ export default function NewsAdminPage() {
   const confirmAsync = (text: string) => new Promise<boolean>((done) => setAsk({ text, done }));
   const [loading, setLoading] = useState(() => adminCacheGet('news') === undefined);
   // Categorias reais (as do menu e as que já têm notícias): vêm do servidor, não de uma lista fixa.
+  // Categorias novas escritas na edição rápida (passam a existir quando a notícia é guardada).
+  const [extraCats, setExtraCats] = useState<CategoryOption[]>([]);
+  const [novaCat, setNovaCat] = useState('');
   const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>(() => adminCacheGet<CategoryOption[]>('category-options') ?? []);
   useEffect(() => {
     fetch('/api/admin/categories', { credentials: 'include' })
@@ -374,7 +377,7 @@ export default function NewsAdminPage() {
           title: editForm.title,
           slug: editForm.slug,
           category: editForm.category,
-          categories: itemCategories(editForm),
+          categories: itemCategories(editForm).map((c) => extraCats.find((o) => o.slug === c)?.label.toLowerCase() ?? c),
           date: editForm.date,
           summary: editForm.summary, // Usado como meta description
         }),
@@ -683,26 +686,51 @@ export default function NewsAdminPage() {
                             <div className="space-y-4">
                               <div>
                                 <label className="block text-[11px] min-[1500px]:text-[12px] font-bold mb-1">Categorias</label>
-                                <div className="h-32 min-h-24 max-h-[70vh] resize-y overflow-y-auto p-2 border border-[#ccd0d4] bg-white rounded-[3px]">
-                                  {categoryOptions.map((cat) => {
-                                    const selected = itemCategories(editForm);
-                                    const on = selected.includes(cat.slug);
-                                    return (
-                                      <label key={cat.slug} className="flex items-center gap-2 text-[12px] min-[1500px]:text-sm py-0.5">
+                                {(() => {
+                                  const selected = itemCategories(editForm);
+                                  const known = [...categoryOptions, ...extraCats.filter((x) => !categoryOptions.some((o) => o.slug === x.slug))];
+                                  // Categorias que a notícia já tem e não estão na lista também aparecem, já marcadas.
+                                  const opts = [...known, ...selected.filter((c) => !known.some((o) => o.slug === c)).map((c) => ({ slug: c, label: c.replace(/-/g, ' ').replace(/^./, (m) => m.toUpperCase()) }))];
+                                  const toggle = (slug: string) => {
+                                    const next = selected.includes(slug) ? selected.filter((c) => c !== slug) : [...selected, slug];
+                                    if (next.length === 0) return; // a notícia fica sempre com uma categoria
+                                    setEditForm({ ...editForm, category: next[0], categories: next });
+                                  };
+                                  const addCat = () => {
+                                    const name = novaCat.trim().replace(/\s+/g, ' ').slice(0, 40);
+                                    const slug = slugOf(name);
+                                    if (!slug || slug === 'opiniao') return; // Opinião é só para colunistas
+                                    if (!opts.some((o) => o.slug === slug)) setExtraCats([...extraCats, { slug, label: name }]);
+                                    if (!selected.includes(slug)) setEditForm({ ...editForm, category: selected[0] ?? slug, categories: [...selected, slug] });
+                                    setNovaCat('');
+                                  };
+                                  return (
+                                    <>
+                                      <p className="mb-1 text-[11px] text-[#646970]">Pode escolher várias; a 1.ª é a principal.</p>
+                                      <div className="h-32 min-h-24 max-h-[70vh] resize-y overflow-y-auto p-2 border border-[#ccd0d4] bg-white rounded-[3px]">
+                                        {opts.map((cat) => (
+                                          <label key={cat.slug} className="flex items-center gap-2 text-[12px] min-[1500px]:text-sm py-0.5">
+                                            <input type="checkbox" checked={selected.includes(cat.slug)} onChange={() => toggle(cat.slug)} />
+                                            {cat.label}
+                                            {selected[0] === cat.slug && selected.length > 1 && <span className="text-[10px] text-[#646970]">(principal)</span>}
+                                          </label>
+                                        ))}
+                                      </div>
+                                      <div className="mt-2 flex gap-2">
                                         <input
-                                          type="checkbox"
-                                          checked={on}
-                                          onChange={() => {
-                                            const next = on ? selected.filter((c) => c !== cat.slug) : [...selected, cat.slug];
-                                            if (next.length === 0) return; // a notícia fica sempre com uma categoria
-                                            setEditForm({ ...editForm, category: next[0], categories: next });
-                                          }}
+                                          type="text"
+                                          value={novaCat}
+                                          onChange={(e) => setNovaCat(e.target.value)}
+                                          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addCat(); } }}
+                                          maxLength={40}
+                                          placeholder="Nova categoria"
+                                          className="h-8 min-w-0 flex-1 px-2 border border-[#ccd0d4] rounded-[3px] text-[12px] min-[1500px]:text-sm"
                                         />
-                                        {cat.label}
-                                      </label>
-                                    );
-                                  })}
-                                </div>
+                                        <button type="button" onClick={addCat} disabled={!novaCat.trim()} className="h-8 shrink-0 px-3 border border-[#047857] rounded-[3px] text-[12px] min-[1500px]:text-sm font-bold text-[#047857] hover:bg-[#f6f7f7] disabled:opacity-50">+ Adicionar</button>
+                                      </div>
+                                    </>
+                                  );
+                                })()}
                               </div>
                             </div>
 
