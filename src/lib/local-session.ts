@@ -1,7 +1,8 @@
 import { createHmac, timingSafeEqual } from 'crypto';
 import type { AppUser, UserRole } from '@/lib/auth';
 
-export const SESSION_COOKIE = 'ec_session';
+// Em desenvolvimento o nome é outro: em `localhost` os cookies não separam as portas, e o Entrecampos (também `ec_session`) apagava a sessão da Revista Terra de cada vez que alguém entrava lá.
+export const SESSION_COOKIE = process.env.NODE_ENV === 'production' ? 'ec_session' : 'rt_session';
 const MAX_AGE_SEC = 60 * 60 * 24 * 7; // 7 days
 
 export type LocalSessionPayload = {
