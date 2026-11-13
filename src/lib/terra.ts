@@ -6,6 +6,66 @@ export const LIME = '#9BCB3C'; // verde-lima de campo: botões, hovers e etiquet
 export const TOPBAR = '#084030'; // barra fina de cima (cor medida na referência)
 export const DARKER = '#053D2F'; // um pouco mais carregado: linha do menu e item activo
 
+/**
+ * Cores por categoria - paleta agro.
+ * O slug e normalizado (sem acentos, minusculas, espacos -> hifens).
+ * Todas as categorias existentes no Supabase estao mapeadas.
+ */
+const CATEGORY_COLORS: Record<string, { bg: string; fg: string }> = {
+  'agricultura':          { bg: '#047857', fg: '#FFFFFF' },
+  'opiniao':              { bg: '#1E3A5F', fg: '#FFFFFF' },
+  'agro-negocio':         { bg: '#5B7C3A', fg: '#FFFFFF' },
+  'comunidade':           { bg: '#C2703E', fg: '#FFFFFF' },
+  'curiosidade':          { bg: '#B8860B', fg: '#FFFFFF' },
+  'sector-agrario':       { bg: '#6B8E23', fg: '#FFFFFF' },
+  'fora-de-campo':        { bg: '#7B5B3A', fg: '#FFFFFF' },
+  'fruticultura':         { bg: '#C2185B', fg: '#FFFFFF' },
+  'sector-publico':       { bg: '#4A6741', fg: '#FFFFFF' },
+  'oportunidades':        { bg: '#7CB342', fg: '#FFFFFF' },
+  'sociedade':            { bg: '#2E7D9B', fg: '#FFFFFF' },
+  'ambiente':             { bg: '#2E7D32', fg: '#FFFFFF' },
+  'mercado':              { bg: '#8B7D3C', fg: '#FFFFFF' },
+  'tempo':                { bg: '#607D8B', fg: '#FFFFFF' },
+  'internacional':        { bg: '#1565C0', fg: '#FFFFFF' },
+  'agro-pecuaria':        { bg: '#558B2F', fg: '#FFFFFF' },
+  'agropecuaria':         { bg: '#558B2F', fg: '#FFFFFF' },
+  'entrevista':           { bg: '#6A1B9A', fg: '#FFFFFF' },
+  'entrevsta':            { bg: '#6A1B9A', fg: '#FFFFFF' },
+  'receitas':             { bg: '#D84315', fg: '#FFFFFF' },
+  'meio-ambiente':        { bg: '#2E7D32', fg: '#FFFFFF' },
+  'inovacao':             { bg: '#00897B', fg: '#FFFFFF' },
+  'apicultura':           { bg: '#FFB300', fg: '#3E2723' },
+  'seguranca-alimentar':  { bg: '#C62828', fg: '#FFFFFF' },
+  'noticia':              { bg: '#047857', fg: '#FFFFFF' },
+  'sem-categoria':        { bg: '#047857', fg: '#FFFFFF' },
+  'meios-de-vida':        { bg: '#A0522D', fg: '#FFFFFF' },
+  'energia':              { bg: '#F9A825', fg: '#3E2723' },
+  'gestao-agricola':      { bg: '#5B7C3A', fg: '#FFFFFF' },
+  'voce-sabia':           { bg: '#B8860B', fg: '#FFFFFF' },
+  'voce-sabiaa':          { bg: '#B8860B', fg: '#FFFFFF' },
+  'politica-agraria':     { bg: '#6A1B3D', fg: '#FFFFFF' },
+  'politica':             { bg: '#6A1B3D', fg: '#FFFFFF' },
+  'guia':                 { bg: '#7CB342', fg: '#FFFFFF' },
+  'recursos':             { bg: '#8B7D3C', fg: '#FFFFFF' },
+  'evento':               { bg: '#C2703E', fg: '#FFFFFF' },
+  'clima':                { bg: '#0288D1', fg: '#FFFFFF' },
+  'desenvolvimento-local':{ bg: '#2E7D9B', fg: '#FFFFFF' },
+  'pesca':                { bg: '#00838F', fg: '#FFFFFF' },
+  'economia':             { bg: '#8D6E24', fg: '#FFFFFF' },
+  'agro-processamento':   { bg: '#4E6B45', fg: '#FFFFFF' },
+};
+
+const DEFAULT_CAT_COLOR = { bg: '#047857', fg: '#FFFFFF' };
+
+function catSlug(s: string) {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+/** Cores (fundo + texto) do badge de uma categoria. */
+export function categoryColor(category: string): { bg: string; fg: string } {
+  return CATEGORY_COLORS[catSlug(category)] ?? DEFAULT_CAT_COLOR;
+}
+
 export type Card = { category: string; title: string; excerpt: string; url: string; image: string | null; date?: string; exclusive?: boolean };
 
 /** Endereço de uma notícia no site antigo (revistaterraonline.com): é daí que vêm os títulos de src/data/terra.json. */
