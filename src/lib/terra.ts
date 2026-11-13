@@ -7,9 +7,9 @@ export const TOPBAR = '#084030'; // barra fina de cima (cor medida na referênci
 export const DARKER = '#053D2F'; // um pouco mais carregado: linha do menu e item activo
 
 /**
- * Cores por categoria - paleta agro.
- * O slug e normalizado (sem acentos, minusculas, espacos -> hifens).
- * Todas as categorias existentes no Supabase estao mapeadas.
+ * Cores por categoria — paleta agro (verdes, terrosos, solares).
+ * O slug é normalizado (sem acentos, minúsculas, espaços → hífens) para a comparação.
+ * Todas as 40 categorias existentes no Supabase estão mapeadas.
  */
 const CATEGORY_COLORS: Record<string, { bg: string; fg: string }> = {
   'agricultura':          { bg: '#047857', fg: '#FFFFFF' },
@@ -55,6 +55,7 @@ const CATEGORY_COLORS: Record<string, { bg: string; fg: string }> = {
   'agro-processamento':   { bg: '#4E6B45', fg: '#FFFFFF' },
 };
 
+/** Cor de fallback quando a categoria não está mapeada. */
 const DEFAULT_CAT_COLOR = { bg: '#047857', fg: '#FFFFFF' };
 
 function catSlug(s: string) {
@@ -137,41 +138,3 @@ export function parseDate(s?: string): number {
   if (!m || MESES[m[1].toLowerCase()] === undefined) return 0;
   return new Date(+m[3], MESES[m[1].toLowerCase()], +m[2]).getTime();
 }
-
-const CATEGORY_COLORS: Record<string, { bg: string; fg: string }> = {
-  'agricultura':        { bg: '#047857', fg: '#FFFFFF' },
-  'opiniao':            { bg: '#1E3A5F', fg: '#FFFFFF' },
-  'comunidade':         { bg: '#C2703E', fg: '#FFFFFF' },
-  'agro-negocio':       { bg: '#5B7C3A', fg: '#FFFFFF' },
-  'fora-de-campo':      { bg: '#7B5B3A', fg: '#FFFFFF' },
-  'curiosidade':        { bg: '#B8860B', fg: '#FFFFFF' },
-  'sociedade':          { bg: '#2E7D9B', fg: '#FFFFFF' },
-  'sector-agrario':     { bg: '#6B8E23', fg: '#FFFFFF' },
-  'fruticultura':       { bg: '#C2185B', fg: '#FFFFFF' },
-  'mercado':            { bg: '#8B7D3C', fg: '#FFFFFF' },
-  'oportunidades':      { bg: '#7CB342', fg: '#FFFFFF' },
-  'tempo':              { bg: '#607D8B', fg: '#FFFFFF' },
-  'agro-pecuaria':      { bg: '#558B2F', fg: '#FFFFFF' },
-  'ambiente':           { bg: '#2E7D32', fg: '#FFFFFF' },
-  'meio-ambiente':      { bg: '#2E7D32', fg: '#FFFFFF' },
-  'receitas':           { bg: '#D84315', fg: '#FFFFFF' },
-  'meios-de-vida':      { bg: '#A0522D', fg: '#FFFFFF' },
-  'energia':            { bg: '#F9A825', fg: '#3E2723' },
-  'clima':              { bg: '#0288D1', fg: '#FFFFFF' },
-  'politica':           { bg: '#6A1B3D', fg: '#FFFFFF' },
-  'internacional':      { bg: '#1565C0', fg: '#FFFFFF' },
-  'pesca':              { bg: '#00838F', fg: '#FFFFFF' },
-  'economia':           { bg: '#8D6E24', fg: '#FFFFFF' },
-  'agro-processamento': { bg: '#4E6B45', fg: '#FFFFFF' },
-  'seguranca-alimentar':{ bg: '#C62828', fg: '#FFFFFF' },
-  'apicultura':         { bg: '#FFB300', fg: '#3E2723' },
-  'entrevista':         { bg: '#6A1B9A', fg: '#FFFFFF' },
-};
-const DEFAULT_CAT_COLOR = { bg: '#047857', fg: '#FFFFFF' };
-function catSlug(s: string) {
-  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
-export function categoryColor(category: string): { bg: string; fg: string } {
-  return CATEGORY_COLORS[catSlug(category)] ?? DEFAULT_CAT_COLOR;
-}
-
