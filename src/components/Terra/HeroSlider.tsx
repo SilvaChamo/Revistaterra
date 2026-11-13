@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { DARK, GREEN, LIME } from '@/lib/terra';
 
-export type HeroItem = { category: string; title: string; excerpt: string; url: string; image: string | null };
+export type HeroItem = { category: string; title: string; excerpt: string; url: string; image: string | null; date?: string };
 
 const arrow = 'flex h-9 w-9 items-center justify-center border border-white/60 bg-white/10 text-lg leading-none text-white backdrop-blur-[1px] transition-colors hover:border-[#9BCB3C] hover:bg-[#9BCB3C] hover:text-[#064E3B]';
 
@@ -36,6 +36,7 @@ export default function HeroSlider({ items }: { items: HeroItem[] }) {
             <span className="inline-block whitespace-nowrap px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{it.category}</span>
             <h2 className="mt-3 max-w-[92%] max-sm:line-clamp-3 font-extrabold leading-tight text-white sm:max-w-[78%]" style={{ fontSize: 'clamp(19px, 6.9cqmin, 32px)' }}>{it.title}</h2>
             {it.excerpt && <p className="mt-3 max-w-[92%] line-clamp-3 leading-snug text-white/85 sm:line-clamp-none sm:max-w-[70%]" style={{ fontSize: 'clamp(11.5px, 3.1cqmin, 14px)' }}>{it.excerpt}</p>}
+            {it.date && <span className="mt-2 inline-block text-[11px] font-medium text-white/70">{it.date}</span>}
           </div>
         </a>
       ))}
