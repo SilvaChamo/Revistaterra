@@ -2,14 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { DARK, GREEN, LIME } from '@/lib/terra';
+import { DARK, GREEN, LIME, categoryColor } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
 import ShareLink from './ShareLink';
 
 export type RecentSet = { id: string; label: string; feature: Card[] };
 
 const Pill = ({ children }: { children: React.ReactNode }) => (
-  <span className="inline-block whitespace-nowrap px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{children}</span>
+  <span className="inline-block whitespace-nowrap px-3 py-1 text-[10px] font-bold uppercase tracking-wide" style={{ background: categoryColor(String(children)).bg, color: categoryColor(String(children)).fg }}>{children}</span>
 );
 
 const arrow = 'flex h-7 w-7 items-center justify-center border border-neutral-300 bg-white text-neutral-700 transition-colors hover:border-[#9BCB3C] hover:bg-[#9BCB3C] hover:text-[#064E3B]';

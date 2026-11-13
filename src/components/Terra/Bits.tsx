@@ -1,4 +1,4 @@
-import { DARK, GREEN, LIME } from '@/lib/terra';
+import { DARK, GREEN, LIME, categoryColor } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
 import ShareLink from './ShareLink';
 
@@ -8,7 +8,7 @@ export const ExclusivaTag = () => (
 );
 
 export const Tag = ({ children }: { children: React.ReactNode }) => (
-  <span className="inline-block whitespace-nowrap px-2 py-[3px] text-[9px] font-bold uppercase tracking-wide" style={{ background: LIME, color: DARK }}>{children}</span>
+  <span className="inline-block whitespace-nowrap px-2 py-[3px] text-[9px] font-bold uppercase tracking-wide" style={{ background: categoryColor(String(children)).bg, color: categoryColor(String(children)).fg }}>{children}</span>
 );
 
 /** A letra do título acompanha o tamanho do cartão (cqmin = 1% do lado menor), em vez de ter um tamanho fixo. */

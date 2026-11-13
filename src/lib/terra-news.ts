@@ -76,7 +76,7 @@ export const loadHero = cache(async () => {
   const posts = (await loadPosts()).filter(notOpinion);
   const feat = posts.filter((p) => p.featured && p.image_url);
   const pick = feat.length >= 3 ? feat : [...feat, ...posts.filter((p) => !p.featured && p.image_url)];
-  return pick.slice(0, 7).map((p) => ({ category: label(p.category), title: p.title, excerpt: p.summary, url: `/noticias/${p.slug}`, image: p.image_url }));
+  return pick.slice(0, 7).map((p) => ({ category: label(p.category), title: p.title, excerpt: p.summary, url: `/noticias/${p.slug}`, image: p.image_url, date: cardDate(p.date) }));
 });
 
 export async function loadPost(slug: string) {
