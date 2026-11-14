@@ -6,6 +6,7 @@ import RadioGrelha from './RadioGrelha';
 import Cambio from './Cambio';
 import StickyAside from './StickyAside';
 import HomeAd from './HomeAd';
+import Newsletter from './Newsletter';
 import { isAdId } from '@/lib/home-sections';
 import { GREEN, terra } from '@/lib/terra';
 import { loadCards } from '@/lib/terra-news';
@@ -42,10 +43,11 @@ export default async function Sidebar({ only, ads = {} }: { only?: string[]; ads
     lidas: (
       <Widget key="lidas" title="Mais lidas">
         <ol>{trending.map((c, n) => (
-          <li key={c.title} className="flex gap-3 border-b border-neutral-100 py-3 text-[13px] last:border-0"><b className="text-lg">{n + 1}.</b><a href={c.url} className="hover:underline">{c.title}</a></li>
+          <li key={c.title} className="flex gap-3 border-b border-neutral-300 py-3 text-[13px] last:border-0"><b className="text-lg">{n + 1}.</b><a href={c.url} className="hover:underline">{c.title}</a></li>
         ))}</ol>
       </Widget>
     ),
+    newsletter: <Widget key="newsletter" title="Subscreva a newsletter"><Newsletter compact /></Widget>,
     recentes: (
       <Widget key="recentes" title="Recentes">
         <ul>{recent.map((c) => (

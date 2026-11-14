@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { GREEN } from '@/lib/terra';
 import AntiSpamFields, { resetAntiSpam } from '@/components/Antispam/AntiSpamFields';
 
-export default function Newsletter() {
+export default function Newsletter({ compact = false }: { compact?: boolean }) {
   const [email, setEmail] = useState('');
   const [state, setState] = useState<{ kind: 'idle' | 'sending' | 'ok' | 'error'; text?: string }>({ kind: 'idle' });
 
@@ -31,14 +31,14 @@ export default function Newsletter() {
 
   return (
     <form onSubmit={submit}>
-      <p className="mb-3 text-sm">Receba o Agro no E-mail: notícias, análises e conteúdos agro-ambientais directamente no seu e-mail.</p>
+      {!compact && <p className="mb-3 text-sm">Receba o Agro no E-mail: notícias, análises e conteúdos agro-ambientais directamente no seu e-mail.</p>}
       {state.kind === 'ok' ? (
         <p className="text-sm font-semibold" style={{ color: GREEN }}>{state.text}</p>
       ) : (
         <>
-          <div className="flex">
+          <div className={compact ? 'flex flex-col gap-2' : 'flex'}>
             <input required type="email" name="email" maxLength={254} autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="O seu e-mail" className="min-w-0 flex-1 border border-neutral-300 px-3 py-2 text-xs" />
-            <button disabled={state.kind === 'sending'} className="px-4 text-xs font-bold uppercase text-white disabled:opacity-60" style={{ background: GREEN }}>{state.kind === 'sending' ? 'A enviar…' : 'Inscrever-se'}</button>
+            <button disabled={state.kind === 'sending'} className={`text-xs font-bold uppercase text-white disabled:opacity-60 ${compact ? 'w-full py-2.5' : 'px-4'}`} style={{ background: GREEN }}>{state.kind === 'sending' ? 'A enviar…' : 'Inscrever-se'}</button>
           </div>
           <div className="mt-3"><AntiSpamFields /></div>
           {state.kind === 'error' && <p className="mt-2 text-xs text-red-600">{state.text}</p>}

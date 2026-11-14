@@ -81,11 +81,10 @@ export const loadCards = cache(async (): Promise<Card[]> => {
   return posts.filter(notOpinion).map((p) => ({ ...toCard(p), exclusive: exclusivas.includes(p.slug) }));
 });
 
+/** Banner principal: as 5 notícias mais recentes (com foto) de todas as categorias, menos Opinião. */
 export const loadHero = cache(async () => {
-  const posts = (await loadPosts()).filter(notOpinion);
-  const feat = posts.filter((p) => p.featured && p.image_url);
-  const pick = feat.length >= 3 ? feat : [...feat, ...posts.filter((p) => !p.featured && p.image_url)];
-  return pick.slice(0, 5).map((p) => ({ category: label(p.category), title: p.title, excerpt: p.summary, url: `/noticias/${p.slug}`, image: p.image_url, date: cardDate(p.date) }));
+  const posts = (await loadPosts()).filter((p) => notOpinion(p) && p.image_url);
+  return posts.slice(0, 5).map((p) => ({ category: label(p.category), title: p.title, excerpt: p.summary, url: `/noticias/${p.slug}`, image: p.image_url, date: cardDate(p.date) }));
 });
 
 export async function loadPost(slug: string) {
@@ -121,7 +120,7 @@ export function cleanContent(html: string) {
     allowedTags: ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'a', 'ul', 'ol', 'li', 'h2', 'h3', 'h4', 'blockquote', 'img', 'figure', 'figcaption', 'hr', 'span', 'div'],
     allowedAttributes: { a: ['href', 'target', 'rel'], img: ['src', 'alt', 'width', 'height'], figure: ['class', 'style'], div: ['class'] },
     // Foto à esquerda/direita e a sua largura em % (como o editor as grava) e a caixa de destaque.
-    allowedClasses: { figure: ['ec-fig-left', 'ec-fig-right'], div: ['ec-callout'] },
+    allowedClasses: { figure: ['ec-fig-left', 'ec-fig-right'], div: ['ec-callout', 'ec-fig-row'] },
     allowedStyles: { figure: { width: [/^\d{1,3}(?:\.\d+)?%$/] } },
     allowedSchemes: ['http', 'https', 'mailto', 'tel'],
     transformTags: { a: (tag, attribs) => ({ tagName: 'a', attribs: { ...attribs, rel: 'noopener noreferrer', target: '_blank' } }) },

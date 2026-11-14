@@ -24,7 +24,7 @@ export const HOME_SECTIONS: { id: string; label: string; zone: HomeZone }[] = [
   { id: 'cambio', label: 'Câmbio', zone: 'side' },
   { id: 'capa', label: 'Edição actual da revista', zone: 'side' },
   { id: 'lidas', label: 'Mais lidas', zone: 'side' },
-  { id: 'recentes', label: 'Recentes', zone: 'side' },
+  { id: 'newsletter', label: 'Subscrever a newsletter', zone: 'side' },
 ];
 
 /** Espaço de publicidade posto numa zona (como um bloco do Gutenberg): o `id` entra na lista de secções da zona. */
