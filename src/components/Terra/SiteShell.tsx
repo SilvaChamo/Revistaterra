@@ -40,11 +40,11 @@ export default async function SiteShell({ children, trail }: { children: React.R
               <Link href="/" aria-label="Início" title="Início" className="flex w-10 items-center justify-center text-white transition-colors hover:!bg-[#8DF43A] hover:!text-[#064E3B]" style={{ background: GREEN }}><Home size={18} aria-hidden /></Link>
             ) : (
               // página inicial: símbolo R do ícone do site
-              <span className="flex w-10 items-center justify-center" style={{ background: GREEN }}>
-                <svg viewBox="11 2 46 48" className="h-7 w-7" aria-hidden><path fillRule="evenodd" d="M18 16H35C43 16 49 20.5 49 28C49 33.5 45.8 37.2 41 38.8L50 48H40L32 40H26V48H18ZM26 23V33H34.5C38 33 40.5 31.4 40.5 28C40.5 24.7 38 23 34.5 23Z" fill="#fff" /><path d="M44 15C44 8 48 4 55 4C55 11 51 15 44 15Z" fill="#bef264" /></svg>
+              <span className="flex w-8 items-center justify-center sm:w-10" style={{ background: GREEN }}>
+                <svg viewBox="11 2 46 48" className="h-5 w-5 sm:h-7 sm:w-7" aria-hidden><path fillRule="evenodd" d="M18 16H35C43 16 49 20.5 49 28C49 33.5 45.8 37.2 41 38.8L50 48H40L32 40H26V48H18ZM26 23V33H34.5C38 33 40.5 31.4 40.5 28C40.5 24.7 38 23 34.5 23Z" fill="#fff" /><path d="M44 15C44 8 48 4 55 4C55 11 51 15 44 15Z" fill="#bef264" /></svg>
               </span>
             )}
-            {!trail && <b className="flex items-center px-4 uppercase tracking-wide">Cotações do dia</b>}
+            {!trail && <b className="flex items-center px-2 text-[9px] uppercase tracking-wide sm:px-4 sm:text-[11px]">Cotações do dia</b>}
           </div>
           {trail ? (
             <nav aria-label="Caminho" className="flex min-w-0 flex-1 items-center overflow-hidden whitespace-nowrap px-4 py-2.5 text-xs text-neutral-600">

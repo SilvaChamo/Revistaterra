@@ -26,7 +26,7 @@ function store<T>(file: string, tag: string, fallback: () => T, normalize: (raw:
       return fallback();
     }
   }
-  const cached = unstable_cache(read, [tag, 'v1'], { tags: [tag], revalidate: 3600 });
+  const cached = unstable_cache(read, [tag, 'v6'], { tags: [tag], revalidate: 3600 });
   return {
     /** Para a home (com cache de 1 hora, limpa ao gravar). */
     get: async (): Promise<T> => {

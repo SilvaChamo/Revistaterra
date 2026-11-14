@@ -14,9 +14,9 @@ export const HOME_SECTIONS: { id: string; label: string; zone: HomeZone }[] = [
   { id: 'destaque', label: 'Destaque (slide principal)', zone: 'main' },
   { id: 'ultimas', label: 'Notícias recentes (separadores)', zone: 'main' },
   { id: 'ambiente', label: 'Ambiente e Clima', zone: 'main' },
+  { id: 'fora', label: 'Categorias (todas)', zone: 'main' },
   { id: 'videos', label: 'Vídeos', zone: 'main' },
   { id: 'sociedade', label: 'Sociedade', zone: 'main' },
-  { id: 'fora', label: 'Fora de Campo', zone: 'main' },
   { id: 'colunistas', label: 'Colunistas', zone: 'main' },
   { id: 'mais', label: 'Mais notícias', zone: 'main' },
   { id: 'tempo', label: 'Tempo · Moçambique', zone: 'side' },
@@ -45,7 +45,11 @@ const emptyLayout = (): HomeLayout => ({ top: [], main: [], side: [], bottom: []
 /** A ordem de origem da página (a de antes de haver esta configuração). */
 export function defaultHomeLayout(): HomeLayout {
   const out = emptyLayout();
-  for (const s of HOME_SECTIONS) out[s.zone].push(s.id);
+  for (const s of HOME_SECTIONS) {
+    out[s.zone].push(s.id);
+    // Espaço de publicidade logo a seguir aos Vídeos: fecha a primeira secção da home (a imagem põe-se no painel).
+    if (s.id === 'videos') out.main.push('pub-videos');
+  }
   return out;
 }
 
@@ -78,9 +82,8 @@ export function normalizeHomeLayout(raw: unknown): HomeLayout {
  * preferência); `defaults` = as de origem. O título de uma secção com uma só categoria acompanha a categoria escolhida.
  */
 export const HOME_CATEGORY_SLOTS: { key: string; section: string; label: string; multi: boolean; defaults: string[] }[] = [
-  { key: 'ambiente', section: 'ambiente', label: 'Categorias', multi: true, defaults: ['meio-ambiente', 'tempo', 'clima'] },
-  { key: 'sociedade', section: 'sociedade', label: 'Categoria', multi: false, defaults: ['sociedade'] },
-  { key: 'fora', section: 'fora', label: 'Categoria', multi: false, defaults: ['fora-de-campo'] },
+  { key: 'ambiente', section: 'ambiente', label: 'Categorias', multi: true, defaults: ['meio-ambiente', 'ambiente', 'tempo', 'clima'] },
+  { key: 'sociedade', section: 'sociedade', label: 'Categorias', multi: true, defaults: ['sociedade', 'agricultura', 'mercado', 'pecuaria', 'biodiversidade', 'estudos', 'reportagem', 'entrevista'] },
   { key: 'mais', section: 'mais', label: 'Categorias', multi: true, defaults: ['pesca', 'energia', 'internacional', 'politica', 'economia'] },
 ];
 
@@ -106,7 +109,8 @@ export function normalizeHomeCategories(raw: unknown): HomeCategories {
 export type HomeAd = { id: string; image: string; link: string };
 export type HomeOptions = { ads: HomeAd[] };
 
-export const defaultHomeOptions = (): HomeOptions => ({ ads: [] });
+// O anúncio da Galeria fica, de origem, logo a seguir aos Vídeos; no painel (Página inicial) troca-se a imagem/ligação ou remove-se.
+export const defaultHomeOptions = (): HomeOptions => ({ ads: [{ id: 'pub-videos', image: '/terra/publicidade-galeria.webp', link: '' }] });
 
 const okUrl = (u: string) => u === '' || (u.length <= 500 && (/^https?:\/\/\S+$/i.test(u) || /^\/[^\s/]\S*$/.test(u)));
 

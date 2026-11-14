@@ -39,15 +39,23 @@ export const loadPosts = cache(async (): Promise<TerraPost[]> => {
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     if (!url || !key) throw new Error('sem chaves');
     const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
-    const { data: rows, error } = await db
-      .from('news')
-      .select('id,slug,title,summary,content,category,image_url,date,featured,author_name')
-      .eq('site_id', SITE_ID)
-      .eq('status', 'published')
-      .order('date', { ascending: false })
-      .limit(200);
-    if (error || !rows?.length) throw new Error(error?.message || 'sem notícias');
-    return rows.map((r) => ({ ...r, summary: r.summary || '', content: r.content || '', category: r.category || 'fora de campo', featured: !!r.featured, author_name: r.author_name || 'Revista Terra', date: r.date || new Date().toISOString() })) as TerraPost[];
+    // Sem o texto (pesado): serve as listas, categorias e cartões. O texto de cada notícia vem em loadPost.
+    // A base devolve no máximo 1000 linhas por pedido, por isso lê-se por páginas.
+    const rows: Record<string, any>[] = [];
+    for (let from = 0; from < 10000; from += 1000) {
+      const { data, error } = await db
+        .from('news')
+        .select('id,slug,title,summary,category,image_url,date,featured,author_name')
+        .eq('site_id', SITE_ID)
+        .eq('status', 'published')
+        .order('date', { ascending: false })
+        .range(from, from + 999);
+      if (error) throw new Error(error.message);
+      rows.push(...(data ?? []));
+      if ((data?.length ?? 0) < 1000) break;
+    }
+    if (!rows.length) throw new Error('sem notícias');
+    return rows.map((r) => ({ ...r, summary: r.summary || '', content: '', category: r.category || 'fora de campo', featured: !!r.featured, author_name: r.author_name || 'Revista Terra', date: r.date || new Date().toISOString() })) as TerraPost[];
   } catch {
     return fallbackPosts();
   }
@@ -81,8 +89,19 @@ export const loadHero = cache(async () => {
 });
 
 export async function loadPost(slug: string) {
-  const posts = await loadPosts();
-  return posts.find((p) => p.slug === slug) ?? null;
+  const post = (await loadPosts()).find((p) => p.slug === slug) ?? null;
+  if (!post) return null;
+  // O texto completo só se pede para a notícia que se está a ler.
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return post;
+  try {
+    const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+    const { data } = await db.from('news').select('content').eq('site_id', SITE_ID).eq('slug', slug).eq('status', 'published').maybeSingle();
+    return data?.content ? { ...post, content: data.content as string } : post;
+  } catch {
+    return post;
+  }
 }
 
 export async function loadCategories() {
@@ -99,8 +118,11 @@ export async function loadCategories() {
 /** HTML do artigo, limpo: só marcas de texto, ligações e imagens. */
 export function cleanContent(html: string) {
   return sanitizeHtml(html || '', {
-    allowedTags: ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'a', 'ul', 'ol', 'li', 'h2', 'h3', 'h4', 'blockquote', 'img', 'figure', 'figcaption', 'hr', 'span'],
-    allowedAttributes: { a: ['href', 'target', 'rel'], img: ['src', 'alt', 'width', 'height'] },
+    allowedTags: ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'a', 'ul', 'ol', 'li', 'h2', 'h3', 'h4', 'blockquote', 'img', 'figure', 'figcaption', 'hr', 'span', 'div'],
+    allowedAttributes: { a: ['href', 'target', 'rel'], img: ['src', 'alt', 'width', 'height'], figure: ['class', 'style'], div: ['class'] },
+    // Foto à esquerda/direita e a sua largura em % (como o editor as grava) e a caixa de destaque.
+    allowedClasses: { figure: ['ec-fig-left', 'ec-fig-right'], div: ['ec-callout'] },
+    allowedStyles: { figure: { width: [/^\d{1,3}(?:\.\d+)?%$/] } },
     allowedSchemes: ['http', 'https', 'mailto', 'tel'],
     transformTags: { a: (tag, attribs) => ({ tagName: 'a', attribs: { ...attribs, rel: 'noopener noreferrer', target: '_blank' } }) },
   });

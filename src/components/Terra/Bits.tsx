@@ -1,4 +1,6 @@
-import { DARK, GREEN, LIME, categoryColor } from '@/lib/terra';
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
+import { DARK, GREEN, LIME, catSlug, categoryColor } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
 import ShareLink from './ShareLink';
 
@@ -12,19 +14,20 @@ export const Tag = ({ children }: { children: React.ReactNode }) => (
 );
 
 /** A letra do título acompanha o tamanho do cartão (cqmin = 1% do lado menor), em vez de ter um tamanho fixo. */
-export const Overlay = ({ c, className = '', big = false }: { c: Card; className?: string; big?: boolean }) => (
+export const Overlay = ({ c, className = '', big = false, desc = false }: { c: Card; className?: string; big?: boolean; desc?: boolean }) => (
   <a href={c.url} className={`group relative block overflow-hidden bg-black ${className}`} style={{ containerType: 'size' }}>
     {c.image && <img src={c.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-    <div className="absolute inset-x-0 bottom-0 p-[3.2cqmin]">
+    <div className={`absolute inset-x-0 bottom-0 ${desc ? 'p-5' : 'p-[3.2cqmin]'}`}>
       <div className="flex flex-wrap items-center gap-1"><Tag>{c.category}</Tag>{c.exclusive && <ExclusivaTag />}</div>
       <h3 className="mt-[1.6cqmin] font-semibold leading-snug text-white" style={{ fontSize: big ? 'clamp(16px, 8.2cqmin, 21px)' : 'clamp(13px, 7.6cqmin, 15px)' }}>{c.title}</h3>
+      {desc && c.excerpt && <p className="mt-1.5 line-clamp-2 text-xs leading-snug text-white/85">{c.excerpt}</p>}
     </div>
   </a>
 );
 
 /**
- * Cartão de notícia com o texto por baixo da foto: etiqueta, título, descrição (mínimo 3 linhas),
+ * Cartão de notícia com o texto por baixo da foto: etiqueta, título (até 3 linhas),
  * linha separadora e, por baixo, a data à esquerda e o ícone de partilha à direita.
  * Todo o espaço interior é 16px (p-4 / gap-3), como no carrossel das Notícias recentes.
  */
@@ -34,10 +37,9 @@ export const NewsCard = ({ c, imageClassName = 'h-[170px]' }: { c: Card; imageCl
       {c.image && <img src={c.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />}
     </a>
     <div className="flex flex-1 flex-col gap-3 p-4">
-      <div className="flex flex-wrap items-center gap-1"><Tag>{c.category}</Tag>{c.exclusive && <ExclusivaTag />}</div>
-      <h3 className="line-clamp-2 min-h-[2.75em] text-[13px] font-bold leading-snug text-neutral-900"><a href={c.url} className="hover:text-[#047857]">{c.title}</a></h3>
-      {/* descrição com pelo menos 3 linhas de altura, para os cartões ficarem alinhados */}
-      <p className="line-clamp-4 min-h-[4.5em] text-xs leading-normal text-neutral-500">{c.excerpt}</p>
+      <div className="flex flex-wrap items-center gap-1"><Link href={`/categoria/${catSlug(c.category)}`} title={`Ver notícias de ${c.category}`} className="transition-opacity hover:opacity-80"><Tag>{c.category}</Tag></Link>{c.exclusive && <ExclusivaTag />}</div>
+      {/* só etiqueta, título (até 3 linhas), data e partilha; na mesma linha da grelha os cartões têm a mesma altura. */}
+      <h3 className="line-clamp-3 text-[15px] font-bold leading-snug text-neutral-900"><a href={c.url} className="hover:text-[#047857]">{c.title}</a></h3>
     </div>
     <div className="flex items-center justify-between border-t border-neutral-200 px-4 py-3 text-[11px] text-neutral-500">
       <span>{c.date || 'Revista Terra'}</span>
@@ -46,10 +48,19 @@ export const NewsCard = ({ c, imageClassName = 'h-[170px]' }: { c: Card; imageCl
   </article>
 );
 
-export const Heading = ({ children, href }: { children: React.ReactNode; href?: string }) => (
-  <div className="mb-3 mt-8 flex items-end justify-between">
+export const Heading = ({ children, href, more = 'Ver tudo' }: { children: React.ReactNode; href?: string; more?: string }) => (
+  <div className="mb-3 mt-8 flex flex-wrap items-end justify-between gap-x-3 gap-y-1">
     <h2 className="whitespace-nowrap border-b-2 text-[15px] font-bold uppercase" style={{ color: GREEN, borderColor: GREEN }}>{children}</h2>
-    {href && <a href={href} className="text-[11px] font-medium uppercase transition-colors hover:text-[#9BCB3C]" style={{ color: GREEN }}>Ver tudo ›</a>}
+    {href && (
+      <a href={href} className="group inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: GREEN }}>
+        <span className="relative">
+          {more}
+          {/* a linha corre para a direita ao apontar */}
+          <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 transition-all duration-300 group-hover:w-full" style={{ background: GREEN }} />
+        </span>
+        <ChevronRight className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
+      </a>
+    )}
   </div>
 );
 

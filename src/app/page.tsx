@@ -4,6 +4,8 @@ import HeroSlider from '@/components/Terra/HeroSlider';
 import VideoSpotlight from '@/components/Terra/VideoSpotlight';
 import { Heading, NewsCard, Overlay } from '@/components/Terra/Bits';
 import RecentNews, { type RecentSet } from '@/components/Terra/RecentNews';
+import CategoryTabs, { type CategoryTab } from '@/components/Terra/CategoryTabs';
+import CategoryCards, { type CategoryCardItem } from '@/components/Terra/CategoryCards';
 import { GREEN, makePicker, parseDate, terra, type Card } from '@/lib/terra';
 import { loadCards, loadHero } from '@/lib/terra-news';
 import type { ReactNode } from 'react';
@@ -54,6 +56,7 @@ export default async function Home() {
         post: { slug: '', title: a.title, href: a.url },
       }));
   const take = makePicker(allCards);
+  const TERRA_CATEGORIES = ['agricultura', 'analise', 'biodiversidade', 'clima', 'economia', 'energia', 'entrevista', 'estudos', 'internacional', 'meio-ambiente', 'mercado', 'pecuaria', 'pesca', 'politica', 'reportagem', 'sociedade', 'tempo'];
   const todas = allCards.filter((c) => c.image);
   const recentSets: RecentSet[] = [
     buildSet('todas', 'Todas', [...todas].sort((x, y) => Number(y.category === 'Sociedade' || y.category === 'Mercado') - Number(x.category === 'Sociedade' || x.category === 'Mercado'))),
@@ -71,9 +74,31 @@ export default async function Home() {
     return allCards.find((c) => slugify(c.category) === slug)?.category ?? label(slug.replace(/-/g, ' '));
   };
   const env = take(2, prefs('ambiente'));
-  const soc = take(3, prefs('sociedade'));
-  const out = take(3, prefs('fora'));
-  const more = take(6, prefs('mais'));
+  // Sociedade: um separador por categoria escolhida no painel; as sem notícias não aparecem.
+  const socSlugs = categories.sociedade ?? [];
+  const nameOf = (slug: string) => allCards.find((c) => slugify(c.category) === slug)?.category ?? label(slug.replace(/-/g, ' '));
+  const socTabs: CategoryTab[] = socSlugs.map((slug, k) => ({
+    id: slug,
+    label: nameOf(slug),
+    // até 24 por categoria (4 páginas de 6); na 1.ª, as 6 primeiras saem do selector para não repetir notícias noutras secções
+    items: (() => {
+      const mine = allCards.filter((c) => slugify(c.category) === slug);
+      if (k > 0) return mine.slice(0, 24);
+      const first = take(6, [nameOf(slug)]);
+      return [...first, ...mine.filter((c) => !first.includes(c))].slice(0, 24);
+    })(),
+  })).filter((t) => t.items.length > 0);
+  // Um cartão por categoria da Revista Terra (a mais recente de cada uma com foto), da que tem mais notícias para a que tem menos.
+  const catCards: CategoryCardItem[] = [...new Set(allCards.map((c) => slugify(c.category)))]
+    .filter((slug) => TERRA_CATEGORIES.includes(slug))
+    .map((slug) => {
+      const mine = allCards.filter((c) => slugify(c.category) === slug);
+      const latest = mine.find((c) => c.image) ?? mine[0];
+      return { slug, name: mine[0].category, image: latest.image, desc: latest.title, n: mine.length };
+    })
+    .sort((a, b) => b.n - a.n)
+    .map(({ n: _n, ...c }) => c);
+  const more = take(8, prefs('mais'));
   const ads = Object.fromEntries(options.ads.map((a) => [a.id, a]));
 
   // Cada secção da home, pelo nome com que o painel a conhece; a ordem e a zona vêm do painel (Página inicial).
@@ -82,8 +107,8 @@ export default async function Home() {
     ultimas: <RecentNews sets={recentSets} />,
     ambiente: (
       <>
-        <Heading>Ambiente e Clima</Heading>
-        <div className="grid gap-3 sm:grid-cols-2">{env.map((c) => <Overlay key={c.title} c={c} big className="h-[230px]" />)}</div>
+        <Heading href={`/categoria/${categories.ambiente?.[0] ?? 'meio-ambiente'}`} more="Ver mais artigos">Ambiente e Clima</Heading>
+        <div className="grid gap-3 sm:grid-cols-2">{env.map((c) => <Overlay key={c.title} c={c} big desc className="h-[230px]" />)}</div>
       </>
     ),
     videos: (
@@ -92,18 +117,8 @@ export default async function Home() {
         <VideoSpotlight />
       </>
     ),
-    sociedade: (
-      <>
-        <Heading>{titleOf('sociedade', 'Sociedade')}</Heading>
-        <div className="grid gap-3 md:grid-cols-3">{soc.map((c) => <NewsCard key={c.title} c={c} />)}</div>
-      </>
-    ),
-    fora: (
-      <>
-        <Heading>{titleOf('fora', 'Fora de Campo')}</Heading>
-        <div className="grid gap-3 md:grid-cols-3">{out.map((c) => <Overlay key={c.title} c={c} className="h-[190px]" />)}</div>
-      </>
-    ),
+    sociedade: socTabs.length > 0 ? <CategoryTabs title={socTabs[0].label} tabs={socTabs} /> : null,
+    fora: catCards.length > 0 ? <CategoryCards title="Categorias" items={catCards} /> : null,
     // Colunistas do painel; enquanto não houver, mostram-se os autores de opinião de sempre, no mesmo desenho de cartão
     colunistas: (
       <>
@@ -131,13 +146,26 @@ export default async function Home() {
   };
   const zone = (ids: string[]) => ids.map((id) => (isAdId(id) ? <HomeAd key={id} image={ads[id]?.image} link={ads[id]?.link} /> : <div key={id}>{sections[id]}</div>));
 
+  // Primeira secção: do topo até aos Vídeos (e o anúncio logo a seguir) e, na barra lateral, até ao Câmbio; o resto passa para a secção de baixo.
+  const mainAt = layout.main.indexOf('videos');
+  const mainCut = mainAt < 0 ? layout.main.length : mainAt + 1 + (isAdId(layout.main[mainAt + 1] ?? '') ? 1 : 0);
+  const sideAt = layout.side.indexOf('cambio');
+  const sideCut = sideAt < 0 ? layout.side.length : sideAt + 1;
+  const lower = layout.main.length > mainCut || layout.side.length > sideCut;
+
   return (
     <SiteShell>
       {layout.top.length > 0 && <div className="mb-5">{zone(layout.top)}</div>}
-      <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
-        <main className="min-w-0">{zone(layout.main)}</main>
-        <Sidebar only={layout.side} ads={ads} />
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[1fr_320px]">
+        <main className="min-w-0">{zone(layout.main.slice(0, mainCut))}</main>
+        <Sidebar only={layout.side.slice(0, sideCut)} ads={ads} />
       </div>
+      {lower && (
+        <div className="mt-5 grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[1fr_320px]">
+          <main className="min-w-0">{zone(layout.main.slice(mainCut))}</main>
+          <Sidebar only={layout.side.slice(sideCut)} ads={ads} />
+        </div>
+      )}
       {layout.bottom.length > 0 && <div className="mt-5">{zone(layout.bottom)}</div>}
     </SiteShell>
   );

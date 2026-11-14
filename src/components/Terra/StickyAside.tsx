@@ -25,5 +25,5 @@ export default function StickyAside({ children }: { children: React.ReactNode })
     return () => { ro.disconnect(); window.removeEventListener('resize', update); };
   }, []);
 
-  return <aside ref={ref} className="lg:sticky lg:self-start" style={{ top: 72 }}>{children}</aside>;
+  return <aside ref={ref} className="lg:sticky lg:self-start [&>*:last-child]:mb-0" style={{ top: 72 }}>{children}</aside>;
 }

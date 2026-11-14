@@ -58,7 +58,7 @@ const CATEGORY_COLORS: Record<string, { bg: string; fg: string }> = {
 /** Cor de fallback quando a categoria não está mapeada. */
 const DEFAULT_CAT_COLOR = { bg: '#047857', fg: '#FFFFFF' };
 
-function catSlug(s: string) {
+export function catSlug(s: string) {
   return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 

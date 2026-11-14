@@ -7,6 +7,7 @@ import { hasPermission } from '@/lib/permissions';
 import { isUuid } from '@/lib/api-guard';
 import { normalizeSpaces } from '@/lib/normalize-spaces';
 import { siteAccess } from '@/lib/site-accounts';
+import { checkNewsText } from '@/lib/news-limits';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -116,6 +117,9 @@ export async function POST(request: Request) {
         delete payload.categories;
       }
     }
+    // Título e descrição obrigatórios (e dentro do limite do cartão) para a notícia poder ser guardada/publicada.
+    const textError = checkNewsText(payload.title, isEdit ? payload.summary : (payload.summary ?? ""));
+    if (textError) return NextResponse.json({ error: textError }, { status: 400 });
     // O editor grava os espaços como &nbsp;, o que impede o texto de quebrar linha na leitura.
     if (typeof payload.content === 'string') payload.content = normalizeSpaces(payload.content);
     payload.site_id = SITE_ID;
