@@ -35,7 +35,9 @@ export default function MediaCleanupPage() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Não foi possível analisar a biblioteca.');
       setFiles(data.files);
-      setSelected(new Set());
+      // Mantém o que já estava marcado (só tira o que deixou de existir): uma análise que acaba depois de marcar não apaga a escolha.
+      const names = new Set<string>(data.files.map((f: Foto) => f.name));
+      setSelected((prev) => new Set([...prev].filter((n) => names.has(n))));
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Erro ao analisar a biblioteca.');
     } finally {
@@ -63,6 +65,8 @@ export default function MediaCleanupPage() {
     }
     setSelected(next);
     setVista('repetidas');
+    setError('');
+    setNotice(next.size > 0 ? `${next.size} foto(s) repetida(s) sem uso marcada(s); em cada grupo fica a que está numa notícia (ou a maior).` : 'Não há repetidas por marcar: todas as cópias estão em uso.');
   };
 
   const toggle = (name: string) => setSelected((s) => { const n = new Set(s); n.has(name) ? n.delete(name) : n.add(name); return n; });

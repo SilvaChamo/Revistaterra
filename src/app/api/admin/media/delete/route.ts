@@ -59,6 +59,10 @@ export async function POST(req: NextRequest) {
       // Fotos ainda usadas por notícias deste site.
       const { data: news } = await supabaseAdmin.from('news').select('image_url').eq('site_id', SITE_ID).not('image_url', 'is', null);
       const inUse = list.filter((name) => (news ?? []).some((n) => String(n.image_url).includes(`/${BUCKET}/${encodeURI(name)}`) || String(n.image_url).includes(`/${BUCKET}/${name}`)));
+      // Também as que estão dentro do texto de uma notícia (src da imagem).
+      const { data: withText } = await supabaseAdmin.from('news').select('content').eq('site_id', SITE_ID).ilike('content', `%/${BUCKET}/%`);
+      const inText = list.filter((name) => !inUse.includes(name) && (withText ?? []).some((n) => [...String(n.content).matchAll(/\ssrc\s*=\s*["']([^"']+)["']/gi)].some((m) => m[1].includes(`/${BUCKET}/${encodeURI(name)}`) || m[1].includes(`/${BUCKET}/${name}`))));
+      inUse.push(...inText);
       if (inUse.length > 0) {
         return NextResponse.json(
           { error: `Não foi movido: ${inUse.length === 1 ? 'este ficheiro é' : 'estes ficheiros são'} a foto de uma notícia (${inUse.slice(0, 3).join(', ')}${inUse.length > 3 ? '…' : ''}). Mude primeiro a foto da notícia.` },

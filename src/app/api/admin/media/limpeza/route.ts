@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/api-guard';
+import data from '@/data/terra.json';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -10,7 +11,15 @@ const BUCKET = process.env.NEXT_PUBLIC_STORAGE_BUCKET || process.env.STORAGE_BUC
 const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
 const SPECIAL = ['_lixo', '_arquivo', 'arquivo', 'partilhado'];
 const IMAGE = /\.(jpe?g|png|gif|webp|avif|svg|bmp)$/i;
-const PROTECTED = /logo|background|banner|footer|header|brand|capa|favicon|publicidade/i; // fotos do próprio site: nunca se propõem para limpar
+const PROTECTED = /logo|background|banner|footer|header|brand|capa|revista|edi[cç][aã]o|bilingual|favicon|publicidade/i; // fotos do próprio site (capas da revista incluídas): nunca se propõem para limpar
+
+/** Imagens que o próprio site usa (capas e edições da revista, etc., em src/data/terra.json): ficam sempre de fora da limpeza. */
+const SITE_IMAGES = new Set<string>();
+(function collect(v: unknown) {
+  if (typeof v === 'string') { if (IMAGE.test(v)) SITE_IMAGES.add(decodeURIComponent(v.split('/').pop() ?? '').toLowerCase()); }
+  else if (Array.isArray(v)) v.forEach(collect);
+  else if (v && typeof v === 'object') Object.values(v).forEach(collect);
+})(data);
 
 type Item = { name: string; id: string | null; created_at?: string; metadata?: { size?: number } | null };
 
@@ -57,8 +66,10 @@ export async function GET() {
     // Notícias do site (a base devolve 1000 por pedido). O texto só se pede das que mencionam o bucket: descarregar o texto de todas demora minutos.
     const used = new Map<string, { id: string; title: string }[]>();
     const ref = new RegExp(`/${BUCKET}/([^"'\\s)<>?#]+)`, 'g');
-    const scan = (n: { id: string; title: string }, text: string) => {
-      for (const m of text.matchAll(ref)) {
+    // No texto só conta o `src` das imagens: o `srcset` (tamanhos alternativos do WordPress) o site não o usa (é retirado ao mostrar a notícia).
+    const scan = (n: { id: string; title: string }, text: string, inContent: boolean) => {
+      const where = inContent ? [...text.matchAll(/\ssrc\s*=\s*["']([^"']+)["']/gi)].map((m) => m[1]).join(' ') : text;
+      for (const m of where.matchAll(ref)) {
         let name = m[1];
         try { name = decodeURIComponent(name); } catch { /* fica como está */ }
         const list = used.get(name) ?? [];
@@ -72,7 +83,7 @@ export async function GET() {
         if (filter) q = q.ilike('content', filter);
         const { data, error } = await q;
         if (error) throw new Error(error.message);
-        for (const n of (data ?? []) as unknown as { id: string; title: string; image_url?: string; content?: string }[]) scan(n, n.image_url ?? n.content ?? '');
+        for (const n of (data ?? []) as unknown as { id: string; title: string; image_url?: string; content?: string }[]) scan(n, n.image_url ?? n.content ?? '', n.image_url === undefined);
         if ((data?.length ?? 0) < 1000) break;
       }
     }));
@@ -91,7 +102,7 @@ export async function GET() {
         created: f.created_at ?? '',
         news: used.get(f.name) ?? [],
         config: config.includes(f.name) || config.includes(encodeURI(f.name)),
-        protegida: PROTECTED.test(f.name),
+        protegida: PROTECTED.test(f.name) || SITE_IMAGES.has((f.name.split('/').pop() ?? '').toLowerCase()),
         group: sameKey(f.name),
         copies: groups.get(sameKey(f.name)) ?? 1,
       })),
