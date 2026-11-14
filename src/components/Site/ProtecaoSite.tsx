@@ -7,5 +7,5 @@ import PageProtection from '@/components/Newsletter/PageProtection';
 export default function ProtecaoSite() {
   const path = usePathname() || '';
   if (path.startsWith('/admin') || path.startsWith('/espacos-de-publicidade')) return null;
-  return <PageProtection />;
+  return <PageProtection onBlur={false} />;
 }
