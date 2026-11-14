@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { GREEN, terra } from '@/lib/terra';
+import { GREEN } from '@/lib/terra';
+import type { Video } from '@/lib/youtube-videos';
 
 /** Série do vídeo (mostrada por baixo do título na lista). */
 const serie = (t: string) => (/paulina/i.test(t) ? 'Conversas' : /mais agro/i.test(t) ? 'Mais Agro' : 'Revista Terra');
@@ -10,8 +11,7 @@ const Play = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M7 4.5v15l13-7.5z" /></svg>
 );
 
-export default function VideoSpotlight() {
-  const vids = terra.videos;
+export default function VideoSpotlight({ videos: vids }: { videos: Video[] }) {
   const [i, setI] = useState(0);
   const [playing, setPlaying] = useState(false);
   const v = vids[i];

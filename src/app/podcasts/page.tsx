@@ -4,10 +4,12 @@ import Sidebar from '@/components/Terra/Sidebar';
 import VideoSpotlight from '@/components/Terra/VideoSpotlight';
 import { PageTitle } from '@/components/Terra/Bits';
 import { terra } from '@/lib/terra';
+import { loadVideos } from '@/lib/youtube-videos';
 
 export const metadata = { title: 'Podcasts — Revista Terra', robots: { index: false, follow: false } };
 
-export default function Podcasts() {
+export default async function Podcasts() {
+  const videos = await loadVideos();
   return (
     <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Podcasts' }]}>
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
@@ -21,7 +23,7 @@ export default function Podcasts() {
               </Link>
             ))}
           </div>
-          <VideoSpotlight />
+          <VideoSpotlight videos={videos} />
         </main>
         <Sidebar only={['radio', 'newsletter', 'capa']} />
       </div>

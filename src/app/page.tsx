@@ -2,6 +2,7 @@ import SiteShell from '@/components/Terra/SiteShell';
 import Sidebar from '@/components/Terra/Sidebar';
 import HeroSlider from '@/components/Terra/HeroSlider';
 import VideoSpotlight from '@/components/Terra/VideoSpotlight';
+import { loadVideos } from '@/lib/youtube-videos';
 import { Heading, NewsCard, Overlay } from '@/components/Terra/Bits';
 import RecentNews, { type RecentSet } from '@/components/Terra/RecentNews';
 import CategoryTabs, { type CategoryTab } from '@/components/Terra/CategoryTabs';
@@ -40,7 +41,7 @@ export const revalidate = 60; // o que se edita no painel aparece em ~1 minuto
 export default async function Home() {
   const [layout, categories, options] = await Promise.all([homeLayout.get(), homeCategories.get(), homeOptions.get()]);
   const allCards = (await loadCards()).map((c) => ({ ...c, category: c.category || 'Fora de Campo' }));
-  const hero = await loadHero();
+  const [hero, videos] = await Promise.all([loadHero(), loadVideos()]);
   // Colunistas = contas com o nível Colunista; o card mostra o artigo de Opinião mais recente do autor; sem artigos, o colunista não aparece.
   const [columnists, { posts: allPosts }] = await Promise.all([getColumnists(), getAllPosts().catch(() => ({ posts: [] as Awaited<ReturnType<typeof getAllPosts>>['posts'] }))]);
   const opinion = opinionPosts(allPosts);
@@ -114,7 +115,7 @@ export default async function Home() {
     videos: (
       <>
         <Heading>Vídeos</Heading>
-        <VideoSpotlight />
+        <VideoSpotlight videos={videos} />
       </>
     ),
     sociedade: socTabs.length > 0 ? <CategoryTabs title={socTabs[0].label} tabs={socTabs} /> : null,
