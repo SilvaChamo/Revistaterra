@@ -31,7 +31,7 @@ export default async function Artigo({ params }: { params: Promise<{ slug: strin
   const related = (await loadCards()).filter((c) => c.category === cat && c.url !== `/noticias/${post.slug}`).slice(0, 3);
   return (
     <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Notícias', href: '/noticias' }, { label: cat, href: `/categoria/${slugify(cat)}` }]}>
-      <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0">
           <article className="bg-white shadow-sm">
             {post.image_url && <img src={post.image_url} alt="" className="h-[240px] w-full object-cover sm:h-[400px]" />}

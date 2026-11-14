@@ -423,14 +423,14 @@ body {
   text-align: left;
 }
 
+/* Telemóvel: a foto continua à esquerda/direita como se escolheu no editor, só que nunca passa de metade da largura (senão o texto ficava espremido). */
 @media (max-width: 520px) {
   .terra-prose figure.ec-fig-left,
   .terra-prose figure.ec-fig-right {
-    float: none;
-    width: 100% !important;
-    margin-left: 0;
-    margin-right: 0;
+    max-width: 50%;
   }
+  .terra-prose figure.ec-fig-left { margin-right: 0.75rem; }
+  .terra-prose figure.ec-fig-right { margin-left: 0.75rem; }
 }
 
 /* Duas fotos lado a lado: toda a largura, sem texto no meio, legenda de cada uma por baixo. */
