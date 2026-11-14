@@ -37,7 +37,6 @@ import {
   Mail,
   FolderOpen,
   Share2,
-  LayoutTemplate,
   ShieldCheck,
   Pencil,
   FilePlus
@@ -362,7 +361,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             { label: 'Visitantes por país', href: '/admin/trafego/paises' },
           ]
         },
-        { href: '/admin/pagina-inicial', icon: LayoutTemplate, label: 'Página inicial' },
         { href: '/admin/redes-sociais', icon: Share2, label: 'Redes sociais' },
         { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
         { href: '/admin/radio', icon: Radio, label: 'Rádio' },
