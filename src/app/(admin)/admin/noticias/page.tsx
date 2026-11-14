@@ -22,6 +22,7 @@ import { SkeletonTableRow, SkeletonHeader } from '@/components/Admin/Skeleton';
 import { adminCacheGet, adminCacheSet } from '@/lib/admin-cache';
 import AdminSelect from '@/components/Admin/AdminSelect';
 import { useAuth } from '@/context/AuthContext';
+import Paginacao from '@/components/Paginacao';
 
 interface NewsItem {
   id: string;
@@ -240,50 +241,28 @@ export default function NewsAdminPage() {
   }, [searchQuery, filterCategory, filterDate, filterMissingImage, perPage]);
 
   const pager = (
-    <div className="flex flex-col-reverse gap-2 max-md:gap-0 md:flex-row md:flex-wrap md:items-center md:justify-end md:gap-1 text-[13px] text-[#50575e]">
-      {/* Telemóvel: por baixo (por página e total). Ecrã grande: à esquerda dos botões, como sempre. */}
-      <div className="flex items-center gap-3 max-md:hidden md:contents">
-      <label className="md:mr-3 flex items-center gap-1.5">
-        Por página:
-        <AdminSelect
-          value={perPage}
-          onChange={(e) => {
-            const value = Number(e.target.value);
-            setPerPage(value);
-            localStorage.setItem('ec-admin-news-perpage', String(value));
-          }}
-          className="h-9 max-md:h-11 border border-[#ccd0d4] bg-white px-1.5 text-[13px] text-[#2c3338]"
-        >
-          {PER_PAGE_OPTIONS.map((n) => (
-            <option key={n} value={n}>
-              {n === 0 ? 'Todas' : n}
-            </option>
-          ))}
-        </AdminSelect>
-      </label>
-      <span className="md:mr-2">{filteredNews.length} itens</span>
-      </div>
-      {/* Paginação completa: no telemóvel em cima, a ocupar a largura toda */}
-      <div className="flex items-center gap-1 max-md:w-full md:contents">
-      {[
-        { label: '«', title: 'Primeira página', to: 1, off: currentPage === 1 },
-        { label: '‹', title: 'Anterior', to: currentPage - 1, off: currentPage === 1 },
-      ].map((b) => (
-        <button key={b.title} type="button" title={b.title} disabled={b.off} onClick={() => setPage(b.to)}
-          className="h-9 max-md:h-11 max-md:flex-1 min-w-9 border border-[#ccd0d4] bg-white px-2 hover:border-[#047857] hover:text-[#065f46] disabled:opacity-40 disabled:hover:border-[#ccd0d4] disabled:hover:text-inherit">
-          {b.label}
-        </button>
-      ))}
-      <span className="mx-1 whitespace-nowrap max-md:flex-[2] max-md:text-center"><span className="md:hidden">pág. {currentPage}/{totalPages}</span><span className="hidden md:inline">Página {currentPage} de {totalPages}</span></span>
-      {[
-        { label: '›', title: 'Seguinte', to: currentPage + 1, off: currentPage >= totalPages },
-        { label: '»', title: 'Última página', to: totalPages, off: currentPage >= totalPages },
-      ].map((b) => (
-        <button key={b.title} type="button" title={b.title} disabled={b.off} onClick={() => setPage(b.to)}
-          className="h-9 max-md:h-11 max-md:flex-1 min-w-9 border border-[#ccd0d4] bg-white px-2 hover:border-[#047857] hover:text-[#065f46] disabled:opacity-40 disabled:hover:border-[#ccd0d4] disabled:hover:text-inherit">
-          {b.label}
-        </button>
-      ))}
+    <div className="text-[13px] text-[#50575e]">
+      <Paginacao page={currentPage} pages={totalPages} onPage={setPage} />
+      <div className="flex items-center justify-center gap-3 max-md:hidden">
+        <label className="flex items-center gap-1.5">
+          Por página:
+          <AdminSelect
+            value={perPage}
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              setPerPage(value);
+              localStorage.setItem('ec-admin-news-perpage', String(value));
+            }}
+            className="h-9 border border-[#ccd0d4] bg-white px-1.5 text-[13px] text-[#2c3338]"
+          >
+            {PER_PAGE_OPTIONS.map((n) => (
+              <option key={n} value={n}>
+                {n === 0 ? 'Todas' : n}
+              </option>
+            ))}
+          </AdminSelect>
+        </label>
+        <span>{filteredNews.length} itens</span>
       </div>
     </div>
   );

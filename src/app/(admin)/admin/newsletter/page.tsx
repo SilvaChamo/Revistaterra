@@ -8,6 +8,7 @@ import AdminSelect from '@/components/Admin/AdminSelect';
 import NewsletterAgenda, { EmailPreview, NewsletterPreviews, type AgendaItem } from '@/components/Admin/NewsletterAgenda';
 import NewsletterAds from '@/components/Admin/NewsletterAds';
 import ConfigNote from '@/components/Admin/ConfigNote';
+import Paginacao from '@/components/Paginacao';
 
 type Subscriber = { id: string; email: string; created_at: string };
 type QueueItem = { slug: string; title: string; category: string; date: string; image: string | null; excerpt: string };
@@ -436,13 +437,7 @@ export default function NewsletterPage() {
                 </tbody>
               </table>
             </div>
-            {pages > 1 && (
-              <div className="mt-3 flex items-center justify-end gap-2 text-[13px] text-[#50575e]">
-                <button onClick={() => setPage(current - 1)} disabled={current <= 1} className={`${btn} border border-[#ccd0d4] bg-white hover:text-[#047857] disabled:opacity-50`}>‹ Anterior</button>
-                <span>{current} / {pages}</span>
-                <button onClick={() => setPage(current + 1)} disabled={current >= pages} className={`${btn} border border-[#ccd0d4] bg-white hover:text-[#047857] disabled:opacity-50`}>Seguinte ›</button>
-              </div>
-            )}
+            <Paginacao page={current} pages={pages} onPage={setPage} />
           </div>
 
             </>

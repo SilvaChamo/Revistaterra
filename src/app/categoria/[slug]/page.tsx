@@ -25,7 +25,7 @@ export default async function Categoria({ params, searchParams }: { params: Prom
       <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Categoria" title={cards[0].category} lead={`${cards.length} ${cards.length === 1 ? 'notícia' : 'notícias'}.`} />
-          <NewsGrid news cards={cards.slice((page - 1) * PER, page * PER)} page={page} pages={pages} base={`/categoria/${slug}`} />
+          <NewsGrid cards={cards.slice((page - 1) * PER, page * PER)} page={page} pages={pages} base={`/categoria/${slug}`} />
         </main>
         <Sidebar only={['tempo', 'radio', 'cambio', 'capa']} />
       </div>

@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { BarChart3, Users, Globe, Search, Download, RefreshCw, FileText } from 'lucide-react';
 import { countryFlag, countryName } from '@/lib/country';
+import Paginacao from '@/components/Paginacao';
 
 type Period = { views: number; visitors: number };
 type Stats = {
@@ -234,14 +235,7 @@ export default function TrafegoPage() {
             </tbody>
           </table>
         </div>
-        {pages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-6">
-            <button disabled={page <= 1} onClick={() => setPage(page - 1)} className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded text-sm disabled:opacity-40">&lt;</button>
-            <span className="px-3 py-1 bg-blue-500 text-white rounded text-sm">{page}</span>
-            <span className="text-sm text-gray-500">de {pages}</span>
-            <button disabled={page >= pages} onClick={() => setPage(page + 1)} className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded text-sm disabled:opacity-40">&gt;</button>
-          </div>
-        )}
+        <Paginacao page={page} pages={pages} onPage={setPage} />
       </div>
     </div>
   );
