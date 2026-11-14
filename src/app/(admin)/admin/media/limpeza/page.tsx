@@ -159,7 +159,7 @@ export default function MediaCleanupPage() {
                 );
               })}
             </div>
-            <Paginacao page={page} pages={Math.ceil(shown.length / ITEMS_PER_PAGE)} onPage={setPage} />
+            <Paginacao page={page} pages={Math.ceil(shown.length / ITEMS_PER_PAGE)} total={shown.length} unit="fotos" onPage={setPage} />
           </>
         )}
       </div>

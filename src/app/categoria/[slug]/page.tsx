@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import SiteShell from '@/components/Terra/SiteShell';
 import Sidebar from '@/components/Terra/Sidebar';
 import NewsGrid from '@/components/Terra/NewsGrid';
-import { PageTitle } from '@/components/Terra/Bits';
 import { loadCards, slugify } from '@/lib/terra-news';
 
 export const revalidate = 60;
@@ -23,9 +22,8 @@ export default async function Categoria({ params, searchParams }: { params: Prom
   return (
     <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Notícias', href: '/noticias' }, { label: cards[0].category }]}>
       <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[1fr_320px]">
-        <main className="min-w-0 space-y-5">
-          <PageTitle kicker="Categoria" title={cards[0].category} lead={`${cards.length} ${cards.length === 1 ? 'notícia' : 'notícias'}.`} />
-          <NewsGrid cards={cards.slice((page - 1) * PER, page * PER)} page={page} pages={pages} base={`/categoria/${slug}`} />
+        <main className="min-w-0">
+          <NewsGrid cards={cards.slice((page - 1) * PER, page * PER)} page={page} pages={pages} total={cards.length} base={`/categoria/${slug}`} />
         </main>
         <Sidebar only={['tempo', 'radio', 'cambio', 'capa']} />
       </div>

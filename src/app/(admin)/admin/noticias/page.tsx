@@ -242,7 +242,7 @@ export default function NewsAdminPage() {
 
   const pager = (
     <div className="text-[13px] text-[#50575e]">
-      <Paginacao page={currentPage} pages={totalPages} onPage={setPage} />
+      <Paginacao page={currentPage} pages={totalPages} total={filteredNews.length} unit="notícias" onPage={setPage} />
       <div className="flex items-center justify-center gap-3 max-md:hidden">
         <label className="flex items-center gap-1.5">
           Por página:

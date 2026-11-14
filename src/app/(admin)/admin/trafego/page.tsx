@@ -235,7 +235,7 @@ export default function TrafegoPage() {
             </tbody>
           </table>
         </div>
-        <Paginacao page={page} pages={pages} onPage={setPage} />
+        <Paginacao page={page} pages={pages} total={recent.length} unit="visitas" onPage={setPage} />
       </div>
     </div>
   );

@@ -437,7 +437,7 @@ export default function NewsletterPage() {
                 </tbody>
               </table>
             </div>
-            <Paginacao page={current} pages={pages} onPage={setPage} />
+            <Paginacao page={current} pages={pages} total={filtered.length} unit="subscritores" onPage={setPage} />
           </div>
 
             </>

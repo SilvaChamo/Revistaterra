@@ -14,8 +14,8 @@ const idle = `${box} border-neutral-200 bg-white text-neutral-600`;
 const link = `${idle} hover:border-[#047857] hover:text-[#047857]`;
 
 /** Paginação centrada: com `href` são ligações (páginas do site), com `onPage` são botões (listas do painel). */
-export default function Paginacao({ page, pages, href, onPage }: { page: number; pages: number; href?: (n: number) => string; onPage?: (n: number) => void }) {
-  if (pages <= 1) return null;
+export default function Paginacao({ page, pages, total, unit = 'notícias', href, onPage }: { page: number; pages: number; total?: number; unit?: string; href?: (n: number) => string; onPage?: (n: number) => void }) {
+  if (pages <= 1 && total === undefined) return null;
   const item = (n: number, label: React.ReactNode, aria: string, current = false, off = false) => {
     if (off) return <span key={aria} className={`${idle} opacity-40`}>{label}</span>;
     const cls = current ? `${box} border-[#047857] bg-[#047857] font-bold text-white` : link;
@@ -24,10 +24,20 @@ export default function Paginacao({ page, pages, href, onPage }: { page: number;
       : <button key={aria} type="button" aria-label={aria} aria-current={current ? 'page' : undefined} onClick={() => onPage?.(n)} className={cls}>{label}</button>;
   };
   return (
-    <nav className="my-6 flex items-center justify-center gap-1" aria-label="Páginas" style={{ fontFamily: 'Verdana, sans-serif' }}>
-      {item(page - 1, '←', 'Página anterior', false, page <= 1)}
-      {slots(page, pages).map((x, i) => x === '…' ? <span key={`e${i}`} className={idle}>…</span> : x === '' ? <span key={`e${i}`} className={`${box} border-transparent`} /> : item(x, x, `Página ${x}`, x === page))}
-      {item(page + 1, '→', 'Página seguinte', false, page >= pages)}
-    </nav>
+    <div className="my-6" style={{ fontFamily: 'Verdana, sans-serif' }}>
+      {pages > 1 && (
+        <nav className="flex items-center justify-center gap-1" aria-label="Páginas">
+          {item(page - 1, '←', 'Página anterior', false, page <= 1)}
+          {slots(page, pages).map((x, i) => x === '…' ? <span key={`e${i}`} className={idle}>…</span> : x === '' ? <span key={`e${i}`} className={`${box} border-transparent`} /> : item(x, x, `Página ${x}`, x === page))}
+          {item(page + 1, '→', 'Página seguinte', false, page >= pages)}
+        </nav>
+      )}
+      {total !== undefined && (
+        <p className="mt-2 text-center text-[12px] text-neutral-500">
+          {pages > 1 && <>Página {page} de {pages.toLocaleString('pt-BR')} · </>}
+          <b className="text-neutral-700">{total.toLocaleString('pt-BR')}</b> {total === 1 ? unit.replace(/s$/, '') : unit}
+        </p>
+      )}
+    </div>
   );
 }
