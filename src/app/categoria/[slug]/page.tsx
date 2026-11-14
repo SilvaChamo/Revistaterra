@@ -4,7 +4,6 @@ import Sidebar from '@/components/Terra/Sidebar';
 import NewsGrid from '@/components/Terra/NewsGrid';
 import { PageTitle } from '@/components/Terra/Bits';
 import { loadCards, slugify } from '@/lib/terra-news';
-import { homeCategories } from '@/lib/home-config';
 
 export const revalidate = 60;
 const PER = 12;
@@ -18,8 +17,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function Categoria({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ pagina?: string }> }) {
   const { slug } = await params;
   const cards = (await loadCards()).filter((c) => slugify(c.category) === slug);
-  // As categorias da secção Ambiente e Clima da home usam os mesmos cartões dessa secção.
-  const overlay = ((await homeCategories.get()).ambiente ?? []).includes(slug);
   if (!cards.length) notFound();
   const pages = Math.max(1, Math.ceil(cards.length / PER));
   const page = Math.min(pages, Math.max(1, parseInt((await searchParams).pagina || '1', 10) || 1));
@@ -28,7 +25,7 @@ export default async function Categoria({ params, searchParams }: { params: Prom
       <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0 space-y-5">
           <PageTitle kicker="Categoria" title={cards[0].category} lead={`${cards.length} ${cards.length === 1 ? 'notícia' : 'notícias'}.`} />
-          <NewsGrid news={!overlay} overlay={overlay} cards={cards.slice((page - 1) * PER, page * PER)} page={page} pages={pages} base={`/categoria/${slug}`} />
+          <NewsGrid news cards={cards.slice((page - 1) * PER, page * PER)} page={page} pages={pages} base={`/categoria/${slug}`} />
         </main>
         <Sidebar only={['tempo', 'radio', 'cambio', 'capa']} />
       </div>

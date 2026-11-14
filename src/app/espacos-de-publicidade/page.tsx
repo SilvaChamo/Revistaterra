@@ -19,7 +19,7 @@ export default async function PublicidadePage({ searchParams }: { searchParams: 
   );
   return (
     <SiteShell trail={[{ label: 'Início', href: '/' }, { label: 'Espaços de publicidade' }]}>
-      <PageProtection />
+      <PageProtection message="Conteúdo protegido. Volte a esta janela para ver os espaços de publicidade." />
       <main className="space-y-5">
         <PageTitle kicker="Publicidade" title="Espaços de publicidade" lead="Onde a sua marca pode aparecer na newsletter e no site da Revista Terra, com a medida e o custo de cada espaço." />
         <div className="mx-auto w-full max-w-[760px] shadow-sm">

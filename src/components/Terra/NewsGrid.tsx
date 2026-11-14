@@ -4,11 +4,11 @@ import { GREEN } from '@/lib/terra';
 import type { Card } from '@/lib/terra';
 
 /** Grelha de notícias (cartões com a foto e o título por cima) e paginação opcional. */
-export default function NewsGrid({ cards, page, pages, base, news = false, overlay = false }: { cards: Card[]; page?: number; pages?: number; base?: string; news?: boolean; overlay?: boolean }) {
+export default function NewsGrid({ cards, page, pages, base, news = false }: { cards: Card[]; page?: number; pages?: number; base?: string; news?: boolean }) {
   return (
     <div>
-      <div className={overlay ? 'grid gap-3 sm:grid-cols-2' : news ? 'grid gap-3 sm:grid-cols-2 xl:grid-cols-3' : 'grid gap-4 sm:grid-cols-2 xl:grid-cols-3'}>
-        {overlay ? cards.map((c) => <Overlay key={c.url} c={c} big desc className="h-[230px]" />) : news ? cards.map((c) => <NewsCard key={c.url} c={c} />) : cards.map((c) => (
+      <div className={news ? 'grid gap-3 sm:grid-cols-2 xl:grid-cols-3' : 'grid gap-4 sm:grid-cols-2 xl:grid-cols-3'}>
+        {news ? cards.map((c) => <NewsCard key={c.url} c={c} />) : cards.map((c) => (
           <div key={c.url}>
             <Overlay c={c} className="h-[200px]" />
             {c.date && <div className="bg-white px-3 py-2 text-[11px] text-neutral-500 shadow-sm">{c.date}</div>}

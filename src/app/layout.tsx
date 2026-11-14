@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import RadioProvider from "@/components/Terra/RadioProvider";
 import NewsletterPulse from "@/components/Site/NewsletterPulse";
 import HitTracker from "@/components/Site/HitTracker";
+import ProtecaoSite from "@/components/Site/ProtecaoSite";
 
 export const metadata = {
   title: 'Revista Terra',
@@ -30,6 +31,7 @@ export default function RootLayout({
           <RevealOnView />
           <NewsletterPulse />
           <HitTracker />
+          <ProtecaoSite />
           <RadioProvider>{children}</RadioProvider>
         </AuthProvider>
       </body>

@@ -20,8 +20,8 @@ export const Overlay = ({ c, className = '', big = false, desc = false }: { c: C
     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
     <div className={`absolute inset-x-0 bottom-0 ${desc ? 'p-5' : 'p-[3.2cqmin]'}`}>
       <div className="flex flex-wrap items-center gap-1"><Tag>{c.category}</Tag>{c.exclusive && <ExclusivaTag />}</div>
-      <h3 className="mt-[1.6cqmin] font-semibold leading-snug text-white" style={{ fontSize: big ? 'clamp(16px, 8.2cqmin, 21px)' : 'clamp(13px, 7.6cqmin, 15px)' }}>{c.title}</h3>
-      {desc && c.excerpt && <p className="mt-1.5 line-clamp-2 text-xs leading-snug text-white/85">{c.excerpt}</p>}
+      <h3 className="mt-[1.6cqmin] font-semibold leading-snug text-white" style={{ fontSize: big ? 'clamp(14px, 6.6cqmin, 17px)' : 'clamp(13px, 7.6cqmin, 15px)' }}>{c.title}</h3>
+      {desc && c.excerpt && <p className="mt-1.5 line-clamp-2 text-[11px] leading-snug text-white/85">{c.excerpt}</p>}
     </div>
   </a>
 );
