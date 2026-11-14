@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import ImageChooser, { type ChosenImage } from '@/components/Admin/ImageChooser';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/Common/Spinner';
-import { SUMMARY_MAX, TITLE_MAX } from '@/lib/news-limits';
+import { TITLE_MAX } from '@/lib/news-limits';
 import {
   ImageIcon,
   Key,
@@ -366,12 +366,11 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
               <textarea
                 rows={3}
                 required
-                maxLength={SUMMARY_MAX}
                 value={formData.summary}
                 onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
                 className="w-full p-2 border border-[#8c8f94] outline-none focus:border-[#047857] focus:ring-1 focus:ring-[#047857] text-[14px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.07)]"
               />
-              <p className="mt-1 text-right text-[12px] text-[#646970]">{formData.summary.length}/{SUMMARY_MAX} caracteres (2 linhas no cartão)</p>
+              <p className="mt-1 text-right text-[12px] text-[#646970]">Sem limite de texto: nos cartões mostram-se 2 linhas, com reticências.</p>
             </div>
           </div>
         </div>
