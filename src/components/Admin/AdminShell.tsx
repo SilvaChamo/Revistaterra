@@ -37,7 +37,10 @@ import {
   Mail,
   FolderOpen,
   Share2,
-  LayoutTemplate
+  LayoutTemplate,
+  ShieldCheck,
+  Pencil,
+  FilePlus
 } from 'lucide-react';
 import Spinner from '@/components/Common/Spinner';
 
@@ -481,28 +484,32 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             className="flex h-10 items-center gap-2 px-1 lg:h-8"
           >
             <span className="capitalize max-sm:hidden">Olá, {user?.name || 'Visitante'} ({colunistaLabel || user?.role || 'guest'})</span>
-            <UserIcon className="w-6 h-6 lg:w-4 lg:h-4 bg-[#2c3338] p-1 lg:p-0.5 rounded-full" />
+            <UserIcon className="w-8 h-8 lg:w-6 lg:h-6 bg-[#2c3338] p-1.5 lg:p-1 rounded-full" />
           </button>
 
-          <div className={`absolute right-0 top-full w-56 bg-[#2c3338] shadow-lg border border-[#3c434a] p-2 rounded-md lg:group-hover:block ${userMenuOpen ? 'block' : 'hidden'}`}>
-            <div className="sm:hidden px-3 py-2 text-[12px] text-gray-300 border-b border-[#3c434a] mb-1 capitalize break-words">{user?.name || 'Visitante'} · {user?.role || 'guest'}</div>
-            <Link href="/admin/perfil" className="flex items-center gap-2 px-3 py-3 lg:py-2 text-[#f0f0f1] hover:text-[#ff3333] text-[13px] rounded-md transition-colors">
+          <div className={`absolute right-0 top-full w-56 bg-[#2c3338] shadow-lg border border-[#3c434a] p-1 rounded-md lg:group-hover:block ${userMenuOpen ? 'block' : 'hidden'}`}>
+            <div className="sm:hidden px-3 py-1.5 text-[12px] text-gray-300 border-b border-[#3c434a] mb-1 capitalize break-words">{user?.name || 'Visitante'} · {user?.role || 'guest'}</div>
+            <Link href="/admin/perfil" className="flex items-center gap-2 px-3 py-2 text-[#f0f0f1] hover:text-[#9BCB3C] text-[12px] rounded-md transition-colors">
               <UserIcon className="w-4 h-4" /> Ver Perfil
             </Link>
+            <div className="mt-1 h-px bg-[#047857]/40" />
             {/* Quick role switch for testing */}
-            <div className="border-t border-[#3c434a] mt-2 pt-2 px-3 text-[10px] text-gray-400 uppercase">Trocar Role (Teste)</div>
+            <div className="-mx-1 flex h-9 items-center bg-[#1d2327] px-4 text-[11px] tracking-wide text-gray-300 uppercase">Trocar papel</div>
+            <div className="divide-y divide-[#3c434a] border-y border-[#3c434a]">
             {(['admin', 'editor', 'contribuidor', 'guest'] as UserRole[]).map(r => (
               <button 
                 key={r}
                 onClick={() => setRole(r)}
-                className={`w-full text-left px-3 py-1 text-[11px] hover:text-[#9BCB3C] ${user?.role === r ? 'text-[#047857] font-bold' : 'text-gray-300'}`}
+                className={`flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-left text-[12px] capitalize transition-colors hover:text-[#9BCB3C] ${user?.role === r ? 'text-[#9BCB3C]' : 'text-gray-200'}`}
               >
-                {r}
+                {(() => { const RI = { admin: ShieldCheck, editor: Pencil, contribuidor: FilePlus, guest: Eye }[r]; return <RI className="h-4 w-4" />; })()}
+                {r === 'guest' ? 'Visitante' : r}
               </button>
             ))}
+            </div>
             <button 
               onClick={handleLogout}
-              className="w-full flex items-center gap-2 px-3 py-2 text-[#f0f0f1] hover:text-[#ff3333] text-[13px] border-t border-[#3c434a] mt-2 rounded-md transition-colors"
+              className="mt-1 flex h-9 w-full items-center gap-2 rounded-md bg-[#1d2327] px-3 text-[13px] text-[#f0f0f1] transition-colors hover:text-[#ff3333]"
             >
               <LogOut className="w-4 h-4" /> Sair
             </button>

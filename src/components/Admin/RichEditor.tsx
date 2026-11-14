@@ -44,20 +44,48 @@ const Figure = Node.create({
   isolating: true,
   draggable: true,
   addAttributes() {
-    return { src: { default: null }, alt: { default: '' }, align: { default: 'center' }, width: { default: null } };
+    // O que se lê do HTML decide-se nas regras de parseHTML (uma <img> solta tem `width` em píxeis, que aqui são %).
+    const own = (def: unknown) => ({ default: def, parseHTML: () => null });
+    return { src: own(null), alt: own(''), align: own('center'), width: own(null) };
   },
   parseHTML() {
+    const noCaption = () => document.createElement('figcaption'); // sem legenda: não se lê o resto (a foto não se duplica)
+    const alignOf = (cls: string): Align => (/\b(ec-fig-left|alignleft)\b/.test(cls) ? 'left' : /\b(ec-fig-right|alignright)\b/.test(cls) ? 'right' : 'center');
+    // Fotos de notícias antigas (do WordPress): só trazem a largura em píxeis; à esquerda/direita viram uma percentagem do texto.
+    const widthOf = (align: Align, px: string | null, style: string | null) => {
+      const pct = /width:\s*(\d+(?:\.\d+)?)%/.exec(style || '');
+      if (pct) return Number(pct[1]);
+      if (align === 'center') return null;
+      const w = parseInt(px || '', 10);
+      return w ? Math.min(100, Math.max(10, Math.round((w / 680) * 100))) : 40;
+    };
     return [
       {
         tag: 'figure',
-        contentElement: 'figcaption',
-        getAttrs: (el) => {
-          const fig = el as HTMLElement;
+        contentElement: (el: HTMLElement) => el.querySelector('figcaption') ?? noCaption(),
+        getAttrs: (fig: HTMLElement) => {
           const img = fig.querySelector('img');
           if (!img?.getAttribute('src')) return false;
-          const align: Align = fig.classList.contains('ec-fig-left') ? 'left' : fig.classList.contains('ec-fig-right') ? 'right' : 'center';
-          const w = /width:\s*(\d+(?:\.\d+)?)%/.exec(fig.getAttribute('style') || '');
-          return { src: img.getAttribute('src'), alt: img.getAttribute('alt') || '', align, width: w ? Number(w[1]) : null };
+          const align = alignOf(fig.className);
+          return { src: img.getAttribute('src'), alt: img.getAttribute('alt') || '', align, width: widthOf(align, img.getAttribute('width'), fig.getAttribute('style')) };
+        },
+      },
+      {
+        tag: 'div.wp-caption',
+        contentElement: (el: HTMLElement) => el.querySelector('.wp-caption-text') ?? noCaption(),
+        getAttrs: (box: HTMLElement) => {
+          const img = box.querySelector('img');
+          if (!img?.getAttribute('src')) return false;
+          const align = alignOf(box.className);
+          return { src: img.getAttribute('src'), alt: img.getAttribute('alt') || '', align, width: widthOf(align, box.style.width || img.getAttribute('width'), null) };
+        },
+      },
+      {
+        tag: 'img[src]',
+        priority: 60,
+        getAttrs: (img: HTMLElement) => {
+          const align = alignOf(img.className);
+          return { src: img.getAttribute('src'), alt: img.getAttribute('alt') || '', align, width: widthOf(align, img.getAttribute('width'), null) };
         },
       },
     ];
@@ -123,7 +151,15 @@ const Figure = Node.create({
         tr.setSelection(NodeSelection.create(tr.doc, target));
         view.dispatch(tr.scrollIntoView());
       };
-      const remove = () => editor.view.dispatch(editor.state.tr.delete(pos(), pos() + current.nodeSize));
+      const remove = () => {
+        const { state, view } = editor;
+        const $p = state.doc.resolve(pos());
+        // Numa linha de duas fotos, apagar uma deixa a outra sozinha (a linha precisa de duas).
+        if ($p.parent.type.name === 'figureRow') {
+          const start = $p.before();
+          view.dispatch(state.tr.replaceWith(start, start + $p.parent.nodeSize, $p.parent.child($p.index() === 0 ? 1 : 0)));
+        } else view.dispatch(state.tr.delete(pos(), pos() + current.nodeSize));
+      };
 
       const button = (label: string, title: string, on: () => void, key?: Align) => {
         const b = document.createElement('button');
@@ -144,6 +180,22 @@ const Figure = Node.create({
         button('↓', 'Descer um bloco', () => move(1)),
         button('✕', 'Apagar a foto', remove),
       );
+      bar.lastElementChild?.classList.add('ec-fig-del');
+      // Nas laterais da foto: juntar outra foto ao lado (esquerda ou direita).
+      (['left', 'right'] as const).forEach((side) => {
+        const add = document.createElement('button');
+        add.type = 'button';
+        add.className = `ec-fig-add ec-fig-add-${side}`;
+        add.textContent = '+';
+        add.title = side === 'left' ? 'Juntar outra foto à esquerda' : 'Juntar outra foto à direita';
+        add.addEventListener('mousedown', (e) => e.preventDefault());
+        add.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          editor.view.dom.dispatchEvent(new CustomEvent('ec-fig-add', { detail: { index: editor.state.doc.resolve(pos()).index(0), side } }));
+        });
+        media.append(add);
+      });
 
       // Clicar na foto selecciona-a (para a poder arrastar e mostrar os botões).
       img.addEventListener('click', () => editor.commands.setNodeSelection(pos()));
@@ -199,11 +251,25 @@ const Figure = Node.create({
         // Cliques e arrastos nos botões e no canto são da foto; o resto (incluindo arrastar o "Mover") segue para o editor.
         stopEvent: (e) => {
           const t = e.target as HTMLElement;
-          return !!t.closest?.('.ec-fig-bar, .ec-fig-resize') && e.type !== 'dragstart' && e.type !== 'dragend';
+          return !!t.closest?.('.ec-fig-bar, .ec-fig-resize, .ec-fig-add') && e.type !== 'dragstart' && e.type !== 'dragend';
         },
         ignoreMutation: (m) => (m.type === 'selection' ? false : !caption.contains(m.target)),
       };
     };
+  },
+});
+
+/** Duas fotos lado a lado, a toda a largura, sem texto no meio; cada uma com a sua legenda por baixo. */
+const FigureRow = Node.create({
+  name: 'figureRow',
+  group: 'block',
+  content: 'figure figure',
+  isolating: true,
+  parseHTML() {
+    return [{ tag: 'div.ec-fig-row' }];
+  },
+  renderHTML() {
+    return ['div', { class: 'ec-fig-row' }, 0];
   },
 });
 
@@ -225,6 +291,7 @@ const EXTENSIONS = [
   StarterKit.configure({ heading: { levels: [1, 2, 3] }, link: { openOnClick: false } }),
   Image.configure({ allowBase64: false }),
   Figure,
+  FigureRow,
   Callout,
 ];
 
@@ -246,6 +313,19 @@ function insertBlock(editor: Editor, node: Json) {
     .focus()
     .scrollIntoView()
     .run();
+}
+
+/** Põe uma segunda foto ao lado (esquerda ou direita) da foto que é o bloco de topo `index`: as duas passam a ocupar a largura toda. */
+function addSide(editor: Editor, index: number, side: 'left' | 'right', url: string) {
+  const { state, view } = editor;
+  const node = state.doc.maybeChild(index);
+  if (!node || node.type.name !== 'figure') return;
+  let pos = 0;
+  for (let i = 0; i < index; i++) pos += state.doc.child(i).nodeSize;
+  const { figure, figureRow } = state.schema.nodes;
+  const mine = figure.create({ ...node.attrs, align: 'center', width: null }, node.content);
+  const added = figure.create({ src: url, alt: '' });
+  view.dispatch(state.tr.replaceWith(pos, pos + node.nodeSize, figureRow.create(null, side === 'left' ? [added, mine] : [mine, added])));
 }
 
 /** Posição do bloco de topo onde o cursor está, para a foto escolhida na galeria voltar a cair nele (-1 = no início). */
@@ -326,6 +406,7 @@ const Divider = () => <span className="mx-1 h-5 w-px bg-gray-300" />;
 /** Editor de texto da notícia, por blocos: texto, títulos, imagens com legenda e caixas de destaque. */
 export default function RichEditor({ value, onChange, newsTitle = '' }: { value: string; onChange: (html: string) => void; newsTitle?: string }) {
   const [picking, setPicking] = useState(false);
+  const sideRef = useRef<{ index: number; side: 'left' | 'right' } | null>(null); // foto escolhida para ir ao lado de outra (em vez de um bloco novo)
   // "+ bloco": aparece depois do fim do texto do bloco onde está o rato (ou o toque). `end` é o fim do bloco onde se insere.
   type Hover = { top: number; left: number; end: number; wrapW: number };
   const [hover, setHover] = useState<Hover | null>(null);
@@ -425,16 +506,30 @@ export default function RichEditor({ value, onChange, newsTitle = '' }: { value:
         if (r.target !== 'editor' || !r.url) return;
         sessionStorage.removeItem('ec-pick-result');
         let index = editor.state.doc.childCount - 1;
+        let side: 'left' | 'right' | undefined;
         try {
-          const p = JSON.parse(sessionStorage.getItem('ec-pick-pos') || 'null') as { index?: number } | null;
+          const p = JSON.parse(sessionStorage.getItem('ec-pick-pos') || 'null') as { index?: number; side?: 'left' | 'right' } | null;
           if (p && Number.isInteger(p.index)) index = p.index as number;
+          if (p?.side === 'left' || p?.side === 'right') side = p.side;
         } catch { /* sem posição guardada: vai para o fim */ }
         sessionStorage.removeItem('ec-pick-pos');
-        insertBlockAtIndex(editor, index, { type: 'figure', attrs: { src: r.url, alt: '' } });
+        if (side) addSide(editor, index, side, r.url);
+        else insertBlockAtIndex(editor, index, { type: 'figure', attrs: { src: r.url, alt: '' } });
       } catch { /* ignora */ }
     }, 600);
     return () => clearTimeout(t);
   }, [editor, value]);
+
+  useEffect(() => {
+    if (!editor) return;
+    const dom = editor.view.dom;
+    const onAdd = (e: Event) => {
+      sideRef.current = (e as CustomEvent<{ index: number; side: 'left' | 'right' }>).detail;
+      setPicking(true);
+    };
+    dom.addEventListener('ec-fig-add', onAdd);
+    return () => dom.removeEventListener('ec-fig-add', onAdd);
+  }, [editor]);
 
   if (!editor) return <div className="min-h-[400px] bg-white" />;
 
@@ -584,15 +679,17 @@ export default function RichEditor({ value, onChange, newsTitle = '' }: { value:
           newsTitle={newsTitle}
           target="editor"
           onBeforeLeave={() => {
-            try { sessionStorage.setItem('ec-pick-pos', JSON.stringify({ index: cursorBlockIndex(editor) })); } catch { /* sem armazenamento */ }
+            try { sessionStorage.setItem('ec-pick-pos', JSON.stringify(sideRef.current ?? { index: cursorBlockIndex(editor) })); } catch { /* sem armazenamento */ }
             window.dispatchEvent(new Event('ec-news-save-draft'));
           }}
-          onClose={() => setPicking(false)}
+          onClose={() => { setPicking(false); sideRef.current = null; }}
           onChoose={async (img) => {
             // Na imagem dentro do texto espera-se o endereço final (curto): assim o texto nunca guarda um endereço temporário.
             try {
               const url = img.uploading ? await img.uploading : img.url;
-              insertBlock(editor, { type: 'figure', attrs: { src: url, alt: '' } });
+              if (sideRef.current) addSide(editor, sideRef.current.index, sideRef.current.side, url);
+              else insertBlock(editor, { type: 'figure', attrs: { src: url, alt: '' } });
+              sideRef.current = null;
             } catch {
               alert('Não foi possível enviar a foto. Tente de novo.');
             }
