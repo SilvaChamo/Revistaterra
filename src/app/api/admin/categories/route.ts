@@ -11,13 +11,13 @@ const BASE = ['Agricultura', 'Mercado', 'Economia', 'Meio Ambiente', 'Clima', 'T
 export async function GET() {
   const guard = await requireAuth('ler_artigos');
   if ('error' in guard) return guard.error;
-  const map = new Map<string, string>();
-  for (const name of BASE) map.set(slugify(name), name);
+  const map = new Map<string, { label: string; count: number }>();
+  for (const name of BASE) map.set(slugify(name), { label: name, count: 0 });
   try {
-    for (const c of await loadCategories()) if (c.slug !== 'opiniao') map.set(c.slug, c.name);
+    for (const c of await loadCategories()) if (c.slug !== 'opiniao') map.set(c.slug, { label: c.name, count: c.count });
   } catch {
     /* sem notícias: ficam as de base */
   }
-  const options = [...map].map(([slug, label]) => ({ slug, label })).sort((a, b) => a.label.localeCompare(b.label, 'pt'));
+  const options = [...map].map(([slug, v]) => ({ slug, label: v.label, count: v.count })).sort((a, b) => a.label.localeCompare(b.label, 'pt'));
   return NextResponse.json({ options });
 }
