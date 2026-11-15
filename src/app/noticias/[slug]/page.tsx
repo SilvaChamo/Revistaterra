@@ -34,7 +34,7 @@ export default async function Artigo({ params }: { params: Promise<{ slug: strin
       <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[1fr_320px]">
         <main className="min-w-0">
           <article className="bg-white shadow-sm">
-            {post.image_url && <img src={post.image_url} alt="" className="h-[260px] w-full object-cover sm:h-[440px]" />}
+            {post.image_url && <img src={post.image_url} alt="" className="h-[260px] w-full object-cover sm:h-[430px]" />}
             <div className="border-t-4 p-5 sm:p-8" style={{ borderColor: GREEN }}>
               <div className="flex flex-wrap items-center gap-2">
                 <Link href={`/categoria/${slugify(cat)}`}><Tag>{cat}</Tag></Link>
