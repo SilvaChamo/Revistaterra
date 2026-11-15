@@ -1,5 +1,5 @@
 /**
- * Categorias de base da Revista Terra (as do menu e das secções de revistaterraonline.com).
+ * Categorias de base da Revista Terra, definidas neste projecto (nada é lido do WordPress).
  * Cada site tem as suas: o Entrecampos usa as dele, noutro projecto. Aqui não entra nada de outros sites.
  */
 export type SiteCategory = { slug: string; name: string; description: string };
