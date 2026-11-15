@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth, isUuid } from '@/lib/api-guard';
-import { importarLote } from '@/lib/importar-wordpress';
+import { importarLote, importarNoticias } from '@/lib/importar-wordpress';
 import { refreshSite } from '@/lib/refresh-site';
 
 export const dynamic = 'force-dynamic';
@@ -11,6 +11,18 @@ export async function POST(req: NextRequest) {
   const guard = await requireAuth('acesso_total');
   if ('error' in guard) return guard.error;
   const body = await req.json().catch(() => ({}));
+  // Fase "noticias": passa as notícias do WordPress para este projecto, uma página de cada vez (com as fotos).
+  if (body.fase === 'noticias') {
+    const c = body.cursor;
+    const cursor = c && Number.isInteger(c.t) && Number.isInteger(c.p) && c.t >= 0 && c.p >= 1 ? { t: c.t, p: c.p } : undefined;
+    try {
+      const out = await importarNoticias(cursor);
+      if (out.criadas) refreshSite();
+      return NextResponse.json(out);
+    } catch (e) {
+      return NextResponse.json({ error: e instanceof Error ? e.message : 'Não foi possível importar.' }, { status: 500 });
+    }
+  }
   const skip = Array.isArray(body.skip) ? (body.skip as unknown[]).map(String).filter(isUuid).slice(0, 500) : [];
   try {
     const out = await importarLote(4, skip);

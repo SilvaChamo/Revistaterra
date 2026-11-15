@@ -32,6 +32,17 @@ const db = () =>
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
+/** Copia uma foto do WordPress para o armazenamento do projecto e devolve o novo endereço público. */
+async function copiarFoto(sb: ReturnType<typeof db>, url: string): Promise<string> {
+  const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
+  const type = res.headers.get('content-type') || '';
+  if (!res.ok || !type.startsWith('image/') || Number(res.headers.get('content-length') || 0) > MAX_BYTES) throw new Error(`${res.status}`);
+  const dest = destName(url);
+  const { error } = await sb.storage.from(BUCKET).upload(dest, Buffer.from(await res.arrayBuffer()), { contentType: type, upsert: true });
+  if (error) throw new Error(error.message);
+  return sb.storage.from(BUCKET).getPublicUrl(dest).data.publicUrl;
+}
+
 const WP_FILTER = 'image_url.ilike.%wp-content%,content.ilike.%wp-content/uploads%';
 
 export type LoteResultado = { importadas: number; actualizadas: number; falhadas: string[]; ids_com_falha: string[]; restantes: number };
@@ -54,13 +65,7 @@ export async function importarLote(limit = 4, skip: string[] = []): Promise<Lote
     for (const url of [...findWpUrls(r.image_url), ...findWpUrls(r.content)]) {
       if (map[url]) continue;
       try {
-        const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
-        const type = res.headers.get('content-type') || '';
-        if (!res.ok || !type.startsWith('image/') || Number(res.headers.get('content-length') || 0) > MAX_BYTES) throw new Error(`${res.status}`);
-        const dest = destName(url);
-        const { error: ue } = await sb.storage.from(BUCKET).upload(dest, Buffer.from(await res.arrayBuffer()), { contentType: type, upsert: true });
-        if (ue) throw new Error(ue.message);
-        map[url] = sb.storage.from(BUCKET).getPublicUrl(dest).data.publicUrl;
+        map[url] = await copiarFoto(sb, url);
         importadas++;
       } catch {
         falhou = true;
@@ -84,4 +89,76 @@ export async function importarLote(limit = 4, skip: string[] = []): Promise<Lote
   if (nao.length) rest = rest.not('id', 'in', `(${nao.join(',')})`);
   const { count } = await rest;
   return { importadas, actualizadas, falhadas, ids_com_falha, restantes: count ?? 0 };
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Notícias: passam do WordPress para a tabela `news` deste site (texto, categoria, data e fotos), para ficarem aqui.
+// ---------------------------------------------------------------------------------------------------------------------
+
+const WP_API = 'https://revistaterraonline.com/wp-json/wp/v2';
+/** Tipos de conteúdo do WordPress que são notícias (os outros — publicações de casinos, páginas, rádio… — não entram). */
+export const TIPOS = ['destaques', 'noticias', 'fora-de-campo', 'opiniao'] as const;
+const PER_PAGE = 4;
+
+const strip = (html: string) =>
+  html.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&#8211;/g, '–').replace(/&#8217;/g, '’').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+const limpar = (html: string) =>
+  html.replace(/<(script|style|iframe)\b[\s\S]*?<\/\1>/gi, '').replace(/\son\w+="[^"]*"/gi, '').replace(/\s+/g, ' ').trim();
+
+export type Cursor = { t: number; p: number };
+export type LoteNoticias = { criadas: number; jaExistiam: number; fotos: number; erros: string[]; proximo: Cursor | null; tipo: string; total: number };
+
+/** Importa uma página de notícias do WordPress. Devolve o cursor seguinte (`null` quando acabou tudo). */
+export async function importarNoticias(cursor: Cursor = { t: 0, p: 1 }): Promise<LoteNoticias> {
+  const sb = db();
+  const tipo = TIPOS[cursor.t];
+  const res = await fetch(`${WP_API}/${tipo}?per_page=${PER_PAGE}&page=${cursor.p}&orderby=date&order=desc&_embed=wp:featuredmedia,wp:term,author`, { signal: AbortSignal.timeout(30_000) });
+  // Página além do fim (400): passa ao tipo seguinte.
+  const total = Number(res.headers.get('x-wp-total') || 0);
+  const pages = Number(res.headers.get('x-wp-totalpages') || 0);
+  const items: Record<string, any>[] = res.ok ? await res.json() : [];
+  const out: LoteNoticias = { criadas: 0, jaExistiam: 0, fotos: 0, erros: [], proximo: null, tipo, total };
+
+  for (const it of items) {
+    const slug = decodeURIComponent(String(it.slug || ''));
+    if (!slug) continue;
+    const { data: ja } = await sb.from('news').select('id').eq('site_id', SITE_ID).eq('slug', slug).maybeSingle();
+    if (ja) { out.jaExistiam++; continue; }
+
+    let content = limpar(String(it.content?.rendered || ''));
+    const emb = it._embedded || {};
+    const featured: string = emb['wp:featuredmedia']?.[0]?.source_url || '';
+    const map: Record<string, string> = {};
+    for (const url of new Set([...findWpUrls(featured), ...findWpUrls(content)])) {
+      try { map[url] = await copiarFoto(sb, url); out.fotos++; } catch { out.erros.push(`foto: ${url}`); }
+    }
+    content = replaceUrls(content, map);
+    const image = replaceUrls(featured, map) || (content.match(/<img[^>]+src="([^"]+)"/i)?.[1] ?? null);
+
+    const opiniao = tipo === 'opiniao';
+    const term: string = (emb['wp:term']?.[0]?.[0]?.name || '').trim();
+    const category = opiniao ? 'Opinião' : (term || (tipo === 'fora-de-campo' ? 'fora de campo' : 'sem categoria')).toLowerCase();
+    const author = opiniao ? term || 'Revista Terra' : emb.author?.[0]?.name || 'Revista Terra';
+    const text = strip(content);
+    const { error } = await sb.from('news').insert({
+      site_id: SITE_ID,
+      title: strip(String(it.title?.rendered || slug)),
+      slug,
+      summary: text.slice(0, 300),
+      content: content || `<p>${strip(String(it.title?.rendered || ''))}</p>`,
+      category,
+      categories: [opiniao ? 'opiniao' : category],
+      image_url: image,
+      date: `${String(it.date_gmt || it.date).slice(0, 19)}+00:00`,
+      status: 'published',
+      featured: false,
+      author_name: author,
+      views: 0,
+    });
+    if (error) out.erros.push(`${slug.slice(0, 40)}: ${error.message}`); else out.criadas++;
+  }
+
+  if (cursor.p < pages) out.proximo = { t: cursor.t, p: cursor.p + 1 };
+  else if (cursor.t + 1 < TIPOS.length) out.proximo = { t: cursor.t + 1, p: 1 };
+  return out;
 }
