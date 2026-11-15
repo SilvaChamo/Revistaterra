@@ -418,6 +418,11 @@ body {
   margin-right: 0;
 }
 
+/* Fotos antigas do WordPress (img com alignleft/alignright), lidas como as figuras do editor. */
+.terra-prose img.ec-img-left { float: left; width: 40%; margin: 0.25rem 1.25rem 0 0; }
+.terra-prose img.ec-img-right { float: right; width: 40%; margin: 0.25rem 0 0 1.25rem; }
+.terra-prose img.ec-img-center { display: block; margin-left: auto; margin-right: auto; }
+
 .terra-prose figure.ec-fig-left figcaption,
 .ec-editor .ProseMirror figure.ec-fig-left figcaption {
   text-align: left;
@@ -429,6 +434,9 @@ body {
   .terra-prose figure.ec-fig-right {
     max-width: 50%;
   }
+  .terra-prose img.ec-img-left, .terra-prose img.ec-img-right { max-width: 50%; }
+  .terra-prose img.ec-img-left { margin-right: 0.75rem; }
+  .terra-prose img.ec-img-right { margin-left: 0.75rem; }
   .terra-prose figure.ec-fig-left { margin-right: 0.75rem; }
   .terra-prose figure.ec-fig-right { margin-left: 0.75rem; }
 }

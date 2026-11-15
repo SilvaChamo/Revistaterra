@@ -115,14 +115,36 @@ export async function loadCategories() {
 }
 
 /** HTML do artigo, limpo: só marcas de texto, ligações e imagens. */
+/** Largura em píxeis de uma foto antiga → % do texto (680 px), entre 10 e 100; sem largura, 40 (igual ao editor). */
+const legacyWidth = (px?: string) => {
+  const w = parseInt(px || '', 10);
+  return w ? Math.min(100, Math.max(10, Math.round((w / 680) * 100))) : 40;
+};
+
 export function cleanContent(html: string) {
   return sanitizeHtml(html || '', {
     allowedTags: ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'a', 'ul', 'ol', 'li', 'h2', 'h3', 'h4', 'blockquote', 'img', 'figure', 'figcaption', 'hr', 'span', 'div'],
-    allowedAttributes: { a: ['href', 'target', 'rel'], img: ['src', 'alt', 'width', 'height'], figure: ['class', 'style'], div: ['class'] },
+    allowedAttributes: { a: ['href', 'target', 'rel'], img: ['src', 'alt', 'width', 'height', 'class', 'style'], figure: ['class', 'style'], div: ['class'] },
     // Foto à esquerda/direita e a sua largura em % (como o editor as grava) e a caixa de destaque.
-    allowedClasses: { figure: ['ec-fig-left', 'ec-fig-right'], div: ['ec-callout', 'ec-fig-row'] },
-    allowedStyles: { figure: { width: [/^\d{1,3}(?:\.\d+)?%$/] } },
+    allowedClasses: { figure: ['ec-fig-left', 'ec-fig-right'], img: ['ec-img-left', 'ec-img-right', 'ec-img-center'], div: ['ec-callout', 'ec-fig-row'] },
+    allowedStyles: { figure: { width: [/^\d{1,3}(?:\.\d+)?%$/] }, img: { width: [/^\d{1,3}(?:\.\d+)?%$/] } },
     allowedSchemes: ['http', 'https', 'mailto', 'tel'],
-    transformTags: { a: (tag, attribs) => ({ tagName: 'a', attribs: { ...attribs, rel: 'noopener noreferrer', target: '_blank' } }) },
+    transformTags: {
+      a: (tag, attribs) => ({ tagName: 'a', attribs: { ...attribs, rel: 'noopener noreferrer', target: '_blank' } }),
+      // Fotos antigas (do WordPress) trazem alignleft/alignright e a largura em píxeis: lêem-se como o editor as lê (percentagem do texto).
+      img: (tag, attribs) => {
+        const { class: cls = '', style: _style, ...rest } = attribs;
+        const side = /\balignleft\b/.test(cls) ? 'left' : /\balignright\b/.test(cls) ? 'right' : /\baligncenter\b/.test(cls) ? 'center' : '';
+        if (!side) return { tagName: 'img', attribs: rest };
+        if (side === 'center') return { tagName: 'img', attribs: { ...rest, class: 'ec-img-center' } };
+        return { tagName: 'img', attribs: { ...rest, class: `ec-img-${side}`, style: `width:${legacyWidth(attribs.width)}%` } };
+      },
+      figure: (tag, attribs) => {
+        const cls = attribs.class || '';
+        const side = /\balignleft\b/.test(cls) ? 'left' : /\balignright\b/.test(cls) ? 'right' : '';
+        if (!side || /\bec-fig-/.test(cls)) return { tagName: 'figure', attribs };
+        return { tagName: 'figure', attribs: { class: `ec-fig-${side}`, style: `width:${legacyWidth(/width:\s*(\d+)px/.exec(attribs.style || '')?.[1])}%` } };
+      },
+    },
   });
 }
