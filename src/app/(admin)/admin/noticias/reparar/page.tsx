@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Spinner from '@/components/Common/Spinner';
+import ImportarWordpress from '@/components/Admin/ImportarWordpress';
 
 interface NewsItem {
   id: string;
@@ -241,6 +242,8 @@ export default function NewsRepairPage() {
       <div className="w-full">
         <div className="py-4 md:py-8">
           
+          <ImportarWordpress onDone={loadData} />
+
           {/* Header */}
           <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
             <div>
