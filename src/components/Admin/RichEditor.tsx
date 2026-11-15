@@ -27,8 +27,9 @@ import AdminSelect from '@/components/Admin/AdminSelect';
 type Align = 'center' | 'left' | 'right';
 
 /** Classe e largura (em % do texto) com que a figura vai para o HTML: `ec-fig-left|right` + `style="width:NN%"`. */
-function figureAttrs(align: Align, width: number | null) {
+function figureAttrs(align: Align, width: number | null, orig: string | null = null) {
   const out: Record<string, string> = {};
+  if (orig) out['data-original'] = orig; // foto antes do recorte, para a repor
   if (align !== 'center') out.class = `ec-fig-${align}`;
   if (width) out.style = `width: ${width}%`;
   return out;
@@ -48,7 +49,7 @@ const Figure = Node.create({
   addAttributes() {
     // O que se lê do HTML decide-se nas regras de parseHTML (uma <img> solta tem `width` em píxeis, que aqui são %).
     const own = (def: unknown) => ({ default: def, parseHTML: () => null });
-    return { src: own(null), alt: own(''), align: own('center'), width: own(null) };
+    return { src: own(null), alt: own(''), align: own('center'), width: own(null), orig: own(null) };
   },
   parseHTML() {
     const noCaption = () => document.createElement('figcaption'); // sem legenda: não se lê o resto (a foto não se duplica)
@@ -69,7 +70,7 @@ const Figure = Node.create({
           const img = fig.querySelector('img');
           if (!img?.getAttribute('src')) return false;
           const align = alignOf(fig.className);
-          return { src: img.getAttribute('src'), alt: img.getAttribute('alt') || '', align, width: widthOf(align, img.getAttribute('width'), fig.getAttribute('style')) };
+          return { src: img.getAttribute('src'), alt: img.getAttribute('alt') || '', align, width: widthOf(align, img.getAttribute('width'), fig.getAttribute('style')), orig: fig.getAttribute('data-original') };
         },
       },
       {
@@ -93,7 +94,7 @@ const Figure = Node.create({
     ];
   },
   renderHTML({ node }) {
-    return ['figure', figureAttrs(node.attrs.align, node.attrs.width), ['img', { src: node.attrs.src, alt: node.attrs.alt }], ['figcaption', 0]];
+    return ['figure', figureAttrs(node.attrs.align, node.attrs.width, node.attrs.orig), ['img', { src: node.attrs.src, alt: node.attrs.alt }], ['figcaption', 0]];
   },
   addKeyboardShortcuts() {
     return {
@@ -173,12 +174,17 @@ const Figure = Node.create({
         b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); on(); });
         return b;
       };
+      const cropBtn = button('✂ Recortar', 'Recortar a foto', () => editor.view.dom.dispatchEvent(new CustomEvent('ec-fig-crop', { detail: { pos: pos(), src: current.attrs.src, orig: current.attrs.orig } })));
+      cropBtn.classList.add('ec-fig-crop');
+      const revertBtn = button('↺ Original', 'Repor a foto sem recorte', () => setAttrs({ src: current.attrs.orig, orig: null }));
+      revertBtn.classList.add('ec-fig-orig');
       bar.append(
         grip,
         button('◧ Esquerda', 'Foto à esquerda, com o texto a contornar', () => setAttrs({ align: 'left' }), 'left'),
         button('▣ Centro', 'Foto sozinha, centrada', () => setAttrs({ align: 'center' }), 'center'),
         button('Direita ◨', 'Foto à direita, com o texto a contornar', () => setAttrs({ align: 'right' }), 'right'),
-        button('✂ Recortar', 'Recortar a foto', () => editor.view.dom.dispatchEvent(new CustomEvent('ec-fig-crop', { detail: { pos: pos(), src: current.attrs.src } }))),
+        cropBtn,
+        revertBtn,
         button('↑', 'Subir um bloco', () => move(-1)),
         button('↓', 'Descer um bloco', () => move(1)),
         button('✕', 'Apagar a foto', remove),
@@ -236,6 +242,7 @@ const Figure = Node.create({
         img.setAttribute('alt', n.attrs.alt || '');
         dom.className = n.attrs.align !== 'center' ? `ec-fig-${n.attrs.align}` : '';
         dom.style.width = n.attrs.width ? `${n.attrs.width}%` : '';
+        revertBtn.style.display = n.attrs.orig ? '' : 'none';
         bar.querySelectorAll('button[data-align]').forEach((b) => {
           const on = (b as HTMLElement).dataset.align === n.attrs.align;
           b.classList.toggle('is-on', on);
@@ -409,7 +416,7 @@ const Divider = () => <span className="mx-1 h-5 w-px bg-gray-300" />;
 /** Editor de texto da notícia, por blocos: texto, títulos, imagens com legenda e caixas de destaque. */
 export default function RichEditor({ value, onChange, newsTitle = '' }: { value: string; onChange: (html: string) => void; newsTitle?: string }) {
   const [picking, setPicking] = useState(false);
-  const [cropping, setCropping] = useState<{ pos: number; src: string } | null>(null);
+  const [cropping, setCropping] = useState<{ pos: number; src: string; orig: string | null } | null>(null);
   const sideRef = useRef<{ index: number; side: 'left' | 'right' } | null>(null); // foto escolhida para ir ao lado de outra (em vez de um bloco novo)
   // "+ bloco": aparece depois do fim do texto do bloco onde está o rato (ou o toque). `end` é o fim do bloco onde se insere.
   type Hover = { top: number; left: number; end: number; wrapW: number };
@@ -531,7 +538,7 @@ export default function RichEditor({ value, onChange, newsTitle = '' }: { value:
       sideRef.current = (e as CustomEvent<{ index: number; side: 'left' | 'right' }>).detail;
       setPicking(true);
     };
-    const onCrop = (e: Event) => setCropping((e as CustomEvent<{ pos: number; src: string }>).detail);
+    const onCrop = (e: Event) => setCropping((e as CustomEvent<{ pos: number; src: string; orig: string | null }>).detail);
     dom.addEventListener('ec-fig-add', onAdd);
     dom.addEventListener('ec-fig-crop', onCrop);
     return () => { dom.removeEventListener('ec-fig-add', onAdd); dom.removeEventListener('ec-fig-crop', onCrop); };
@@ -543,11 +550,12 @@ export default function RichEditor({ value, onChange, newsTitle = '' }: { value:
     setCropping(null);
     if (!editor || !target) return;
     try {
-      const file = await cropImage(target.src, rect, decodeURIComponent(target.src.split(/[?#]/)[0].split('/').pop() || 'foto').replace(/\.[^.]+$/, '') + '-recorte');
+      const source = target.orig || target.src; // recorta sempre a partir da foto original
+      const file = await cropImage(source, rect, decodeURIComponent(source.split(/[?#]/)[0].split('/').pop() || 'foto').replace(/\.[^.]+$/, '') + '-recorte');
       const url = await uploadToLibrary(file, newsTitle);
       const node = editor.state.doc.nodeAt(target.pos);
       if (node?.type.name !== 'figure' || node.attrs.src !== target.src) return; // entretanto a foto mudou de sítio ou foi apagada
-      editor.view.dispatch(editor.state.tr.setNodeMarkup(target.pos, undefined, { ...node.attrs, src: url }));
+      editor.view.dispatch(editor.state.tr.setNodeMarkup(target.pos, undefined, { ...node.attrs, src: url, orig: source }));
     } catch (err) {
       alert((err as Error).message || 'Não foi possível recortar a foto.');
     }
@@ -695,7 +703,7 @@ export default function RichEditor({ value, onChange, newsTitle = '' }: { value:
         )}
       </div>
 
-      {cropping && <CropDialog src={cropping.src} onConfirm={applyCrop} onClose={() => setCropping(null)} />}
+      {cropping && <CropDialog src={cropping.orig || cropping.src} onConfirm={applyCrop} onClose={() => setCropping(null)} />}
 
       {picking && (
         <ImageChooser

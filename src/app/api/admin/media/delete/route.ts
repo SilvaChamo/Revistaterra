@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
       const inUse = list.filter((name) => (news ?? []).some((n) => String(n.image_url).includes(`/${BUCKET}/${encodeURI(name)}`) || String(n.image_url).includes(`/${BUCKET}/${name}`)));
       // Também as que estão dentro do texto de uma notícia (src da imagem).
       const { data: withText } = await supabaseAdmin.from('news').select('content').eq('site_id', SITE_ID).ilike('content', `%/${BUCKET}/%`);
-      const inText = list.filter((name) => !inUse.includes(name) && (withText ?? []).some((n) => [...String(n.content).matchAll(/\ssrc\s*=\s*["']([^"']+)["']/gi)].some((m) => m[1].includes(`/${BUCKET}/${encodeURI(name)}`) || m[1].includes(`/${BUCKET}/${name}`))));
+      const inText = list.filter((name) => !inUse.includes(name) && (withText ?? []).some((n) => [...String(n.content).matchAll(/\s(?:src|data-original)\s*=\s*["']([^"']+)["']/gi)].some((m) => m[1].includes(`/${BUCKET}/${encodeURI(name)}`) || m[1].includes(`/${BUCKET}/${name}`))));
       inUse.push(...inText);
       if (inUse.length > 0) {
         return NextResponse.json(

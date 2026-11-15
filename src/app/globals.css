@@ -551,7 +551,7 @@ body {
 .ec-editor .ProseMirror figure:not(.ec-fig-left):not(.ec-fig-right):hover .ec-fig-add,
 .ec-editor .ProseMirror figure:not(.ec-fig-left):not(.ec-fig-right).ProseMirror-selectednode .ec-fig-add { display: block; }
 .ec-editor .ProseMirror .ec-fig-row .ec-fig-add { display: none !important; }
-.ec-editor .ProseMirror .ec-fig-row .ec-fig-bar > :not(.ec-fig-del),
+.ec-editor .ProseMirror .ec-fig-row .ec-fig-bar > :not(.ec-fig-del):not(.ec-fig-crop):not(.ec-fig-orig),
 .ec-editor .ProseMirror .ec-fig-row .ec-fig-resize { display: none !important; }
 
 .ec-editor .ProseMirror .ProseMirror-selectednode { outline: 2px solid #047857; }
