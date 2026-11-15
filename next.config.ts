@@ -5,18 +5,15 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'revistaterra.co.mz',
-        pathname: '/wp-content/uploads/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'revistaterraonline.com',
-        pathname: '/wp-content/uploads/**',
-      },
-    ],
+    // Só o armazenamento deste projecto (Supabase): as fotos não se lêem de outros sites.
+    remotePatterns: (() => {
+      try {
+        const u = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '');
+        return [{ protocol: u.protocol.replace(':', '') as 'http' | 'https', hostname: u.hostname, ...(u.port ? { port: u.port } : {}), pathname: '/storage/v1/object/public/**' }];
+      } catch {
+        return [];
+      }
+    })(),
   },
   // Páginas que vinham do EntreCAMPOS: já não existem na Revista Terra, seguem para a home (ou para o equivalente).
   async redirects() {

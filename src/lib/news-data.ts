@@ -52,9 +52,6 @@ const SITE_ID = process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra';
  */
 const SHARE_BASE = process.env.SHARE_BASE_NEWS === 'true';
 
-/** Domínio antigo (sem DNS) → site online, onde as imagens existem. */
-const ONLINE_HOST = 'https://revistaterraonline.com/';
-
 const CATEGORY_LABELS: Record<string, string> = {
   agricultura: 'Agricultura',
   'sector-agrario': 'Sector agrário',
@@ -83,7 +80,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   inovacao: 'Inovação',
   'sem-categoria': 'Sem categoria',
   'voce-sabiaa': 'Você sabia?',
-  // Categorias da Revista Terra (menu e secções de revistaterraonline.com).
+  // Categorias da Revista Terra.
   economia: 'Economia',
   reportagem: 'Reportagem',
   estudos: 'Estudos',
@@ -137,11 +134,10 @@ function stripTags(value: string) {
 }
 
 function cleanImageUrl(value?: string) {
-  const url = (value || '').replace(/<!\[CDATA\[|\]\]>/g, '').trim();
-  return url.replace(/^https?:\/\/(www\.)?revistaterra\.co\.mz\//, ONLINE_HOST);
+  return (value || '').replace(/<!\[CDATA\[|\]\]>/g, '').trim();
 }
 
-/** HTML do artigo: sanitizado (conteúdo vindo do editor/contribuidores) e com imagens apontadas ao site online. */
+/** HTML do artigo: sanitizado (conteúdo vindo do editor/contribuidores) (as fotos são as do armazenamento deste projecto). */
 function cleanContent(html: string) {
   const safe = sanitizeHtml(normalizeSpaces(html || '').replace(/<!\[CDATA\[|\]\]>/g, ''), {
     allowedTags: [
@@ -169,7 +165,6 @@ function cleanContent(html: string) {
     .replace(/<li>\s*<\/li>/g, '')
     .replace(/<(ul|ol)>\s*<\/\1>/g, '')
     .replace(/<div class="ec-callout">\s*<\/div>/g, '')
-    .replace(/https?:\/\/(www\.)?revistaterra\.co\.mz\//g, ONLINE_HOST)
     .trim();
 }
 

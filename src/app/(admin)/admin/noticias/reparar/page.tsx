@@ -60,14 +60,11 @@ export default function NewsRepairPage() {
       // 3. Filter news that genuinely need repair:
       // - No image_url at all
       // - URL contains CDATA (malformed WordPress export artifact)
-      // - URL points to wp-content on an UNKNOWN host (not our live site or Supabase)
+      // - URL ainda aponta para wp-content (WordPress, qualquer domínio): tem de ser importada para este projecto
       const needsRepair = (newsData || []).filter((n: any) => {
         if (!n.image_url) return true;
         if (n.image_url.includes('CDATA')) return true;
-        // URLs from the live site or Supabase are valid — do not flag
-        if (n.image_url.includes('revistaterraonline.com') || n.image_url.includes('revistaterra.co.mz') || n.image_url.startsWith('/terra/')) return false;
-        if (n.image_url.includes('supabase')) return false;
-        // Any other wp-content URL from an unknown host still needs repair
+        // Fotos do WordPress (wp-content) não contam: o WordPress vai ser eliminado e a foto perde-se.
         if (n.image_url.includes('wp-content')) return true;
         return false;
       });
