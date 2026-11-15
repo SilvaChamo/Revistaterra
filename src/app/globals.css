@@ -99,6 +99,8 @@ body {
   line-height: 1.5;
   text-align: center;
   color: #6b7280;
+  padding: 0.4rem 0.75rem;
+  background: #f6faf4; /* fundo suave (o mesmo das citações) */
 }
 
 .blog-details figcaption:empty {
@@ -387,7 +389,8 @@ body {
 .terra-prose blockquote { border-left: 4px solid #9BCB3C; padding: .2em 1em; color: #444; background: #f6faf4; }
 .terra-prose img { max-width: 100%; height: auto; }
 .terra-prose figure { margin-left: 0; margin-right: 0; }
-.terra-prose figcaption { font-size: 13px; color: #666; }
+.terra-prose figcaption { font-size: 13px; color: #666; padding: 0.4rem 0.75rem; background: #f6faf4; }
+.terra-prose figcaption:empty { display: none; }
 
 /* Foto com texto a contornar (esquerda/direita), na leitura e no editor. A largura vem do style="width:NN%" da figura. */
 .terra-prose,
