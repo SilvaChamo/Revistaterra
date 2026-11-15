@@ -10,6 +10,7 @@ import { cropImage, type CropRect } from '@/lib/client-image';
 import dynamic from 'next/dynamic';
 import Spinner from '@/components/Common/Spinner';
 import { TITLE_MAX } from '@/lib/news-limits';
+import { DEFAULT_CATEGORIES } from '@/lib/site-categories';
 import {
   ImageIcon,
   Key,
@@ -34,8 +35,8 @@ const RichEditor = dynamic(loadRichEditor, {
   ),
 });
 
-// Categorias da Revista Terra
-const CATEGORIES = ['Agricultura', 'Mercado', 'Economia', 'Meio Ambiente', 'Clima', 'Tempo', 'Pesca', 'Energia', 'Sociedade', 'Política', 'Internacional', 'Fora de Campo', 'Opinião'];
+// Categorias da Revista Terra (as de base; as guardadas no painel chegam do servidor)
+const CATEGORIES = [...DEFAULT_CATEGORIES.map((c) => c.name), 'Opinião'];
 
 // Compara categorias sem depender de maiúsculas, acentos ou hífenes ("agro-negocio" = "Agro-negócio").
 const catKey = (v: string) => {

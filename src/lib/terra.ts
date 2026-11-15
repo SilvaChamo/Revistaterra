@@ -30,6 +30,8 @@ const CATEGORY_COLORS: Record<string, { bg: string; fg: string }> = {
   'agro-pecuaria':        { bg: '#558B2F', fg: '#FFFFFF' },
   'agropecuaria':         { bg: '#558B2F', fg: '#FFFFFF' },
   'entrevista':           { bg: '#6A1B9A', fg: '#FFFFFF' },
+  'reportagem':           { bg: '#AD3B2E', fg: '#FFFFFF' },
+  'estudos':              { bg: '#3F5F8A', fg: '#FFFFFF' },
   'entrevsta':            { bg: '#6A1B9A', fg: '#FFFFFF' },
   'receitas':             { bg: '#D84315', fg: '#FFFFFF' },
   'meio-ambiente':        { bg: '#2E7D32', fg: '#FFFFFF' },

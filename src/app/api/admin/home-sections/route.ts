@@ -2,22 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { requireAuth } from '@/lib/api-guard';
 import { homeCategories, homeLayout, homeOptions } from '@/lib/home-config';
-import { loadCategories, slugify } from '@/lib/terra-news';
+import { listSiteCategories } from '@/lib/categorias-site';
 
 export const dynamic = 'force-dynamic';
 
-// Categorias do formulário de notícias: aparecem no selector mesmo que ainda não tenham notícias.
-const BASE = ['Agricultura', 'Mercado', 'Economia', 'Meio Ambiente', 'Clima', 'Tempo', 'Pesca', 'Energia', 'Sociedade', 'Política', 'Internacional', 'Fora de Campo'];
-
 async function categoryOptions() {
-  const map = new Map<string, string>();
-  for (const name of BASE) map.set(slugify(name), name);
-  try {
-    for (const c of await loadCategories()) if (c.slug !== 'opiniao') map.set(c.slug, c.name);
-  } catch {
-    /* sem notícias: ficam as de base */
-  }
-  return [...map].map(([slug, label]) => ({ slug, label })).sort((a, b) => a.label.localeCompare(b.label, 'pt'));
+  return (await listSiteCategories(true)).map((c) => ({ slug: c.slug, label: c.name }));
 }
 
 /** Posição, categorias e publicidade das secções da home: as que estão guardadas, sem a cache de 1 hora. */

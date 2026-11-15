@@ -83,6 +83,15 @@ const CATEGORY_LABELS: Record<string, string> = {
   inovacao: 'Inovação',
   'sem-categoria': 'Sem categoria',
   'voce-sabiaa': 'Você sabia?',
+  // Categorias da Revista Terra (menu e secções de revistaterraonline.com).
+  economia: 'Economia',
+  reportagem: 'Reportagem',
+  estudos: 'Estudos',
+  politica: 'Política',
+  mercado: 'Mercado',
+  sociedade: 'Sociedade',
+  clima: 'Clima',
+  'meio-ambiente': 'Meio Ambiente',
   // Categorias que chegam da Base de Dados Agro (vista `noticias_base`).
   noticia: 'Notícia',
   evento: 'Evento',

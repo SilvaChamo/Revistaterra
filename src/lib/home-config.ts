@@ -5,6 +5,7 @@ import {
   normalizeHomeCategories, normalizeHomeLayout, normalizeHomeOptions,
   type HomeCategories, type HomeLayout, type HomeOptions,
 } from '@/lib/home-sections';
+import { DEFAULT_CATEGORIES, normalizeSiteCategories, type SiteCategory } from '@/lib/site-categories';
 
 /**
  * Posição, categorias e publicidade das secções da página inicial, escolhidas no painel (Página inicial). Cada uma fica num
@@ -56,3 +57,6 @@ function store<T>(file: string, tag: string, fallback: () => T, normalize: (raw:
 export const homeLayout = store<HomeLayout>('home-seccoes.json', 'home-layout', defaultHomeLayout, normalizeHomeLayout);
 export const homeCategories = store<HomeCategories>('home-categorias.json', 'home-categories', defaultHomeCategories, normalizeHomeCategories);
 export const homeOptions = store<HomeOptions>('home-opcoes.json', 'home-options', defaultHomeOptions, normalizeHomeOptions);
+
+/** Categorias deste site (cada site tem o seu ficheiro e o seu armazenamento: nunca se misturam com as de outro site). */
+export const siteCategoryList = store<SiteCategory[]>(`categorias-${process.env.NEXT_PUBLIC_SITE_ID || 'revistaterra'}.json`, 'site-categories', () => DEFAULT_CATEGORIES, normalizeSiteCategories);
