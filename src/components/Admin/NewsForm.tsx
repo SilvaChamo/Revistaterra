@@ -135,7 +135,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
   // Ao ir à galeria escolher uma foto sai-se desta página: guarda-se o que já está escrito e repõe-se ao voltar.
   const saveDraft = () => {
     try {
-      sessionStorage.setItem('ec-news-draft', JSON.stringify({ path: window.location.pathname, ts: Date.now(), formData: { ...formData, image_url: formData.image_url.startsWith('blob:') ? '' : formData.image_url } }));
+      sessionStorage.setItem('ec-news-draft', JSON.stringify({ path: window.location.pathname, ts: Date.now(), formData: { ...formData, image_url: (formData.image_url || '').startsWith('blob:') ? '' : (formData.image_url || '') } }));
     } catch { /* sem armazenamento */ }
   };
 
@@ -178,7 +178,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
     let next: Record<string, unknown> = {};
     if (initialData) {
       const list = Array.isArray(initialData.categories) && initialData.categories.length ? initialData.categories : [initialData.category || 'agricultura'];
-      next = { ...initialData, categories: list };
+      next = { ...initialData, categories: list, image_url: initialData.image_url ?? '', summary: initialData.summary ?? '', content: initialData.content ?? '' };
     }
     const d = readDraft();
     if (d?.formData) next = { ...next, ...d.formData };
@@ -285,9 +285,9 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
 
     try {
       // Se a foto ainda está a seguir para a biblioteca, espera só o que falta (normalmente já terminou).
-      let imageUrl = formData.image_url;
+      let imageUrl: string = formData.image_url || '';
       if (pendingImage.current) {
-        try { imageUrl = await pendingImage.current; } catch { throw new Error('A foto não chegou à biblioteca. Escolha-a de novo.'); }
+        try { imageUrl = (await pendingImage.current) || ''; } catch { throw new Error('A foto não chegou à biblioteca. Escolha-a de novo.'); }
       } else if (imageUrl.startsWith('blob:')) throw new Error('A foto ainda não foi enviada. Escolha-a de novo.');
       // Buscar o utilizador actual do Supabase para obter o ID real
       const { data: { user: currentUser } } = await supabase.auth.getUser();
