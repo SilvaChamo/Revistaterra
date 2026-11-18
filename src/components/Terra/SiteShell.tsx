@@ -14,14 +14,12 @@ export type Crumb = { label: string; href?: string };
 /** `trail`: caminho da página (páginas interiores). Sem `trail` (página inicial) a barra mostra as cotações do dia. */
 export default async function SiteShell({ children, trail }: { children: React.ReactNode; trail?: Crumb[] }) {
   const [weather, socialLinks] = await Promise.all([loadWeather(), loadSocialLinks()]);
-  const items = [
-    ...ticker.map((r) => ({ k: 'm' + r.prov, label: `Milho · ${r.prov}`, value: `${r.milho} MT/kg`, change: '' })),
-    ...terra.market.map((m) => ({ k: 'c' + m.pair, label: m.pair, value: m.price, change: m.change })),
-  ];
+  // só cotações (milho por província); o câmbio tem o seu próprio bloco na barra lateral
+  const items = ticker.map((r) => ({ k: 'm' + r.prov, label: `Milho · ${r.prov}`, value: `${r.milho} MT/kg` }));
   const Row = ({ dup = false }: { dup?: boolean }) => (
     <div className="flex shrink-0 items-center gap-8 pr-8" aria-hidden={dup}>
       {items.map((r) => (
-        <span key={r.k} className="whitespace-nowrap"><b>{r.label}</b> {r.value}{r.change && <b className="ml-1" style={{ color: r.change.startsWith('-') ? '#E22F57' : '#039A67' }}>{r.change}</b>}</span>
+        <span key={r.k} className="whitespace-nowrap"><b>{r.label}</b> {r.value}</span>
       ))}
     </div>
   );
