@@ -120,7 +120,7 @@ export default async function Home() {
     fora: catCards.length > 0 ? <CategoryCards title="Categorias" items={catCards} /> : null,
     // Colunistas do painel; enquanto não houver, mostram-se os autores de opinião de sempre, no mesmo desenho de cartão
     colunistas: (
-      <Columnists items={cards} title="Opinião" href="/categoria/opiniao" more="Ver todos os artigos de opinião" />
+      <Columnists items={cards} title="Opinião" />
     ),
     mais: (
       <>
