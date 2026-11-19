@@ -47,7 +47,12 @@ export default function AntiSpamFields({ theme = 'light' }: { theme?: 'light' | 
       language: 'pt',
       callback: (t: string) => setToken(t),
       'expired-callback': () => setToken(''),
-      'error-callback': () => setToken(''),
+      'error-callback': () => {
+        setToken('');
+        if (box.current) {
+          box.current.style.display = 'none';
+        }
+      },
     });
   }, [scriptReady, theme]);
 
