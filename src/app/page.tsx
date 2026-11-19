@@ -45,17 +45,15 @@ export default async function Home() {
   // Colunistas = contas com o nível Colunista; o card mostra o artigo de Opinião mais recente do autor; sem artigos, o colunista não aparece.
   const [columnists, { posts: allPosts }] = await Promise.all([getColumnists(), getAllPosts().catch(() => ({ posts: [] as Awaited<ReturnType<typeof getAllPosts>>['posts'] }))]);
   const opinion = opinionPosts(allPosts);
-  const columnistItems = columnists.flatMap((columnist) => {
-    const mine = opinion.filter((p) => sameAuthor(p.author, columnist.autor));
+  // Colunistas: autores da Revista Terra com o artigo de opinião mais recente de cada um
+  const cards = terra.authors.map((a) => {
+    const mine = opinion.filter((p) => sameAuthor(p.author, a.author));
     const p = mine[0];
-    return p ? [{ columnist, post: { slug: p.slug, title: p.title } }] : [];
+    return {
+      columnist: { id: a.author, nome: a.author, handle: '', foto: a.image || '', autor: a.author, facebook: '', instagram: '', linkedin: '', x: '' },
+      post: { slug: p ? p.slug : (a.url.replace(/^\/noticias\//, '') || ''), title: p ? p.title : a.title, href: p ? undefined : a.url, summary: (a as { summary?: string }).summary },
+    };
   });
-  const cards = columnistItems.length > 0
-    ? columnistItems
-    : terra.authors.map((a) => ({
-        columnist: { id: a.author, nome: a.author, handle: '', foto: a.image || '', autor: a.author, facebook: '', instagram: '', linkedin: '', x: '' },
-        post: { slug: '', title: a.title, href: a.url, summary: (a as { summary?: string }).summary },
-      }));
   const take = makePicker(allCards);
   const TERRA_CATEGORIES = ['agricultura', 'analise', 'biodiversidade', 'clima', 'economia', 'energia', 'entrevista', 'estudos', 'internacional', 'meio-ambiente', 'mercado', 'pecuaria', 'pesca', 'politica', 'reportagem', 'sociedade', 'tempo'];
   const todas = allCards.filter((c) => c.image);
@@ -122,10 +120,7 @@ export default async function Home() {
     fora: catCards.length > 0 ? <CategoryCards title="Categorias" items={catCards} /> : null,
     // Colunistas do painel; enquanto não houver, mostram-se os autores de opinião de sempre, no mesmo desenho de cartão
     colunistas: (
-      <>
-        <Heading>{columnistItems.length > 0 ? 'Colunistas' : 'Opinião'}</Heading>
-        <Columnists items={cards} />
-      </>
+      <Columnists items={cards} title="Opinião" href="/categoria/opiniao" more="Ver todos os artigos de opinião" />
     ),
     mais: (
       <>
