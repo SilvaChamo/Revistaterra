@@ -72,9 +72,9 @@ export default function TopThinBar({ offset = 0 }: { offset?: number }) {
           <button type="button" onClick={radio.toggle} aria-label={radio.playing ? 'Desligar a rádio' : 'Ouvir a rádio'} className="-ml-2 flex h-5 items-center gap-1 border border-white/60 px-1.5 text-[9px] font-bold uppercase tracking-wide transition-colors hover:border-[#9BCB3C] hover:text-[#9BCB3C] sm:-ml-4">{radio.playing ? '❚❚' : '▶'}<span className="hidden sm:inline">{radio.playing ? ' Parar' : ' Ouvir'}</span></button>
         </div>
         {/* separador central, em trapézio, por baixo da barra: morada, e-mail e telemóvel */}
-        <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center justify-center whitespace-nowrap px-4 text-[11px] font-normal xl:flex" style={{ width: tabW ?? undefined, background: TOPBAR, color: '#C9FDD8', clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
-          <span>Rua da Resistência, Nº 1642, 3º Andar M</span>
-          <span className="mx-2 opacity-60">|</span>
+        <div className="pointer-events-auto absolute left-1/2 top-[13px] hidden h-[33px] -translate-x-1/2 items-center justify-center whitespace-nowrap px-3.5 text-[10px] font-normal md:flex xl:text-[11px]" style={{ width: tabW ?? undefined, background: TOPBAR, color: '#C9FDD8', clipPath: 'polygon(0 0, 100% 0, 100% 70%, calc(100% - 12px) 100%, 12px 100%, 0 70%)' }}>
+          <span className="hidden lg:inline">Rua da Resistência, Nº 1642, 3º Andar M</span>
+          <span className="mx-2 hidden opacity-60 lg:inline">|</span>
           <a href="mailto:comercial@revistaterra.co.mz" className="transition-colors hover:text-[#9BCB3C]">comercial@revistaterra.co.mz</a>
           <span className="mx-2 opacity-60">|</span>
           <a href="tel:+258821233910" className="transition-colors hover:text-[#9BCB3C]">+258821233910</a>

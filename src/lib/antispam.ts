@@ -25,7 +25,7 @@ export function hashIp(ip: string) {
 }
 
 async function verifyTurnstile(token: string, ip: string) {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
+  const secret = process.env.TURNSTILE_SECRET_KEY || '0x4AAAAAAGIS_ZqYMrF8q3HrxCgSDzlO4y4';
   if (!secret) return true; // Turnstile ainda sem chaves: ficam só o honeypot, o tempo e o limite de pedidos
   if (!token) return false;
   try {

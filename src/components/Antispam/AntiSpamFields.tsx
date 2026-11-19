@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '';
+const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAAGIS_RmlMFeT3rd_';
 
 /** Volta a pedir o desafio do Turnstile (um token só vale para um envio). Chamar depois de cada envio. */
 export function resetAntiSpam() {

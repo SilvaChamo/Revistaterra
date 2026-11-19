@@ -54,7 +54,7 @@ export default async function Home() {
     ? columnistItems
     : terra.authors.map((a) => ({
         columnist: { id: a.author, nome: a.author, handle: '', foto: a.image || '', autor: a.author, facebook: '', instagram: '', linkedin: '', x: '' },
-        post: { slug: '', title: a.title, href: a.url },
+        post: { slug: '', title: a.title, href: a.url, summary: (a as { summary?: string }).summary },
       }));
   const take = makePicker(allCards);
   const TERRA_CATEGORIES = ['agricultura', 'analise', 'biodiversidade', 'clima', 'economia', 'energia', 'entrevista', 'estudos', 'internacional', 'meio-ambiente', 'mercado', 'pecuaria', 'pesca', 'politica', 'reportagem', 'sociedade', 'tempo'];
