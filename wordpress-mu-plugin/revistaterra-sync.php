@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // CONFIGURAÇÃO AUTOMÁTICA (JÁ CONFIGURADA)
 // ============================================================
 
-define( 'MLTMARK_NEXTJS_URL', 'https://revistaterra-moz.vercel.app' );
+define( 'MLTMARK_NEXTJS_URL', 'https://revistaterra.visualdesignmoz.com' );
 define( 'MLTMARK_WEBHOOK_SECRET', 'c6a98be250fc952ff5f30049904ee0730a972d57ded5bddc7e280337ce9a4cd7' );
 
 // ============================================================
